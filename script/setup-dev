@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+"$ROOT/script/setup"
+"$ROOT/.venv/bin/python" -m pip install --only-binary=:all: --require-hashes -r "$ROOT/requirements-dev.lock"
+"$ROOT/.venv/bin/python" -m pip check

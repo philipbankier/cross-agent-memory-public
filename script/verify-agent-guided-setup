@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+export PYTHONDONTWRITEBYTECODE=1
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+PYTHON=${PYTHON:-python3}
+if [ -x "$ROOT/.venv/bin/python" ]; then
+  PYTHON="$ROOT/.venv/bin/python"
+fi
+if [ -z "${CAM_CLI:-}" ] && [ -x "$ROOT/.venv/bin/cross-memory" ]; then
+  CAM_CLI="$ROOT/.venv/bin/cross-memory"
+  export CAM_CLI
+fi
+cd "$ROOT"
+PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}" exec "$PYTHON" \
+  -m cross_assistant_memory.setup_acceptance "$@"

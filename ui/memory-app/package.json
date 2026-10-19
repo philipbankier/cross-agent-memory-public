@@ -1,0 +1,26 @@
+{
+  "name": "@cross-agent-memory/mcp-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check src build.mjs test",
+    "test": "node --test test/*.test.mjs",
+    "check:bundle": "node build.mjs --check"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "2.0.3",
+    "@modelcontextprotocol/core": "2.2.0",
+    "@modelcontextprotocol/client": "2.2.0",
+    "zod": "4.2.0",
+    "lucide": "1.49.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "typescript": "6.0.3",
+    "playwright": "1.58.2",
+    "prettier": "3.7.4"
+  }
+}

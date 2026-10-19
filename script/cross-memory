@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if [ ! -x "$ROOT/.venv/bin/cross-memory" ]; then
+  echo 'Run script/setup first.' >&2
+  exit 1
+fi
+exec "$ROOT/.venv/bin/cross-memory" "$@"

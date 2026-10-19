@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+export PYTHONDONTWRITEBYTECODE=1
+case "${1:-}" in ''|--runtime-only) ;; *) echo 'usage: script/setup [--runtime-only]' >&2; exit 2;; esac
+[ "$#" -le 1 ] || exit 2
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+PYTHON_BIN=${PYTHON_BIN:-python3}
+"$PYTHON_BIN" -c 'import sys; assert sys.version_info >= (3, 11), "Python 3.11 or newer required; set PYTHON_BIN"'
+"$PYTHON_BIN" -m venv "$ROOT/.venv"
+"$ROOT/.venv/bin/python" -m pip install --only-binary=:all: --require-hashes -r "$ROOT/requirements-bootstrap.lock"
+"$ROOT/.venv/bin/python" -m pip install --only-binary=:all: --require-hashes -r "$ROOT/requirements.lock"
+"$ROOT/.venv/bin/python" -m pip install --no-deps --no-build-isolation "$ROOT"
+"$ROOT/.venv/bin/python" -m pip check

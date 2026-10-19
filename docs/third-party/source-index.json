@@ -1,0 +1,3497 @@
+{
+  "format_version": 1,
+  "scope": "Portable source directions and original notices for the pinned Linux image inputs",
+  "artifact_binding": "The package build-provenance manifest binds these files; published image digests require release provenance",
+  "notices": {
+    "path": "notices.txt",
+    "sha256": "9d8d4bc3cf86b0fa4bb29ccf8dd287748279e50e511583bb177ec8c1ef4aae8b",
+    "original_texts": 100,
+    "original_notice_bodies_unchanged": true
+  },
+  "debian": {
+    "installed_binary_packages": 80,
+    "source_inventory_platform": "linux/arm64",
+    "binary_version_differences": [
+      {
+        "name": "grep",
+        "arm64": "3.11-4+b1",
+        "amd64": "3.11-4",
+        "source_version": "3.11-4"
+      }
+    ],
+    "source_releases": [
+      {
+        "name": "acl",
+        "version": "2.3.2-2",
+        "files": [
+          {
+            "name": "acl_2.3.2-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/a69f6cb6c5eeb21e17debd698968c5c9c03782b6",
+            "bytes": 24296,
+            "sha256": "e27b6e194c0a7554595d76f96acdceb800631bdc46c36457b73bc7e4a0c5f2ee"
+          },
+          {
+            "name": "acl_2.3.2-2.dsc",
+            "url": "https://snapshot.debian.org/file/a78c0a5e511ee122ba5976bbd7cabeff0fd7cbe6",
+            "bytes": 2604,
+            "sha256": "1f42130ccb5442fe2db2aee1dcc03c51a31512dd2519a38e8fc9270c5abbc807"
+          },
+          {
+            "name": "acl_2.3.2.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/2674394a4061791c77d80fd2089a39c3675a5980",
+            "bytes": 371680,
+            "sha256": "97203a72cae99ab89a067fe2210c1cbf052bc492b479eca7d226d9830883b0bd"
+          },
+          {
+            "name": "acl_2.3.2.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/884c1cae6bbc52db9deba2f5523f6624df796201",
+            "bytes": 833,
+            "sha256": "184c6a903490885a096095db67b433a04542c6569f167cbe8115268c0f227273"
+          }
+        ]
+      },
+      {
+        "name": "apt",
+        "version": "3.0.3",
+        "files": [
+          {
+            "name": "apt_3.0.3.dsc",
+            "url": "https://snapshot.debian.org/file/75cc2d8a7adec664f1b1058dcab263372da25df5",
+            "bytes": 3091,
+            "sha256": "ccf1666e5b268d76bf62aafb22db089a2fdae9c17d1d1c446546b3621768add7"
+          },
+          {
+            "name": "apt_3.0.3.tar.xz",
+            "url": "https://snapshot.debian.org/file/d5db7bec0f62e2ef71d140c17977e6153bb2d09b",
+            "bytes": 2422096,
+            "sha256": "5b5f6f6d26121742a83aa80d4ed0eb0c6ce9bea259518db412edefd95760e4ef"
+          }
+        ]
+      },
+      {
+        "name": "attr",
+        "version": "1:2.5.2-3",
+        "files": [
+          {
+            "name": "attr_2.5.2-3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/9f7fbe109938c86fa973dae5e77f3bda24d0574c",
+            "bytes": 32260,
+            "sha256": "153f98c87575277ea021e24dae36293b7738699174438a2060b47e8312b771e3"
+          },
+          {
+            "name": "attr_2.5.2-3.dsc",
+            "url": "https://snapshot.debian.org/file/cd31cdd7a10abf9f6edd5a3050bed9eaf4cd4c9d",
+            "bytes": 2576,
+            "sha256": "c2ae3e15db059029030ddf4fdac179d8f90d423f2310a6ef8c745ba28ac18b0a"
+          },
+          {
+            "name": "attr_2.5.2.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/dfced877779583861401389eea82dfeb88cb5d3a",
+            "bytes": 334180,
+            "sha256": "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b"
+          },
+          {
+            "name": "attr_2.5.2.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/eee0e22675431900d88d16eab9d76c122cffb89e",
+            "bytes": 833,
+            "sha256": "eeac729088d3c6379e91b7596cb3582e46b047c47f0fa3c5c77f9c9e84dc3a4c"
+          }
+        ]
+      },
+      {
+        "name": "audit",
+        "version": "1:4.0.2-2+deb13u1",
+        "files": [
+          {
+            "name": "audit_4.0.2-2+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/65bf7227fb8ee21bdbdf6d9493ad0ceb6a25acc4",
+            "bytes": 25008,
+            "sha256": "ab39cb2d6dc6b0440da37f085b643dffc86d8cc5370b5cc6502d36b53edaa862"
+          },
+          {
+            "name": "audit_4.0.2-2+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/f318926afbbfa4cc8f96188d7907199116567d72",
+            "bytes": 2761,
+            "sha256": "f72198219d4a50967e328a143c9c0a7ba981c8f3790b2880465b8a80ac33850e"
+          },
+          {
+            "name": "audit_4.0.2.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/fcb0bdecdaa649d1e688196713a824c332f37d65",
+            "bytes": 1198769,
+            "sha256": "d5d1b5d50ee4a2d0d17875bc6ae6bd6a7d5b34d9557ea847a39faec531faaa0a"
+          }
+        ]
+      },
+      {
+        "name": "base-files",
+        "version": "13.8+deb13u7",
+        "files": [
+          {
+            "name": "base-files_13.8+deb13u7.dsc",
+            "url": "https://snapshot.debian.org/file/09c6e9bef6e1c0234e4cd91d2a7ac5d52f6dc8b3",
+            "bytes": 1247,
+            "sha256": "6240b5a02fc32bd6d925bb7776e00c467e80d930f8cf3c4a20c299ce692dc7e4"
+          },
+          {
+            "name": "base-files_13.8+deb13u7.tar.xz",
+            "url": "https://snapshot.debian.org/file/967e7c01534a5ffee64590239c8c22371619c1aa",
+            "bytes": 83444,
+            "sha256": "be32803b9408ac9aa46b96f68c83ee45e88d04d89854a87999986efc4cb34c69"
+          }
+        ]
+      },
+      {
+        "name": "base-passwd",
+        "version": "3.6.7",
+        "files": [
+          {
+            "name": "base-passwd_3.6.7.dsc",
+            "url": "https://snapshot.debian.org/file/c9a3fe0b6da25cfac124b9ace5c5882606f9235b",
+            "bytes": 1891,
+            "sha256": "23dafe71f85d7595d9e20efba17729c1c975a33bd469cf09bfad9e96b1f542f3"
+          },
+          {
+            "name": "base-passwd_3.6.7.tar.xz",
+            "url": "https://snapshot.debian.org/file/96b8461fab82edcbd97e75db607c4c134b40e990",
+            "bytes": 60872,
+            "sha256": "cf869870fed7862b57bfa9e99cd5cd6f365e2349705a1b65af7fc182629bd1ab"
+          }
+        ]
+      },
+      {
+        "name": "bash",
+        "version": "5.2.37-2",
+        "files": [
+          {
+            "name": "bash_5.2.37-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/a1af1bbde88b868738d336b2804dbbe72cebe648",
+            "bytes": 88360,
+            "sha256": "42e03ef523258b61fa765b8c9719d7bf461f2a274260d07fbe45ca7e4627923a"
+          },
+          {
+            "name": "bash_5.2.37-2.dsc",
+            "url": "https://snapshot.debian.org/file/d32750d217c43dabc3b63b1d6431071e6cd506dc",
+            "bytes": 2162,
+            "sha256": "7e5f6d5a26093e812f8841d5cf3245054102e86986017d8edd859417b03707f9"
+          },
+          {
+            "name": "bash_5.2.37.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/cf4da6fb3798f10b9510ab13fc69a5a9bf75e86e",
+            "bytes": 5600932,
+            "sha256": "370704c9c859f4060b7df19055e43bb9b5fa09d887699cf6ba87885c5485d36a"
+          }
+        ]
+      },
+      {
+        "name": "bzip2",
+        "version": "1.0.8-6",
+        "files": [
+          {
+            "name": "bzip2_1.0.8-6.debian.tar.bz2",
+            "url": "https://snapshot.debian.org/file/339a767cb2f05ec32402bae7269d98fd14413428",
+            "bytes": 26991,
+            "sha256": "648ed0dac9a041ba6951e0cca521628aa39947cefee78139f7b934a5dc502095"
+          },
+          {
+            "name": "bzip2_1.0.8-6.dsc",
+            "url": "https://snapshot.debian.org/file/d6f4c6bc376a703658ee6a6811c4e876944c3f13",
+            "bytes": 1604,
+            "sha256": "cd3bfd77254a6b5ef1be144bdc90a0dd374bc8206afd98ba4abf828741b79820"
+          },
+          {
+            "name": "bzip2_1.0.8.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/bf7badf7e248e0ecf465d33c2f5aeec774209227",
+            "bytes": 810029,
+            "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
+          }
+        ]
+      },
+      {
+        "name": "ca-certificates",
+        "version": "20250419",
+        "files": [
+          {
+            "name": "ca-certificates_20250419.dsc",
+            "url": "https://snapshot.debian.org/file/a101569da0577fb5df37889d4206eab6f2e2948d",
+            "bytes": 1766,
+            "sha256": "3fc919369a3b84e34a959faa8bdffb9bd2c5a7d4a948a4b07a09a5d43e257030"
+          },
+          {
+            "name": "ca-certificates_20250419.tar.xz",
+            "url": "https://snapshot.debian.org/file/6e0ea4bd2ac108fec5edec1187dc69c0b1f94f2d",
+            "bytes": 277504,
+            "sha256": "33b44ef78653ecd3f0f2f13e5bba6be466be2e7da72182f737912b81798ba5d2"
+          }
+        ]
+      },
+      {
+        "name": "cdebconf",
+        "version": "0.280",
+        "files": [
+          {
+            "name": "cdebconf_0.280.dsc",
+            "url": "https://snapshot.debian.org/file/94a37e191c3df033a9ae39bfbe6d7acd11c8d996",
+            "bytes": 2703,
+            "sha256": "36cdaa45fca445d2164fbdd81faad9918d748fa703678d8af237354d5744b1d1"
+          },
+          {
+            "name": "cdebconf_0.280.tar.xz",
+            "url": "https://snapshot.debian.org/file/eaddf7a38a41aa060d81a5cdf659561d1ab0a4e3",
+            "bytes": 286132,
+            "sha256": "c42115131939845e452a323ceded937efad3b2e3e1b80a1a186f9d5c494a43a2"
+          }
+        ]
+      },
+      {
+        "name": "coreutils",
+        "version": "9.7-3",
+        "files": [
+          {
+            "name": "coreutils_9.7-3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/850e25c476de51e09af13540425ec42669d0a210",
+            "bytes": 26820,
+            "sha256": "483f77876a080577f63da1d004cc1cf17d16df65d6925aefdd3294c6101eccfb"
+          },
+          {
+            "name": "coreutils_9.7-3.dsc",
+            "url": "https://snapshot.debian.org/file/8cab01ea1c688c66c5b76274f92f6a36d27aba71",
+            "bytes": 2122,
+            "sha256": "c3a207e3aaad165765c7a6fab89045f5fd20035fea6830b9f9ebbb92ebfbff89"
+          },
+          {
+            "name": "coreutils_9.7.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/920791e12e7471479565a066e116a087edcc0df9",
+            "bytes": 6158960,
+            "sha256": "e8bb26ad0293f9b5a1fc43fb42ba970e312c66ce92c1b0b16713d7500db251bf"
+          },
+          {
+            "name": "coreutils_9.7.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/10ba8173099a993fdb9cac8a7a3042b455ce54f5",
+            "bytes": 833,
+            "sha256": "5070e9428bd372a7fa1f66b395b81092bb40c98f9f56a2e2bc55c47fd387e901"
+          }
+        ]
+      },
+      {
+        "name": "dash",
+        "version": "0.5.12-12",
+        "files": [
+          {
+            "name": "dash_0.5.12-12.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/0302a1006f740bc89faf8f4cf3d8f3f5dd1cbfd2",
+            "bytes": 47300,
+            "sha256": "a278acb5d9a1f5d9a086d36a547287cbf3105b8f33c0e62d86d264decf5ba1ad"
+          },
+          {
+            "name": "dash_0.5.12-12.dsc",
+            "url": "https://snapshot.debian.org/file/6dfbaf7435adb82d03033aabb3f06783fc7cbb23",
+            "bytes": 1460,
+            "sha256": "589efc4d87a4ae4745c273bdb33198d7c4f28a71736a8ece81d3677cf9c6e5ce"
+          },
+          {
+            "name": "dash_0.5.12.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/e15444a93853f693774df003f87d9040ab600a5e",
+            "bytes": 246054,
+            "sha256": "6a474ac46e8b0b32916c4c60df694c82058d3297d8b385b74508030ca4a8f28a"
+          }
+        ]
+      },
+      {
+        "name": "db5.3",
+        "version": "5.3.28+dfsg2-9",
+        "files": [
+          {
+            "name": "db5.3_5.3.28+dfsg2-9.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/b22b47d5420774557ddbed0a50f1e2d9f100c911",
+            "bytes": 36412,
+            "sha256": "21fe6ee0491c83d0c34fe52e0e0e423946172eff68262584a0cc8ef880c36b74"
+          },
+          {
+            "name": "db5.3_5.3.28+dfsg2-9.dsc",
+            "url": "https://snapshot.debian.org/file/5a9565fb65d95f3c03d77fe053950451242c133f",
+            "bytes": 2373,
+            "sha256": "045f392c75dffc9d4f3bd44978b90ca8d45b935cf0ae4202bf79a760f2ce07b1"
+          },
+          {
+            "name": "db5.3_5.3.28+dfsg2.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/c2e52e52021c4df2ebff57f1fb68e2879d65376a",
+            "bytes": 21287688,
+            "sha256": "ad41b507415dec8316e828b2230242af2251d2c86eefa3c7aa9ef47c5239ef33"
+          }
+        ]
+      },
+      {
+        "name": "debconf",
+        "version": "1.5.91",
+        "files": [
+          {
+            "name": "debconf_1.5.91.dsc",
+            "url": "https://snapshot.debian.org/file/258e67779a4053a81b60528b1dd4e25b587d2fcf",
+            "bytes": 2035,
+            "sha256": "1aa3ceaef24ef533cfffe7f9ca750c6325dbaea86a7abca77cb4439ceae930d8"
+          },
+          {
+            "name": "debconf_1.5.91.tar.xz",
+            "url": "https://snapshot.debian.org/file/0cd43ac0c9b8d69755c00876128ca1c969d35997",
+            "bytes": 609964,
+            "sha256": "18f3f43924ccc870be483d7c5f1a9be59e51ae1da403059d654666b5a175bf15"
+          }
+        ]
+      },
+      {
+        "name": "debian-archive-keyring",
+        "version": "2025.1",
+        "files": [
+          {
+            "name": "debian-archive-keyring_2025.1.dsc",
+            "url": "https://snapshot.debian.org/file/1629ea8905ffbf6d25ce63553d086c2db6fc2835",
+            "bytes": 1267,
+            "sha256": "09604bd8d4562a1e942e5d1a19a6b82447cbdeb2e7c7f0df7c32a2503647ea47"
+          },
+          {
+            "name": "debian-archive-keyring_2025.1.tar.xz",
+            "url": "https://snapshot.debian.org/file/dc99ba5c567a918dbc1f7c10c45964c95a3a9773",
+            "bytes": 138248,
+            "sha256": "2d019c3fa19c42da4d37571e473c296286dad0214cb3bd5cafd99f04a8bf5471"
+          }
+        ]
+      },
+      {
+        "name": "diffutils",
+        "version": "1:3.10-4",
+        "files": [
+          {
+            "name": "diffutils_3.10-4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/82f441d0158e30c292ee6039abda0168e983bd55",
+            "bytes": 14304,
+            "sha256": "8588b6ffb897ccff46c583e58ef50500b2511eee41949b21e8afa5439712c2c7"
+          },
+          {
+            "name": "diffutils_3.10-4.dsc",
+            "url": "https://snapshot.debian.org/file/0cb61e8a7c5802e7bf8c70c9168105d9eebec476",
+            "bytes": 1875,
+            "sha256": "087b414ddfc92161a30186926bc4b4ac02c7cba589b0323561cacd54c8b48392"
+          },
+          {
+            "name": "diffutils_3.10.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/c16a9cf107ad1f0f791b6d00852dc5e961c1c451",
+            "bytes": 1624240,
+            "sha256": "90e5e93cc724e4ebe12ede80df1634063c7a855692685919bfe60b556c9bd09e"
+          },
+          {
+            "name": "diffutils_3.10.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/7712d36db350c347a6c44bd1483996f84ac3bc52",
+            "bytes": 833,
+            "sha256": "a94faf8f1baa04ff220f7b2ccb137c16337284e023ebc4a1d5df475c08d810f7"
+          }
+        ]
+      },
+      {
+        "name": "dpkg",
+        "version": "1.22.22",
+        "files": [
+          {
+            "name": "dpkg_1.22.22.dsc",
+            "url": "https://snapshot.debian.org/file/e0dbbfa6400dc9a838176b4e046b7a57ce844c85",
+            "bytes": 3449,
+            "sha256": "fc481d9b87cd4416cd55673cc1fa716b57480a6b23253ac0d87c1abbfad4c964"
+          },
+          {
+            "name": "dpkg_1.22.22.tar.xz",
+            "url": "https://snapshot.debian.org/file/3f562f6937e1df756e7275a303914f0efaa3c377",
+            "bytes": 5746724,
+            "sha256": "d5ea9f132deec8030b50ab2a02ade2b49f0c7a195805a302c8301156fe833a57"
+          }
+        ]
+      },
+      {
+        "name": "findutils",
+        "version": "4.10.0-3",
+        "files": [
+          {
+            "name": "findutils_4.10.0-3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/7adc5849ee272795be86d66a1eda10e8f37a6bf5",
+            "bytes": 33364,
+            "sha256": "7d19668508523a6fcfb7731f5646305a8b1a00a3105ee3f0a5f167adf93a8a46"
+          },
+          {
+            "name": "findutils_4.10.0-3.dsc",
+            "url": "https://snapshot.debian.org/file/c2274f0252eda9175f71c9233e9fef87be421678",
+            "bytes": 2291,
+            "sha256": "fa6b67056d9e5b4d8edbfc8ab95ac15ac769b140284426973f6a1ef07a4594ec"
+          },
+          {
+            "name": "findutils_4.10.0.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/aa0646445da9aba2ab7823d7298f3a9a40a6b6ad",
+            "bytes": 2240712,
+            "sha256": "1387e0b67ff247d2abde998f90dfbf70c1491391a59ddfecb8ae698789f0a4f5"
+          },
+          {
+            "name": "findutils_4.10.0.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/f0dfd4608b3c2215868b3f0ac9a32ea97151db2e",
+            "bytes": 488,
+            "sha256": "7f53670eea6bd114e014571221eb652855c1129a3ed99f2a9257c2a313cc216f"
+          }
+        ]
+      },
+      {
+        "name": "gcc-14",
+        "version": "14.2.0-19",
+        "files": [
+          {
+            "name": "gcc-14_14.2.0-19.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/47c1fc8b2b6a5643058a6d903ba5734cae7c03b7",
+            "bytes": 2577016,
+            "sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781"
+          },
+          {
+            "name": "gcc-14_14.2.0-19.dsc",
+            "url": "https://snapshot.debian.org/file/065b6e84c53e405389c312739057e1a42e41b44c",
+            "bytes": 47347,
+            "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+          },
+          {
+            "name": "gcc-14_14.2.0.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/40f4fae7a993865facd67321c28b95ef19aa7ab1",
+            "bytes": 94299633,
+            "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
+          }
+        ]
+      },
+      {
+        "name": "glibc",
+        "version": "2.41-12+deb13u4",
+        "files": [
+          {
+            "name": "glibc_2.41-12+deb13u4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/57751ec678751a3cf5bf3badb54f6ab6b9760eea",
+            "bytes": 499524,
+            "sha256": "dda4153511bfd543502d18e5bc9323110996fe9c531f14ae3fad6eb17f027c7d"
+          },
+          {
+            "name": "glibc_2.41-12+deb13u4.dsc",
+            "url": "https://snapshot.debian.org/file/f291d4082eef7e094241a1a87585f275cf336149",
+            "bytes": 7576,
+            "sha256": "0915324aa646bb99abfaa9aa6ecb734b30babd28454a3e51f3152912370fbd3e"
+          },
+          {
+            "name": "glibc_2.41.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/ecf54de179ba3fb468949af843c8270979e53cc8",
+            "bytes": 20323540,
+            "sha256": "f24aa441021121a79266f0d75242706cab8843a47901fefe74527491807f1998"
+          }
+        ]
+      },
+      {
+        "name": "gmp",
+        "version": "2:6.3.0+dfsg-3",
+        "files": [
+          {
+            "name": "gmp_6.3.0+dfsg-3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/917f804f224e3b64179f8672905a6517cdc38e4d",
+            "bytes": 19912,
+            "sha256": "1d890bbe25dd649d2ddba1926483176520e50f22115a00566f250b613b8c20ad"
+          },
+          {
+            "name": "gmp_6.3.0+dfsg-3.dsc",
+            "url": "https://snapshot.debian.org/file/89d865c92f775ca7c7affc74388c204365268ac2",
+            "bytes": 2251,
+            "sha256": "f7b64af28f52b7346bb8581e01d3c19daf769639345f234f8ae1e29c42171443"
+          },
+          {
+            "name": "gmp_6.3.0+dfsg.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/72323f8cf07aa5d338aff92ef42eea622569ed2c",
+            "bytes": 1870556,
+            "sha256": "bd2966e6d277f79328e894a5a9f3ba3fbf2ed2be81def5f48623e30c23fb1572"
+          }
+        ]
+      },
+      {
+        "name": "grep",
+        "version": "3.11-4",
+        "files": [
+          {
+            "name": "grep_3.11-4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/3686e9c246f03108dad1379f3e1d666fbd065d91",
+            "bytes": 20468,
+            "sha256": "f10394b7589c58ca7de4b580692b1b59431f898cb2068e86222c174e093fdf49"
+          },
+          {
+            "name": "grep_3.11-4.dsc",
+            "url": "https://snapshot.debian.org/file/11e1b405ff336ae264c25f1ee8aed46031f91e11",
+            "bytes": 1642,
+            "sha256": "dd6f8eb933bc05446e483f7792c8bf0a1aba9d498e65c6ccafe64e9bf27ac054"
+          },
+          {
+            "name": "grep_3.11.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/955146a0a4887eca33606e391481bbef37055b86",
+            "bytes": 1703776,
+            "sha256": "1db2aedde89d0dea42b16d9528f894c8d15dae4e190b59aecc78f5a951276eab"
+          },
+          {
+            "name": "grep_3.11.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/55d07b1247899b99e5b6cb956b0720491c235f32",
+            "bytes": 833,
+            "sha256": "89ec23ffd59b68822732dc8204fc89883c3af30a90ae390feb94346d9d09a589"
+          }
+        ]
+      },
+      {
+        "name": "gzip",
+        "version": "1.13-1+deb13u1",
+        "files": [
+          {
+            "name": "gzip_1.13-1+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/8a722d74425395decd1588fb5b79a2ca97d5e549",
+            "bytes": 21364,
+            "sha256": "ffc69d13290009f42dbb4d10a34839350eff3fdaf4be1fda03d10b238ba2f77d"
+          },
+          {
+            "name": "gzip_1.13-1+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/da29a1d6cbffd22cf19ba0acb51355aedae2c985",
+            "bytes": 1708,
+            "sha256": "0c25763da4f7242fbe7e9185b69bcb3f986011b04446b66a84c52bbdf731d308"
+          },
+          {
+            "name": "gzip_1.13.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/a793e107a54769576adc16703f97c39ee7afdd4e",
+            "bytes": 838248,
+            "sha256": "7454eb6935db17c6655576c2e1b0fabefd38b4d0936e0f87f48cd062ce91a057"
+          }
+        ]
+      },
+      {
+        "name": "hostname",
+        "version": "3.25",
+        "files": [
+          {
+            "name": "hostname_3.25.dsc",
+            "url": "https://snapshot.debian.org/file/bdc52533af77ed664f9f91ecb72e786e4ff90251",
+            "bytes": 1519,
+            "sha256": "80aadf116c3423044be69a4cef8ba2766f412bd4d46a500aacb61f303c19c4ef"
+          },
+          {
+            "name": "hostname_3.25.tar.xz",
+            "url": "https://snapshot.debian.org/file/5c3ce185949d8440dda78a4639819802480c693d",
+            "bytes": 12804,
+            "sha256": "5bb5d1be011158090157c9e7587ae5606c262a5020ecdc5caac6686b9910592e"
+          }
+        ]
+      },
+      {
+        "name": "init-system-helpers",
+        "version": "1.69~deb13u1",
+        "files": [
+          {
+            "name": "init-system-helpers_1.69~deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/b79c1fca08ca8c538a5967b46f9af5fd767308ae",
+            "bytes": 2266,
+            "sha256": "873082d72727267b6207e38df47e3002aeb0ed554f876db17c7bbfeb26174ee6"
+          },
+          {
+            "name": "init-system-helpers_1.69~deb13u1.tar.xz",
+            "url": "https://snapshot.debian.org/file/a9f896dadb2cb3ac8fb63ceaf22a7908f3611d60",
+            "bytes": 45852,
+            "sha256": "bbd65c63420b6335b91cbf5daad9a70632a087657eb9078ea000f0a16c2d83da"
+          }
+        ]
+      },
+      {
+        "name": "libbsd",
+        "version": "0.12.2-2",
+        "files": [
+          {
+            "name": "libbsd_0.12.2-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/c60b41226e738fc9872fc8a633fd2f501465f954",
+            "bytes": 18688,
+            "sha256": "36c878a32c1f190ca2cb474de5c6139990a6c029906493d3566770b1ebd569bf"
+          },
+          {
+            "name": "libbsd_0.12.2-2.dsc",
+            "url": "https://snapshot.debian.org/file/a3e0557ef167fd83e16803225c4de6abd69c26bf",
+            "bytes": 2446,
+            "sha256": "01eb1d0c896096f9038213f5f00376ecfd1c0d1def21b7042f28ae070e4837e3"
+          },
+          {
+            "name": "libbsd_0.12.2.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/c8f49920dec71e8e72f2b19f6c209b440a367d3a",
+            "bytes": 446032,
+            "sha256": "b88cc9163d0c652aaf39a99991d974ddba1c3a9711db8f1b5838af2a14731014"
+          },
+          {
+            "name": "libbsd_0.12.2.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/e234fc7862bd78065ebf5222f7dcc54ae6b33786",
+            "bytes": 833,
+            "sha256": "620dc92f158ebe0a650c0e92214a8121b927276895dc9a1dcaa38f627fa0fcb0"
+          }
+        ]
+      },
+      {
+        "name": "libcap-ng",
+        "version": "0.8.5-4",
+        "files": [
+          {
+            "name": "libcap-ng_0.8.5-4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/77af6afc188df68af65da122de5f56a8533f906a",
+            "bytes": 7816,
+            "sha256": "f5d4e7f38bdbca87de77317ce95f973883081370ef257019b484e29e3368a20d"
+          },
+          {
+            "name": "libcap-ng_0.8.5-4.dsc",
+            "url": "https://snapshot.debian.org/file/9b8a214e343e0cad71743b2e4e8ce4500c79554f",
+            "bytes": 1710,
+            "sha256": "a5745b7d68a11068ae5beddcc7fbc94cd87dd81cb2d7495e7d48610603be3526"
+          },
+          {
+            "name": "libcap-ng_0.8.5.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/37693cccf2a13576c7b642a19f83db298fd1979d",
+            "bytes": 59265,
+            "sha256": "e4be07fdd234f10b866433f224d183626003c65634ed0552b02e654a380244c2"
+          }
+        ]
+      },
+      {
+        "name": "libcap2",
+        "version": "1:2.75-10+deb13u1",
+        "files": [
+          {
+            "name": "libcap2_2.75-10+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/6295bbcaf6a5ffad653da306d98370d1e8966ecb",
+            "bytes": 24628,
+            "sha256": "d375de2f743f112835fc0eef2a9c305c1109371954cf53e109b7f046fe58c1bc"
+          },
+          {
+            "name": "libcap2_2.75-10+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/c8c3bd695ab0cac34ea0ac0c395fa0777dec1105",
+            "bytes": 2714,
+            "sha256": "cb6af220de216655ec55bb1f5abf3fa8f03e82c9956f120b313056e895c02ea6"
+          },
+          {
+            "name": "libcap2_2.75.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/1551cef1dd86c56a41c6e5793a79d7a7a9c648fb",
+            "bytes": 197868,
+            "sha256": "de4e7e064c9ba451d5234dd46e897d7c71c96a9ebf9a0c445bc04f4742d83632"
+          },
+          {
+            "name": "libcap2_2.75.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/fe47ee3715175c88a5261a6f6275ea6eddf426dd",
+            "bytes": 833,
+            "sha256": "c71b593e7c3160fd7f406641074d93462bbc4906c9243937a0e232f42d5c54d2"
+          }
+        ]
+      },
+      {
+        "name": "libmd",
+        "version": "1.1.0-2",
+        "files": [
+          {
+            "name": "libmd_1.1.0-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/7073624fcfe38f68b4faddd51c3af703883946a2",
+            "bytes": 8244,
+            "sha256": "3b6ff35fc921eb5450fa9bf2d300c9e058e3771f96f8f13f759768fadd53324c"
+          },
+          {
+            "name": "libmd_1.1.0-2.dsc",
+            "url": "https://snapshot.debian.org/file/1240d4d6fa5945654e74f7e4e7084c79b57f3171",
+            "bytes": 2280,
+            "sha256": "46cc951cd6d71bbfeff4522de66f968fb92601ec4cc622b07f6ac0a2a36ac5f0"
+          },
+          {
+            "name": "libmd_1.1.0.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/72718d5ffad112b702ba84fd40900486f8179642",
+            "bytes": 271228,
+            "sha256": "1bd6aa42275313af3141c7cf2e5b964e8b1fd488025caf2f971f43b00776b332"
+          },
+          {
+            "name": "libmd_1.1.0.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/36302180a69e21afb53f5e30c1c2df3d75db61a9",
+            "bytes": 833,
+            "sha256": "402fd3024e43ab975733d09e661804a58ca58697194e4b15216b1217cfe1dadb"
+          }
+        ]
+      },
+      {
+        "name": "libseccomp",
+        "version": "2.6.0-2",
+        "files": [
+          {
+            "name": "libseccomp_2.6.0-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/2e7b2ad26b39ade9ee22652047d2c2c40a04991b",
+            "bytes": 20800,
+            "sha256": "ed705ec85719403e77d004c99c0b06b795f090c66fcae265c4bcf37ffea9cc27"
+          },
+          {
+            "name": "libseccomp_2.6.0-2.dsc",
+            "url": "https://snapshot.debian.org/file/6cfdde70eba246af6ae8fc25814318164e80f72f",
+            "bytes": 2622,
+            "sha256": "d05f94536558d34fa339326c6f958a3357b51efac8234470b5d97b69472db765"
+          },
+          {
+            "name": "libseccomp_2.6.0.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/2eb0222d379756bd5f0a52c0488a20e3311bbf00",
+            "bytes": 685655,
+            "sha256": "83b6085232d1588c379dc9b9cae47bb37407cf262e6e74993c61ba72d2a784dc"
+          },
+          {
+            "name": "libseccomp_2.6.0.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/a3a445eac376025b8b55998ac7c9ceb92db9a0d3",
+            "bytes": 833,
+            "sha256": "52e338fa958128293cbd25d2be189e34da41c4f4abbb1b641cf58f373c001f94"
+          }
+        ]
+      },
+      {
+        "name": "libselinux",
+        "version": "3.8.1-1",
+        "files": [
+          {
+            "name": "libselinux_3.8.1-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/5999a5d34d86dbf2379f1a41abe8cb9706721d8d",
+            "bytes": 37812,
+            "sha256": "1af25952374f083cf3d6d0edd5beb938f2e53c30eb404afa1e32fcd1cb127db7"
+          },
+          {
+            "name": "libselinux_3.8.1-1.dsc",
+            "url": "https://snapshot.debian.org/file/6af7920fefad36d817bb5f4e39507de9a08668dd",
+            "bytes": 3013,
+            "sha256": "e430b782a396e266f86c32fa779efadebfd40e6a0d10ddbd786fc47905f723b9"
+          },
+          {
+            "name": "libselinux_3.8.1.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/e039453ee0b5ebb980ddf082a2b1024171913834",
+            "bytes": 204411,
+            "sha256": "ec2d2789f931152d21c1db1eb4bc202ce4eccede34d9be9e360e3b45243cee2c"
+          },
+          {
+            "name": "libselinux_3.8.1.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/f43f4b604b59642e23e41713fb7ba465094f5fd3",
+            "bytes": 833,
+            "sha256": "7f983714a780d89f7677e7ba140ce29974022b8ba225f60246b6c33de1477dd6"
+          }
+        ]
+      },
+      {
+        "name": "libsemanage",
+        "version": "3.8.1-1",
+        "files": [
+          {
+            "name": "libsemanage_3.8.1-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/b3faa24ae0a937771fa9338e66650cacc22e2a53",
+            "bytes": 37572,
+            "sha256": "6d1e5bd4d06bbd25ced1b75fba394c3e2157bd604cf1cd33fb581793d70bd7b8"
+          },
+          {
+            "name": "libsemanage_3.8.1-1.dsc",
+            "url": "https://snapshot.debian.org/file/74bd19c38e0821c833f2c3b70f0dd14e5dad7b20",
+            "bytes": 2992,
+            "sha256": "b22bfc4ab2cd47fac46cc9e45d418bb30eb540c3e5c1052d6c669f53e180e4e5"
+          },
+          {
+            "name": "libsemanage_3.8.1.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/6cd27679ad83becede4ac4d92beea54dabbe695a",
+            "bytes": 184618,
+            "sha256": "7b39127b219cc70bfd935a4af6b0f2ba83d4b35c916f253c7e942c23ab490f07"
+          },
+          {
+            "name": "libsemanage_3.8.1.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/13e857e719133b658b5ce7870e2fd8629364ce9e",
+            "bytes": 833,
+            "sha256": "5b4856cb5823fba1b247ff1b5355692706da68a4df61a936d1b33b1f9e9b2f3d"
+          }
+        ]
+      },
+      {
+        "name": "libsepol",
+        "version": "3.8.1-1",
+        "files": [
+          {
+            "name": "libsepol_3.8.1-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/7ba9eb7910f59be4932f4d0b1a0bd8d35f0aaa46",
+            "bytes": 21432,
+            "sha256": "7aac515a941f8dd19581b16c664b3098962e6a8ed7fa0afdafd306a85c667619"
+          },
+          {
+            "name": "libsepol_3.8.1-1.dsc",
+            "url": "https://snapshot.debian.org/file/fc4625ed3b1317ca6ced73b6a64a9438fa7946f5",
+            "bytes": 2347,
+            "sha256": "0351ffc8c3f66918c9e4ecae9244ae2af27857d8795e424e384ddda794718c34"
+          },
+          {
+            "name": "libsepol_3.8.1.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/7ae668832ae5456c363bda01cc2698c5d142102f",
+            "bytes": 513830,
+            "sha256": "0e78705305f955abd4c0654d37a5477ee26349ab74db9e2b03a7868897ae1ddf"
+          },
+          {
+            "name": "libsepol_3.8.1.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/6ef55c7f475df3fca85be45bd6570e539d8fa255",
+            "bytes": 833,
+            "sha256": "183f6cf96054986704d4224f89518e9139370385c43a533078f45ca688dca8b6"
+          }
+        ]
+      },
+      {
+        "name": "libxcrypt",
+        "version": "1:4.4.38-1",
+        "files": [
+          {
+            "name": "libxcrypt_4.4.38-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/a153f83a63de70924cdd8c04d06f6e3edef57505",
+            "bytes": 8512,
+            "sha256": "6b87bcb5325e417ab3f4c01c364233444b4c9008a69ec1d6fababb3f6e693a5e"
+          },
+          {
+            "name": "libxcrypt_4.4.38-1.dsc",
+            "url": "https://snapshot.debian.org/file/554bbfe851512b6f83b8035d8608591d8311d1cf",
+            "bytes": 1573,
+            "sha256": "feba1874a84616791c1c17f9a290c9e97562b2904b3b0200edc82a2db54f3f07"
+          },
+          {
+            "name": "libxcrypt_4.4.38.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/1ddb65a7d360d026586ee83b35430b0d1da39b34",
+            "bytes": 394216,
+            "sha256": "6a275a356622c64ba9f693892215dbb399c003a7a4afeed9c4c74070eaab20f4"
+          }
+        ]
+      },
+      {
+        "name": "libzstd",
+        "version": "1.5.7+dfsg-1",
+        "files": [
+          {
+            "name": "libzstd_1.5.7+dfsg-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/899c78a644062eefb4cb056a23e22c5aed8cd4f4",
+            "bytes": 23036,
+            "sha256": "5e88424d919941291f79e1bfada6cb1a6f748671d9de7d4b7d931f361f183a15"
+          },
+          {
+            "name": "libzstd_1.5.7+dfsg-1.dsc",
+            "url": "https://snapshot.debian.org/file/5882e87bb6e8f39c83044b4aefa3b819b1310e67",
+            "bytes": 2371,
+            "sha256": "8f6ab97fa772d921334e50fa5756a0951e23c718dc913e43a228f28c1a23adf9"
+          },
+          {
+            "name": "libzstd_1.5.7+dfsg.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/232037627d9d8bd80033e4316bdb62f737c9968f",
+            "bytes": 1834780,
+            "sha256": "0c092ef267edce57ba7f3f2645c861f72eaf5e76273c6c3632869423464b90a5"
+          }
+        ]
+      },
+      {
+        "name": "lz4",
+        "version": "1.10.0-4",
+        "files": [
+          {
+            "name": "lz4_1.10.0-4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/1a12361295cb206d28afa6461cfe1e2466bfd1e8",
+            "bytes": 8080,
+            "sha256": "8d276c3254182c2c9cf319b9a6504cf257c56b441f37d3db8ad97d33d46a0911"
+          },
+          {
+            "name": "lz4_1.10.0-4.dsc",
+            "url": "https://snapshot.debian.org/file/6d870247eeda54129ef9a6b7a81d7f8d5377ff31",
+            "bytes": 1941,
+            "sha256": "394c635aa75a21cd5896680e48821c05336645072ae866b2717d53f36b9ba851"
+          },
+          {
+            "name": "lz4_1.10.0.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/e6a01c6d457365f9e26bc440394daab80ab0aff0",
+            "bytes": 387114,
+            "sha256": "537512904744b35e232912055ccf8ec66d768639ff3abe5788d90d792ec5f48b"
+          }
+        ]
+      },
+      {
+        "name": "mawk",
+        "version": "1.3.4.20250131-1",
+        "files": [
+          {
+            "name": "mawk_1.3.4.20250131-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/6ce8be9766f59cec41c4463ea632649eed5676fc",
+            "bytes": 16008,
+            "sha256": "23dea8244bf4f116ec3cd202ab5d4693207d82d986cd0a3d79442b916be4e2b7"
+          },
+          {
+            "name": "mawk_1.3.4.20250131-1.dsc",
+            "url": "https://snapshot.debian.org/file/8f63fbdec6d94845289d707e25efdb74f0a1ac8e",
+            "bytes": 2969,
+            "sha256": "147dd01670e2ebf61f3c78470e0025b87d14e69c7ba9cfafd54da32a355dea84"
+          },
+          {
+            "name": "mawk_1.3.4.20250131.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/cc9d8dfb14c35a4d06e4ef3cf694d8e960e266e3",
+            "bytes": 433213,
+            "sha256": "51bcb82d577b141d896d9d9c3077d7aaa209490132e9f2b9573ba8511b3835be"
+          },
+          {
+            "name": "mawk_1.3.4.20250131.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/77ccc0eef274106391fe509ab0adfcfcc745a676",
+            "bytes": 729,
+            "sha256": "bc83f127727edb42a91d516770c8d0d3cdb5f6e541aa3cb5213b79dae494db95"
+          }
+        ]
+      },
+      {
+        "name": "ncurses",
+        "version": "6.5+20250216-2",
+        "files": [
+          {
+            "name": "ncurses_6.5+20250216-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/025a3164026bef20a1872b0cc9107236d5738a4a",
+            "bytes": 50420,
+            "sha256": "546930a8992ae3325d8c38378f290265d969cf6333cfae9648ac6d69e1e8a8a6"
+          },
+          {
+            "name": "ncurses_6.5+20250216-2.dsc",
+            "url": "https://snapshot.debian.org/file/69f4cedccc8fe157ec94ea231017d65e37cde091",
+            "bytes": 3890,
+            "sha256": "00539cc2bc6bb84be1b8a8a5decf606682e14b6f39b76b9aa090e65d2c2d4580"
+          },
+          {
+            "name": "ncurses_6.5+20250216.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/e9a1792b02cd603c5a094dadc5046d5440723c4b",
+            "bytes": 3774714,
+            "sha256": "b37baafa436e7133bb12a185cb8f60e1599b1947e9f0181c76f3190acf28b6eb"
+          },
+          {
+            "name": "ncurses_6.5+20250216.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/df154cc6de3378e3705f4db1ce663d38a9c765d9",
+            "bytes": 729,
+            "sha256": "64f4d17923322176c44079f18f170e2164a59d551d7e4e9c1a6e4eebedc5dd6f"
+          }
+        ]
+      },
+      {
+        "name": "nettle",
+        "version": "3.10.1-1",
+        "files": [
+          {
+            "name": "nettle_3.10.1-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/a893d45b20ec91e65f1a8645e50619e788e277b7",
+            "bytes": 25036,
+            "sha256": "2d40d02ddac5985d8833532a17a0ef96cb685ee0547ee9617ec13793b22e34c6"
+          },
+          {
+            "name": "nettle_3.10.1-1.dsc",
+            "url": "https://snapshot.debian.org/file/9f8922b81b23705fcacf6c8f5dcd6727523250b2",
+            "bytes": 2053,
+            "sha256": "7b440850ce04b341363f3f5e23dfb9f96ebf7d52e0ef7ba2d07120c90ca61b3c"
+          },
+          {
+            "name": "nettle_3.10.1.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/7b2881587b42d0748de55a39491c14f96adde821",
+            "bytes": 2643267,
+            "sha256": "b0fcdd7fc0cdea6e80dcf1dd85ba794af0d5b4a57e26397eee3bc193272d9132"
+          }
+        ]
+      },
+      {
+        "name": "openssl",
+        "version": "3.5.7-1~deb13u3",
+        "files": [
+          {
+            "name": "openssl_3.5.7-1~deb13u3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/11a6b388b1ce45f8c60021ed66f8772f7c963c62",
+            "bytes": 147344,
+            "sha256": "0a427fdc3e773f4119a7dd5b36d1f0903a163cf4ea15d812bb823b251ff1cbc5"
+          },
+          {
+            "name": "openssl_3.5.7-1~deb13u3.dsc",
+            "url": "https://snapshot.debian.org/file/db56cd5070f847d98b8fec3dde05ce8ee276ba64",
+            "bytes": 2710,
+            "sha256": "9cdb0d9daf0773ca5c0f3f5ea1fc59b1106a99e005a5c048948b826e8d3b47e1"
+          },
+          {
+            "name": "openssl_3.5.7.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/53d331880fbde8e6fe25870d5325a61201f6264d",
+            "bytes": 53153930,
+            "sha256": "a8c0d28a529ca480f9f36cf5792e2cd21984552a3c8e4aa11a24aa31aeac98e8"
+          },
+          {
+            "name": "openssl_3.5.7.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/9408998095f984b36591732286ef1df1ba7ce492",
+            "bytes": 833,
+            "sha256": "d3d082bee3f658c31db53af625eceecf29d777c7010394bed5787ebcc98abdf2"
+          }
+        ]
+      },
+      {
+        "name": "pam",
+        "version": "1.7.0-5",
+        "files": [
+          {
+            "name": "pam_1.7.0-5.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/e27bfdcceb1294670f95467e4ce4e2455ce841c7",
+            "bytes": 145640,
+            "sha256": "d776d7cb6fc8b08273f96b7f843299356ef13c6756e30468c594ab28faf1701c"
+          },
+          {
+            "name": "pam_1.7.0-5.dsc",
+            "url": "https://snapshot.debian.org/file/dc44d975a3cee93b2e116db4682b90abc8a11f31",
+            "bytes": 2210,
+            "sha256": "5c127aa18c7cb52ec9ee91fa2099453b3a851bcc0088e79045384a2a508b341c"
+          },
+          {
+            "name": "pam_1.7.0.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/935f3a737f834ac94a6600e4e3619de47e0cfa6a",
+            "bytes": 507824,
+            "sha256": "57dcd7a6b966ecd5bbd95e1d11173734691e16b68692fa59661cdae9b13b1697"
+          },
+          {
+            "name": "pam_1.7.0.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/0cc8ae9ba7a17610041e702b70eaba8765f93ced",
+            "bytes": 801,
+            "sha256": "7a8ea18ec7d9dd1f8cbf9055c32128cbca8241aa63e9fea44d56ce6f0e15e441"
+          }
+        ]
+      },
+      {
+        "name": "pcre2",
+        "version": "10.46-1~deb13u3",
+        "files": [
+          {
+            "name": "pcre2_10.46-1~deb13u3.diff.gz",
+            "url": "https://snapshot.debian.org/file/205a17397d764e25a8b4e86af9d70263e74eff66",
+            "bytes": 20405,
+            "sha256": "28734c85365f431a4494c2efe2cdb42ed432673f962e421826f3c3b7aa76c4cf"
+          },
+          {
+            "name": "pcre2_10.46-1~deb13u3.dsc",
+            "url": "https://snapshot.debian.org/file/e5fb135d6cf0465aa05ebdd5b5e72c3eb700a52b",
+            "bytes": 2406,
+            "sha256": "5f317534eff1e33f0a5690a866ba2f2c9399c60ce9b74c89039d4de372420c5c"
+          },
+          {
+            "name": "pcre2_10.46.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/6858f0eb287c8285f53a038c8a95dc43ba51c653",
+            "bytes": 2718545,
+            "sha256": "8d28d7f2c3b970c3a4bf3776bcbb5adfc923183ce74bc8df1ebaad8c1985bd07"
+          }
+        ]
+      },
+      {
+        "name": "perl",
+        "version": "5.40.1-6+deb13u1",
+        "files": [
+          {
+            "name": "perl_5.40.1-6+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/1c181a089b69ccda8f7adce847dd5d8984e247a7",
+            "bytes": 186360,
+            "sha256": "5ee76db601d6f4638433ab9b0f5bd5cfb15b102a79d902ff282e762becb7e724"
+          },
+          {
+            "name": "perl_5.40.1-6+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/735f1a33e381a4037b22f895726d2ffce281b39a",
+            "bytes": 2404,
+            "sha256": "92d1cfb32167d77fada7284f1c291de72f93eb896f5cfd58247d020182b403a8"
+          },
+          {
+            "name": "perl_5.40.1.orig-regen-configure.tar.xz",
+            "url": "https://snapshot.debian.org/file/82d1edc45031c917619d2c412c6d5c34a50fde0a",
+            "bytes": 421056,
+            "sha256": "4ea023d08101443f6ed9dc3bdd9bb5f5e08087678dc9e443d195df22da36209a"
+          },
+          {
+            "name": "perl_5.40.1.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/4ffe5246c791df884363aed05ba81ba41cb02084",
+            "bytes": 13930924,
+            "sha256": "dfa20c2eef2b4af133525610bbb65dd13777ecf998c9c5b1ccf0d308e732ee3f"
+          }
+        ]
+      },
+      {
+        "name": "rust-sequoia-sqv",
+        "version": "1.3.0-3",
+        "files": [
+          {
+            "name": "rust-sequoia-sqv_1.3.0-3.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/b087e30e5a26d8e07eec12b6a3f921b0e0d4bad9",
+            "bytes": 3876,
+            "sha256": "be04e0365bc1206617a3e55d507bfce2e972819fb737e23a1112a717cc89b9bc"
+          },
+          {
+            "name": "rust-sequoia-sqv_1.3.0-3.dsc",
+            "url": "https://snapshot.debian.org/file/2fa9c040526922b732991ab5e752c7f4b32c2006",
+            "bytes": 2704,
+            "sha256": "98ad852ed30d42d3b0d6ce40d2f56a96fb443cc6fa2caeaa12516fe5bbe544af"
+          },
+          {
+            "name": "rust-sequoia-sqv_1.3.0.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/9178a31edda5e16a872c6c26593d3f0092473154",
+            "bytes": 140759,
+            "sha256": "8924571d26720b245292ad3c450e4061fcb24890461874790549747bffa35e60"
+          }
+        ]
+      },
+      {
+        "name": "sed",
+        "version": "4.9-2+deb13u1",
+        "files": [
+          {
+            "name": "sed_4.9-2+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/c06297931461cd71d87fbf5115980a5a2722d5c7",
+            "bytes": 63644,
+            "sha256": "9c9aacda91e02802f33fb6a1a6e86f80be1bc67b92a4dae009e78f77e26e130a"
+          },
+          {
+            "name": "sed_4.9-2+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/a20e0007bcf83fd3d4af77f6dfc40067dfb620b9",
+            "bytes": 2047,
+            "sha256": "9fcc5dffe5e712b4631757c057228ae57919aec1cca1c91a80e76719167f443b"
+          },
+          {
+            "name": "sed_4.9.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/8ded1b543f1f558cbd5d7b713602f6a8ee84bde4",
+            "bytes": 1397092,
+            "sha256": "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181"
+          }
+        ]
+      },
+      {
+        "name": "shadow",
+        "version": "1:4.17.4-2",
+        "files": [
+          {
+            "name": "shadow_4.17.4-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/995c806c27f295af2fc46c9b7b565ada9b6ce9e9",
+            "bytes": 167792,
+            "sha256": "97eaf0b3682a8a1a1ae6e4c4fac00885a7433d2487e636bde7c1c406e66bdb23"
+          },
+          {
+            "name": "shadow_4.17.4-2.dsc",
+            "url": "https://snapshot.debian.org/file/e4d18b937f954167778fbeb365b5661658a97780",
+            "bytes": 2851,
+            "sha256": "920de0d3be5303f2c0511d5531c1815abc258b15af8f9c511c8aa6d8e1a91a86"
+          },
+          {
+            "name": "shadow_4.17.4.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/6472ed66405924de1f564d0a18f01f12e5ce44d0",
+            "bytes": 2326584,
+            "sha256": "554801054694ff7d8a7abdf0d6ece34e2f16e111673cc01b8c9ee1278451181e"
+          },
+          {
+            "name": "shadow_4.17.4.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/7bd20c7d3f803fa040e0778ff8fb01423b61fbdb",
+            "bytes": 488,
+            "sha256": "82437d2b54790b3a6734c526b757e693cd0c734ec6afd69f9a9cf0eb1dad8dc4"
+          }
+        ]
+      },
+      {
+        "name": "sqlite3",
+        "version": "3.46.1-7+deb13u2",
+        "files": [
+          {
+            "name": "sqlite3_3.46.1-7+deb13u2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/9df0075462130032e1641d6646c01e691dbe0a40",
+            "bytes": 37084,
+            "sha256": "59d33bc436258603702bb051d645743ab03612b82f79e7c7d638c65127c21261"
+          },
+          {
+            "name": "sqlite3_3.46.1-7+deb13u2.dsc",
+            "url": "https://snapshot.debian.org/file/e9d9d4e7b5c82a96d3f233e46eb23a35376700eb",
+            "bytes": 2673,
+            "sha256": "46e1eec171e11108fc436e45309b635b601029726b6ffd3bf435bb474e511638"
+          },
+          {
+            "name": "sqlite3_3.46.1.orig-www.tar.xz",
+            "url": "https://snapshot.debian.org/file/17c0f982c06df44a531d8ef3aef8b226b65cf6cd",
+            "bytes": 5861820,
+            "sha256": "648df41a8e532882b1905df45919aae4bafaf74c455f66bc86f1f52f45c8b8f0"
+          },
+          {
+            "name": "sqlite3_3.46.1.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/0a1dee600409dded148a8595d8f8b7b7c6a3c2a9",
+            "bytes": 8456776,
+            "sha256": "d0cdd2ece271b29e7ce18095745d892517ee26d0f270065b3a25c2e9eb11639c"
+          }
+        ]
+      },
+      {
+        "name": "systemd",
+        "version": "257.13-1~deb13u1",
+        "files": [
+          {
+            "name": "systemd_257.13-1~deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/6f9f1a95623f849371303ee6fd11b95c2b7a2493",
+            "bytes": 183128,
+            "sha256": "9c6e435d613b996efcdb3b7dd9a4cebaa745333a3f64dc722f3fad646f1fdc1a"
+          },
+          {
+            "name": "systemd_257.13-1~deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/fc07f2628e44c0ddbcc964768730cab7b094d627",
+            "bytes": 8696,
+            "sha256": "1b3405d671a82d1e20c9d99f52d4336aafe8543b28d04e91b7f1f586d3a667c7"
+          },
+          {
+            "name": "systemd_257.13.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/a30ac2421a76ec05eeb4627e19d94f653279dff0",
+            "bytes": 16543653,
+            "sha256": "1eb7d5f9ff8a426ff880a3cded9ce819613ba8003ac5ddde9eca162f14ddabe7"
+          }
+        ]
+      },
+      {
+        "name": "sysvinit",
+        "version": "3.14-4",
+        "files": [
+          {
+            "name": "sysvinit_3.14-4.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/03d7606ab74829d04a9db953e2151c15b4391ca4",
+            "bytes": 122156,
+            "sha256": "2ba0aa763232112696bce50ee5acc707a515fcbd5b2c194193bfa7a0a525bff6"
+          },
+          {
+            "name": "sysvinit_3.14-4.dsc",
+            "url": "https://snapshot.debian.org/file/f8c0e7ebbc91f5312e19f9d97bd4747d007c6b24",
+            "bytes": 2375,
+            "sha256": "1cfe65682218077e6f76011f0c5caacc9f2ab214d55893307d4a54c93312ac92"
+          },
+          {
+            "name": "sysvinit_3.14.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/23f55970b5e4fbd904934845950713a43d76ba07",
+            "bytes": 516357,
+            "sha256": "4e90a148707cf64113fc97343c053f9c0c9589551936b053999dcc69731f295f"
+          }
+        ]
+      },
+      {
+        "name": "tar",
+        "version": "1.35+dfsg-3.1",
+        "files": [
+          {
+            "name": "tar_1.35+dfsg-3.1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/3741fabff56ede7bf8448ef7f5069b25ca36b761",
+            "bytes": 21540,
+            "sha256": "0d0278034b82ed84dce04a461879b6e1871e4cb416a0ff04d3d35ff05fc30a53"
+          },
+          {
+            "name": "tar_1.35+dfsg-3.1.dsc",
+            "url": "https://snapshot.debian.org/file/f0a9bdc3c47cf3b0e7864db3e7a8876a9d61ebf1",
+            "bytes": 2017,
+            "sha256": "5bb58d4966d94c99a9f1b182676089ecc05058d62fdb927f5c07539d9cda4077"
+          },
+          {
+            "name": "tar_1.35+dfsg.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/d910d9a9dc1252a793ca1837ac4f1080a64fca1f",
+            "bytes": 2111608,
+            "sha256": "9ae57e981c1e73c0eebc2b26c9b0c4497fe310ef1d516ea430efb5470b71f7a8"
+          }
+        ]
+      },
+      {
+        "name": "tzdata",
+        "version": "2026c-0+deb13u1",
+        "files": [
+          {
+            "name": "tzdata_2026c-0+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/400617cf66c795b78477770832fb47a9bbcb8073",
+            "bytes": 127148,
+            "sha256": "48cd3f42cee2b8ec62ca9c2f4c43cf6c0ec05e1a5ae97f4ed771635811b82f29"
+          },
+          {
+            "name": "tzdata_2026c-0+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/3c4d3f3e2f82678a39f566611da6143c7d8a3b7a",
+            "bytes": 2466,
+            "sha256": "b18d6eddfb23971bacbf569a2641cda837002a813d8e8940d8792ea7ba8e2d4e"
+          },
+          {
+            "name": "tzdata_2026c.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/25e5390e8b06c4dd9a7dea4d4a079631c1dd312e",
+            "bytes": 475694,
+            "sha256": "e4a178a4477f3d0ea77cc31828ff72aa38feff8d61aa13e7e99e142e9d902be4"
+          },
+          {
+            "name": "tzdata_2026c.orig.tar.gz.asc",
+            "url": "https://snapshot.debian.org/file/ff388761981f8a9754f06876c3ba96b560149882",
+            "bytes": 833,
+            "sha256": "26cd02e034eed682aa911d224bca3247ff15914df317e3bb0b1a01dc557b46fe"
+          }
+        ]
+      },
+      {
+        "name": "util-linux",
+        "version": "2.41.5-0+deb13u1",
+        "files": [
+          {
+            "name": "util-linux_2.41.5-0+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/44d5f01ef357eca57a89f86125392fed89a8b14b",
+            "bytes": 107604,
+            "sha256": "5b327ccd22f0f4ed28a389870aa51d04ecedb8693e52a1d122850f2b3188cbf6"
+          },
+          {
+            "name": "util-linux_2.41.5-0+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/af0f23320ed30c50ca540273f6f659b152be2c6f",
+            "bytes": 4988,
+            "sha256": "43e9b2cbebd10fdc598c4ad10217c8202c28de53af6eafc892c8e9b5cbf3a3a5"
+          },
+          {
+            "name": "util-linux_2.41.5.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/aad638b4dea74be6227238f5e6398a8f54daefb4",
+            "bytes": 9474992,
+            "sha256": "f586e35d320ff537aab3ffeca37e9ecd482ccbe013590db4429a414d8aa6a728"
+          }
+        ]
+      },
+      {
+        "name": "xxhash",
+        "version": "0.8.3-2",
+        "files": [
+          {
+            "name": "xxhash_0.8.3-2.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/61e2b4577bb87fc219135cf9bd5b95b5e93e935d",
+            "bytes": 5144,
+            "sha256": "13824bfb2b2367225dfe3090d0ae050614f1c470a47db7232a2e9d4b2b14ad31"
+          },
+          {
+            "name": "xxhash_0.8.3-2.dsc",
+            "url": "https://snapshot.debian.org/file/226be1e33182d1835530149ecbd67c4a6dc4cca8",
+            "bytes": 1969,
+            "sha256": "9d1f7aaace7871fbdb8775d756c6eaca84e6ad5d8e9c6ac465b7e0adc06ff90c"
+          },
+          {
+            "name": "xxhash_0.8.3.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/6caf7421bbcb2be76006f31ab514d484a8d8b628",
+            "bytes": 1147630,
+            "sha256": "aae608dfe8213dfd05d909a57718ef82f30722c392344583d3f39050c7f29a80"
+          }
+        ]
+      },
+      {
+        "name": "xz-utils",
+        "version": "5.8.1-1+deb13u1",
+        "files": [
+          {
+            "name": "xz-utils_5.8.1-1+deb13u1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/a4388b86149165bb1ae1010d54cf89f2fddfbfcc",
+            "bytes": 25696,
+            "sha256": "0e48427971a9ce674ddbba26e34ac1dd009c683f3816ce17852d99dc7b0a8e46"
+          },
+          {
+            "name": "xz-utils_5.8.1-1+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/81bd81b15c3e5c9965ecebece5a3a2cc99354516",
+            "bytes": 2736,
+            "sha256": "ddadd9d9f7c4bb80b08f9f17409e2701a29a4cf8fe25e15d19605e5281c1fc1b"
+          },
+          {
+            "name": "xz-utils_5.8.1.orig.tar.xz",
+            "url": "https://snapshot.debian.org/file/c29df8058b6279bfab2744f3e79b2940229207a3",
+            "bytes": 1461872,
+            "sha256": "0b54f79df85912504de0b14aec7971e3f964491af1812d83447005807513cd9e"
+          },
+          {
+            "name": "xz-utils_5.8.1.orig.tar.xz.asc",
+            "url": "https://snapshot.debian.org/file/3658f92b0eec052a58ca69fa3c12c5b095a05fc6",
+            "bytes": 833,
+            "sha256": "4138f4ceca1aa7fd2085fb15a23f6d495d27bca6d3c49c429a8520ea622c27ae"
+          }
+        ]
+      },
+      {
+        "name": "zlib",
+        "version": "1:1.3.dfsg+really1.3.1-1",
+        "files": [
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1-1.debian.tar.xz",
+            "url": "https://snapshot.debian.org/file/8b454f72def33b4a329489b8dcb2568ba0ccac69",
+            "bytes": 16576,
+            "sha256": "9ed525955ce9fb0c1b39be8ff98f73450dbfc6305a9a27e6149c8972d38a0a9e"
+          },
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1-1.dsc",
+            "url": "https://snapshot.debian.org/file/f1d41173a0d8586644be4a5b9ee6185a794a767c",
+            "bytes": 2637,
+            "sha256": "ede2791e29c1d3b422f9208bdd7edf040c20445ea1e7453a72037576e64fa197"
+          },
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1.orig.tar.gz",
+            "url": "https://snapshot.debian.org/file/3b19b81105d3436095134a648c521b678905eaac",
+            "bytes": 1325737,
+            "sha256": "60dd315c07f616887caa029408308a018ace66e3d142726a97db164b3b8f69fb"
+          }
+        ]
+      },
+      {
+        "name": "debianutils",
+        "version": "5.23.2",
+        "files": [
+          {
+            "name": "debianutils_5.23.2.dsc",
+            "url": "https://snapshot.debian.org/file/617a03e001015cdb7651df4ddbf5b22d0f716271",
+            "bytes": 1908,
+            "sha256": "471b65deec232bb033f3e3e06d5bf64dac0ced474c6fd61d41538f3f3de876f8"
+          },
+          {
+            "name": "debianutils_5.23.2.tar.xz",
+            "url": "https://snapshot.debian.org/file/7432fd03bb106c03e2c6e34ffc042a5f83ae7652",
+            "bytes": 82376,
+            "sha256": "79e524b7526dba2ec5c409d0ee52ebec135815cf5b2907375d444122e0594b69"
+          }
+        ]
+      }
+    ],
+    "descriptor_signatures_verified": false
+  },
+  "python_packages": [
+    {
+      "name": "absl-py",
+      "version": "2.5.0",
+      "sources": [
+        {
+          "name": "absl_py-2.5.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d0/4f/d79676ab82f2e42fc3611618139f13a9c4c31d0cff4b486982047679a802/absl_py-2.5.0.tar.gz",
+          "bytes": 118119,
+          "sha256": "0c996f25c0490700fadabe6351630f6111534fa0ae252cc6d2014ea3b141135f"
+        }
+      ]
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "sources": [
+        {
+          "name": "annotated_types-0.8.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/5f/56/a8120250d128bed162cd73c76d45f6ef9991f3e068f62a8ee060afa3104a/annotated_types-0.8.0.tar.gz",
+          "bytes": 15893,
+          "sha256": "13b2beaad985e05e2d6407ee4c4f35590b11f8d693a258a561055cac8f64cab7"
+        }
+      ]
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "sources": [
+        {
+          "name": "anyio-4.14.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/61/cc/a381afa6efea9f496eff839d4a6a1aed3bfafc7b3ab4b0d1b243a12573dd/anyio-4.14.2.tar.gz",
+          "bytes": 260176,
+          "sha256": "cfa139f3ed1a23ee8f88a145ddb5ac7605b8bbfd8592baacd7ce3d8bb4313c7f"
+        }
+      ]
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "sources": [
+        {
+          "name": "attrs-26.1.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9a/8e/82a0fe20a541c03148528be8cac2408564a6c9a0cc7e9171802bc1d26985/attrs-26.1.0.tar.gz",
+          "bytes": 952055,
+          "sha256": "d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32"
+        }
+      ]
+    },
+    {
+      "name": "bazel-runfiles",
+      "version": "2.3.2",
+      "sources": [
+        {
+          "name": "bazel_runfiles-2.3.2-py3-none-any.whl",
+          "url": "https://files.pythonhosted.org/packages/30/8a/ee68d39bb8729fd4ed0668dbf6d0909e2364ea573442356667bba7687acd/bazel_runfiles-2.3.2-py3-none-any.whl",
+          "bytes": 10356,
+          "sha256": "1e69e329f824e05384cad02979e3a186da6c59b4424b805e15d41a386f157617"
+        }
+      ]
+    },
+    {
+      "name": "boto3",
+      "version": "1.43.82",
+      "sources": [
+        {
+          "name": "boto3-1.43.82.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/3f/b1/5d8bc6b7335d86f15d43a34a4bbbeced202aef2b4e942c67a5846120c1ff/boto3-1.43.82.tar.gz",
+          "bytes": 112671,
+          "sha256": "bc5a7824568c117110bac8fe7ccfac63f0a946f253953d42e73a8c1fb65162e0"
+        }
+      ]
+    },
+    {
+      "name": "botocore",
+      "version": "1.43.82",
+      "sources": [
+        {
+          "name": "botocore-1.43.82.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ed/96/54e8d9a09689bf870bc723bf95ee8f5a4bba3b9c203baaaca3fb557d4924/botocore-1.43.82.tar.gz",
+          "bytes": 16007302,
+          "sha256": "347573c0bab52e29c923e28128764fcc50f469ed98dc5460220026cd3672ac0c"
+        }
+      ]
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "sources": [
+        {
+          "name": "cffi-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9e/ef/008a1939e372c06329a3fce4279c02f328488f3526744906eeec3da7ad5f/cffi-2.1.1.tar.gz",
+          "bytes": 530807,
+          "sha256": "dd31f52ea1086513bb9df30f8fcee9b8918323ae067a3d5b78bc826a000712be"
+        }
+      ]
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "sources": [
+        {
+          "name": "click-8.4.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/76/d4/81420972a676e8ffea40450d8c8c92943e7218a78fe9b64359836cc9876b/click-8.4.2.tar.gz",
+          "bytes": 338000,
+          "sha256": "9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6"
+        }
+      ]
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "sources": [
+        {
+          "name": "cryptography-50.0.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/de/41/6cbdcf9142d00fe82836fbb51e503e58088575cf7a0fe1dbff6695bf0840/cryptography-50.0.0.tar.gz",
+          "bytes": 880201,
+          "sha256": "eeac2acb5a20ed25e0ad6d1df9891a520b78b404266b6d11778f25d5d691a6c9"
+        }
+      ]
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "sources": [
+        {
+          "name": "h11-0.16.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6fb3c75474d40b3052059d95df7e73351460c8588d963/h11-0.16.0.tar.gz",
+          "bytes": 101250,
+          "sha256": "4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"
+        }
+      ]
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.12.0",
+      "sources": [
+        {
+          "name": "httpcore2-2.12.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/be/ad/f4f0e57345f1870f3e8cb624e058d7eca6e5a27d33bcc3311d9b618734cd/httpcore2-2.12.0.tar.gz",
+          "bytes": 67548,
+          "sha256": "9293522bba0aa7c4c8e9e3f040c16575bd8868e155a77fa30c7a9085a5eae648"
+        }
+      ]
+    },
+    {
+      "name": "httpx2",
+      "version": "2.12.0",
+      "sources": [
+        {
+          "name": "httpx2-2.12.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/7f/f8/579a8b51e42e38ee32647df9f08aa25643ae788e275cc625b199829c4671/httpx2-2.12.0.tar.gz",
+          "bytes": 100040,
+          "sha256": "7631fe9887a8a2275f4a2540e053aa670fcc50742864a9ae7c66e609fdcf12cf"
+        }
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "sources": [
+        {
+          "name": "idna-3.18.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/cd/63/9496c57188a2ee585e0f1db071d75089a11e98aa86eb99d9d7618fc1edce/idna-3.18.tar.gz",
+          "bytes": 196711,
+          "sha256": "ffb385a7e039654cef1ab9ef32c6fafe283c0c0467bba1d9029738ce4a14a848"
+        }
+      ]
+    },
+    {
+      "name": "jmespath",
+      "version": "1.1.0",
+      "sources": [
+        {
+          "name": "jmespath-1.1.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d3/59/322338183ecda247fb5d1763a6cbe46eff7222eaeebafd9fa65d4bf5cb11/jmespath-1.1.0.tar.gz",
+          "bytes": 27377,
+          "sha256": "472c87d80f36026ae83c6ddd0f1d05d4e510134ed462851fd5f754c8c3cbb88d"
+        }
+      ]
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "sources": [
+        {
+          "name": "jsonschema-4.26.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/b3/fc/e067678238fa451312d4c62bf6e6cf5ec56375422aee02f9cb5f909b3047/jsonschema-4.26.0.tar.gz",
+          "bytes": 366583,
+          "sha256": "0c26707e2efad8aa1bfc5b7ce170f3fccc2e4918ff85989ba9ffa9facb2be326"
+        }
+      ]
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "sources": [
+        {
+          "name": "jsonschema_specifications-2025.9.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/19/74/a633ee74eb36c44aa6d1095e7cc5569bebf04342ee146178e2d36600708b/jsonschema_specifications-2025.9.1.tar.gz",
+          "bytes": 32855,
+          "sha256": "b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d"
+        }
+      ]
+    },
+    {
+      "name": "mcp",
+      "version": "2.1.1",
+      "sources": [
+        {
+          "name": "mcp-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d4/6e/21fb8e5d579dbe21d96ea4d5034200d46d8bdf2261053b5bd041f3c2f612/mcp-2.1.1.tar.gz",
+          "bytes": 3984589,
+          "sha256": "50b7ba1ebbe117008ea7bdd288234043e69c20b403d6851d19661e6d431a75ef"
+        }
+      ]
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.1.1",
+      "sources": [
+        {
+          "name": "mcp_types-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6a/dd/1c4417dc0b722c23a1669032d5f044e41170fe5d4773b488a50fcce98c32/mcp_types-2.1.1.tar.gz",
+          "bytes": 66674,
+          "sha256": "77dcbe48fba73cca71a673f2646a5f037a017b7a0a07ac89cec1113028890eda"
+        }
+      ]
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.44.0",
+      "sources": [
+        {
+          "name": "opentelemetry_api-1.44.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ee/8b/aa9e2d8b8dfa7c946f7dec5d1f8f6ba8eca062f43509a06bdb5ce93d26c0/opentelemetry_api-1.44.0.tar.gz",
+          "bytes": 72406,
+          "sha256": "67647e5e9566edcf421166fdf022b3537f818635daa852b289e34604dc6fb33a"
+        }
+      ]
+    },
+    {
+      "name": "pip",
+      "version": "26.2.1",
+      "sources": [
+        {
+          "name": "pip-26.2.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ae/15/4500e320e6b101ec3b719ae85b697d9940b6cda672bc555bd6016fc60c6f/pip-26.2.1.tar.gz",
+          "bytes": 1848877,
+          "sha256": "f6ad667e89a1fe78046c8f13232b247200f5258d7828f3f7883d660878e0813f"
+        }
+      ]
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.0",
+      "sources": [
+        {
+          "name": "protobuf-7.36.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/a7/e7/0553e21d25ca4d9f573135775348a372c3ec34a93a71d5f297c3bac38341/protobuf-7.36.0.tar.gz",
+          "bytes": 510034,
+          "sha256": "e8e09cb0d794c6687926fa558a8a6e72aa10edb997d5ca61da0765f12a3e00ea"
+        }
+      ]
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0",
+      "sources": [
+        {
+          "name": "pycparser-3.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/1b/7d/92392ff7815c21062bea51aa7b87d45576f649f16458d78b7cf94b9ab2e6/pycparser-3.0.tar.gz",
+          "bytes": 103492,
+          "sha256": "600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29"
+        }
+      ]
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4",
+      "sources": [
+        {
+          "name": "pydantic-2.13.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/18/a5/b60d21ac674192f8ab0ba4e9fd860690f9b4a6e51ca5df118733b487d8d6/pydantic-2.13.4.tar.gz",
+          "bytes": 844775,
+          "sha256": "c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6"
+        }
+      ]
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "sources": [
+        {
+          "name": "pydantic_core-2.46.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9d/56/921726b776ace8d8f5db44c4ef961006580d91dc52b803c489fafd1aa249/pydantic_core-2.46.4.tar.gz",
+          "bytes": 471464,
+          "sha256": "62f875393d7f270851f20523dd2e29f082bcc82292d66db2b64ea71f64b6e1c1"
+        }
+      ]
+    },
+    {
+      "name": "pyjwt",
+      "version": "2.15.0",
+      "sources": [
+        {
+          "name": "pyjwt-2.15.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/02/a5/5197bfd06417837ac079921c66fa6393f1dea3557272a263cebfef69e432/pyjwt-2.15.0.tar.gz",
+          "bytes": 120513,
+          "sha256": "b11c5f9791d7bf51c2b39a81ed669f6b2dbbd669df2942f6c60167e9e3d1abe4"
+        }
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "sources": [
+        {
+          "name": "python-dateutil-2.9.0.post0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz",
+          "bytes": 342432,
+          "sha256": "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+        }
+      ]
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "sources": [
+        {
+          "name": "python_multipart-0.0.32.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/5b/42/55c32bb9b12693c092ad250a0e82edb5b31ddeda6eb772de5f308b3804ad/python_multipart-0.0.32.tar.gz",
+          "bytes": 46881,
+          "sha256": "be54b7f3fa167bb83e4fcd936b887b708f4e57fe75911c02aebf53efaf8d938e"
+        }
+      ]
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "sources": [
+        {
+          "name": "referencing-0.37.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/22/f5/df4e9027acead3ecc63e50fe1e36aca1523e1719559c499951bb4b53188f/referencing-0.37.0.tar.gz",
+          "bytes": 78036,
+          "sha256": "44aefc3142c5b842538163acb373e24cce6632bd54bdb01b21ad5863489f50d8"
+        }
+      ]
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "sources": [
+        {
+          "name": "rpds_py-2026.6.3.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/aa/2a/9618a122aeb2a169a28b03889a2995fe297588964333d4a7d67bdf46e147/rpds_py-2026.6.3.tar.gz",
+          "bytes": 64051,
+          "sha256": "1cebd1337c242e4ec2293e541f712b2da849b29f48f0c293684b71c0632625d4"
+        }
+      ]
+    },
+    {
+      "name": "s3transfer",
+      "version": "0.19.2",
+      "sources": [
+        {
+          "name": "s3transfer-0.19.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/76/43/35e4d8aa320bffe8287fe8f65f578fa2d2db0a64212f0e710dce58267854/s3transfer-0.19.2.tar.gz",
+          "bytes": 165592,
+          "sha256": "ba0309fd86be3c27dbf78cdd813c13c5e1df16e5874b99d2535ebbdfb9892993"
+        }
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "84.0.0",
+      "sources": [
+        {
+          "name": "setuptools-84.0.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6d/44/f5da03a8ef95d369145c5bb53050e7877c9f3d312e128605fd9504829143/setuptools-84.0.0.tar.gz",
+          "bytes": 1168449,
+          "sha256": "f4695c21257f0d9b537ec2692c941d02ee143b7cc1276941349a546573b2ef73"
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "sources": [
+        {
+          "name": "six-1.17.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz",
+          "bytes": 34031,
+          "sha256": "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
+        }
+      ]
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.4.8",
+      "sources": [
+        {
+          "name": "sse_starlette-3.4.8.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/f8/00/b42a44342a054d58cb1115d7c8aa9cb4290dd9442f9c1b91a4b8173dba22/sse_starlette-3.4.8.tar.gz",
+          "bytes": 32548,
+          "sha256": "ed89ffbb75cbf78a5fe2f2109cd584792ee7f9dfac96f791db546df8f15f3f9c"
+        }
+      ]
+    },
+    {
+      "name": "starlette",
+      "version": "1.6.0",
+      "sources": [
+        {
+          "name": "starlette-1.6.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/b5/b4/205b0d5241d934e8add0c38aa924c4f9fb7330834ff11e5444db964ec3f9/starlette-1.6.0.tar.gz",
+          "bytes": 2716969,
+          "sha256": "d4e3ac5e546444960c710297a3c9fc3f7ebae1b7e963f3d36173b49da535be9b"
+        }
+      ]
+    },
+    {
+      "name": "tink",
+      "version": "1.16.1",
+      "sources": [
+        {
+          "name": "tink-1.16.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d3/e2/06a2836b499abddff5127ac4a849667b721f1e1b38742572e0cf9a53f327/tink-1.16.1.tar.gz",
+          "bytes": 280107,
+          "sha256": "8d82f934f31d1ba8fa6014c37edddc0b3f61cfdbbd9317eb6269cfe7eeb1fa86"
+        }
+      ]
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.4",
+      "sources": [
+        {
+          "name": "truststore-0.10.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/53/a3/1585216310e344e8102c22482f6060c7a6ea0322b63e026372e6dcefcfd6/truststore-0.10.4.tar.gz",
+          "bytes": 26169,
+          "sha256": "9d91bd436463ad5e4ee4aba766628dd6cd7010cf3e2461756b3303710eebc301"
+        }
+      ]
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "sources": [
+        {
+          "name": "typing_extensions-4.16.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz",
+          "bytes": 113555,
+          "sha256": "dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"
+        }
+      ]
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.3",
+      "sources": [
+        {
+          "name": "typing_inspection-0.4.3.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6d/bc/4eae18cd40c65798a16267572ba346c11f599d44b01603dbd843342042bc/typing_inspection-0.4.3.tar.gz",
+          "bytes": 76711,
+          "sha256": "c5f9ec1530b5c1e2c9bc34a84d9a3466ed1b2f3f2fa9f901368d9c5596210e4d"
+        }
+      ]
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "sources": [
+        {
+          "name": "urllib3-2.8.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/e3/05/b17359e1cefb4f909b5e40b1b90a496d987258916dbbf88e842c729f510e/urllib3-2.8.0.tar.gz",
+          "bytes": 458972,
+          "sha256": "63bf2ead4c879426ebf22ef2a781eeb4aa3b4ae798a0435506f8687fd5bb9b63"
+        }
+      ]
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.52.1",
+      "sources": [
+        {
+          "name": "uvicorn-0.52.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/03/18/ccce41535dee1be77735592bd19965f3972c82e07ee703d324709496b716/uvicorn-0.52.1.tar.gz",
+          "bytes": 100571,
+          "sha256": "112ec661814189acbccd3f7b86460147cc065fc92c0821afa78918780e4354dd"
+        }
+      ]
+    }
+  ],
+  "bundled_ui_packages": [
+    {
+      "name": "@modelcontextprotocol/client",
+      "version": "2.2.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.2.0.tgz",
+      "lock_integrity": "sha512-LxCou/CSYQ6dwEnjhLZY0KnEuc8V4UJ3IEQCl/uR2yHobSQIEdJKUlKLRYRF5i5FqRGHy1eK7une3aAWDHLtig=="
+    },
+    {
+      "name": "@modelcontextprotocol/core",
+      "version": "2.2.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.2.0.tgz",
+      "lock_integrity": "sha512-iLhmprRmWI8EcosOA3wVvww22z02NkgqhV4fBH6f/odQBsi7xnJc0HGmi21yWO+/iKw2yzqVE127Zhna5/+JXw=="
+    },
+    {
+      "name": "@modelcontextprotocol/ext-apps",
+      "version": "2.0.3",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/ext-apps/-/ext-apps-2.0.3.tgz",
+      "lock_integrity": "sha512-Tn+4+cyhO4f4cQSDxNyLiIfEE+qlTTuIbWBJB8JTinEXOhDYgCT4wDTQplxD9MBYZH5pCYGC59GaxiwIT4bu8w=="
+    },
+    {
+      "name": "lucide",
+      "version": "1.49.0",
+      "package_archive": "https://registry.npmjs.org/lucide/-/lucide-1.49.0.tgz",
+      "lock_integrity": "sha512-Dyl20SJao+7GUAYqa1Wz/x5wiIYzVRlDXwtFDvf44HULQObsb8YjXE81YGv24WMFQQYLqlxHu86ikEAqG4Mbww=="
+    },
+    {
+      "name": "pkce-challenge",
+      "version": "5.0.1",
+      "package_archive": "https://registry.npmjs.org/pkce-challenge/-/pkce-challenge-5.0.1.tgz",
+      "lock_integrity": "sha512-wQ0b/W4Fr01qtpHlqSqspcj3EhBvimsdh0KlHhH8HRZnMsEa0ea2fTULOXOS9ccQr3om+GcGRk4e+isrZWV8qQ=="
+    },
+    {
+      "name": "zod",
+      "version": "4.2.0",
+      "package_archive": "https://registry.npmjs.org/zod/-/zod-4.2.0.tgz",
+      "lock_integrity": "sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw=="
+    }
+  ],
+  "python_runtime": {
+    "version": "3.12.15",
+    "release": "20261013",
+    "producer_source": {
+      "commit": "9e40cba825ca0997a01cab9f60a0b15ffb976af2",
+      "tree": "69d7e592ff5918b1c991d5d9d5b6c1e6a2a98527",
+      "url": "https://codeload.github.com/astral-sh/python-build-standalone/tar.gz/9e40cba825ca0997a01cab9f60a0b15ffb976af2",
+      "bytes": 465734,
+      "sha256": "e748761a4826f861864c8316b2ae59f1d4a641cbe15b0582a40d36595eff6547",
+      "complete_archive_bytes_verified": true,
+      "contents_and_modes_reconstruct_git_tree": true,
+      "public_source_archive_includes_build_scripts_and_patches": true,
+      "not_a_signed_release_attestation": true
+    },
+    "archives": [
+      {
+        "component": "bdb",
+        "version": "6.0.19",
+        "declared_url": "https://ftp.osuosl.org/pub/blfs/conglomeration/db/db-6.0.19.tar.gz",
+        "verified_fetch_url": "https://ftp2.osuosl.org/pub/blfs/conglomeration/db/db-6.0.19.tar.gz",
+        "bytes": 36541923,
+        "sha256": "2917c28f60903908c2ca4587ded1363b812c4e830a5326aaa77c9879d13ae18e"
+      },
+      {
+        "component": "bzip2",
+        "version": "1.0.8",
+        "declared_url": "https://astral-sh.github.io/mirror/files/bzip2-1.0.8.tar.gz",
+        "verified_fetch_url": "https://astral-sh.github.io/mirror/files/bzip2-1.0.8.tar.gz",
+        "bytes": 810029,
+        "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
+      },
+      {
+        "component": "cpython-3.12",
+        "version": "3.12.15",
+        "declared_url": "https://www.python.org/ftp/python/3.12.15/Python-3.12.15.tar.xz",
+        "verified_fetch_url": "https://www.python.org/ftp/python/3.12.15/Python-3.12.15.tar.xz",
+        "bytes": 20829824,
+        "sha256": "c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a"
+      },
+      {
+        "component": "expat",
+        "version": "2.9.0",
+        "declared_url": "https://github.com/libexpat/libexpat/releases/download/R_2_9_0/expat-2.9.0.tar.xz",
+        "verified_fetch_url": "https://github.com/libexpat/libexpat/releases/download/R_2_9_0/expat-2.9.0.tar.xz",
+        "bytes": 534052,
+        "sha256": "1e6371862cc31999b368c3b89b49994f0677e1bab5f1b2b85ae3741f5d803051"
+      },
+      {
+        "component": "libX11",
+        "version": "1.8.13",
+        "declared_url": "https://www.x.org/releases/individual/lib/libX11-1.8.13.tar.gz",
+        "verified_fetch_url": "https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.13.tar.gz",
+        "bytes": 3217264,
+        "sha256": "acf0e7cd7541110e6330ecb539441a2d53061f386ec7be6906dfde0de2598470"
+      },
+      {
+        "component": "libXau",
+        "version": "1.0.12",
+        "declared_url": "https://www.x.org/releases/individual/lib/libXau-1.0.12.tar.gz",
+        "verified_fetch_url": "https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz",
+        "bytes": 418722,
+        "sha256": "2402dd938da4d0a332349ab3d3586606175e19cb32cb9fe013c19f1dc922dcee"
+      },
+      {
+        "component": "libedit",
+        "version": "20240808-3.1",
+        "declared_url": "https://thrysoee.dk/editline/libedit-20240808-3.1.tar.gz",
+        "verified_fetch_url": "https://thrysoee.dk/editline/libedit-20240808-3.1.tar.gz",
+        "bytes": 538611,
+        "sha256": "5f0573349d77c4a48967191cdd6634dd7aa5f6398c6a57fe037cc02696d6099f"
+      },
+      {
+        "component": "libffi",
+        "version": "3.8.0",
+        "declared_url": "https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz",
+        "verified_fetch_url": "https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz",
+        "bytes": 1581626,
+        "sha256": "7da3e2d9a171eb0a038f592ecad3ff2bb2550f3496d87b3b29ad0cf4430c0db4"
+      },
+      {
+        "component": "libxcb",
+        "version": "1.17.0",
+        "declared_url": "https://xcb.freedesktop.org/dist/libxcb-1.17.0.tar.gz",
+        "verified_fetch_url": "https://xcb.freedesktop.org/dist/libxcb-1.17.0.tar.gz",
+        "bytes": 661593,
+        "sha256": "2c69287424c9e2128cb47ffe92171e10417041ec2963bceafb65cb3fcf8f0b85"
+      },
+      {
+        "component": "mpdecimal",
+        "version": "4.0.0",
+        "declared_url": "https://astral-sh.github.io/mirror/files/mpdecimal-4.0.0.tar.gz",
+        "verified_fetch_url": "https://astral-sh.github.io/mirror/files/mpdecimal-4.0.0.tar.gz",
+        "bytes": 315325,
+        "sha256": "942445c3245b22730fd41a67a7c5c231d11cb1b9936b9c0f76334fb7d0b4468c"
+      },
+      {
+        "component": "ncurses",
+        "version": "6.5",
+        "declared_url": "https://astral-sh.github.io/mirror/files/ncurses-6.5.tar.gz",
+        "verified_fetch_url": "https://astral-sh.github.io/mirror/files/ncurses-6.5.tar.gz",
+        "bytes": 3688489,
+        "sha256": "136d91bc269a9a5785e5f9e980bc76ab57428f604ce3e5a5a90cebc767971cc6"
+      },
+      {
+        "component": "openssl-3.5",
+        "version": "3.5.9",
+        "declared_url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.9/openssl-3.5.9.tar.gz",
+        "verified_fetch_url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.9/openssl-3.5.9.tar.gz",
+        "bytes": 53279637,
+        "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
+      },
+      {
+        "component": "sqlite",
+        "version": "3530100",
+        "declared_url": "https://www.sqlite.org/2026/sqlite-autoconf-3530100.tar.gz",
+        "verified_fetch_url": "https://www.sqlite.org/2026/sqlite-autoconf-3530100.tar.gz",
+        "bytes": 3275272,
+        "sha256": "83e6b2020a034e9a7ad4a72feea59e1ad52f162e09cbd26735a3ffb98359fc4f"
+      },
+      {
+        "component": "tcl",
+        "version": "9.0.4",
+        "declared_url": "https://prdownloads.sourceforge.net/tcl/tcl9.0.4-src.tar.gz",
+        "verified_fetch_url": "https://prdownloads.sourceforge.net/tcl/tcl9.0.4-src.tar.gz",
+        "bytes": 11866337,
+        "sha256": "d0aed49230bc02a65c1e0229e65f34590a4b037ec40d546f32573b467f7551ea"
+      },
+      {
+        "component": "tk",
+        "version": "9.0.4",
+        "declared_url": "https://prdownloads.sourceforge.net/tcl/tk9.0.4-src.tar.gz",
+        "verified_fetch_url": "https://prdownloads.sourceforge.net/tcl/tk9.0.4-src.tar.gz",
+        "bytes": 4613019,
+        "sha256": "d7a146d2917eb8b5cc95276dbf0e3d03c7464d2b19c1675357857c989301dbb4"
+      },
+      {
+        "component": "uuid",
+        "version": "1.0.3",
+        "declared_url": "https://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz",
+        "verified_fetch_url": "https://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz",
+        "bytes": 318256,
+        "sha256": "46af3275291091009ad7f1b899de3d0cea0252737550e7919d17237997db5644"
+      },
+      {
+        "component": "xz",
+        "version": "5.8.4",
+        "declared_url": "https://github.com/tukaani-project/xz/releases/download/v5.8.4/xz-5.8.4.tar.gz",
+        "verified_fetch_url": "https://github.com/tukaani-project/xz/releases/download/v5.8.4/xz-5.8.4.tar.gz",
+        "bytes": 2799797,
+        "sha256": "0014c7886930454fe8bd4228665b51af55eeae560ea135c9c4cd33f55b2591d9"
+      },
+      {
+        "component": "zlib",
+        "version": "1.3.2",
+        "declared_url": "https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz",
+        "verified_fetch_url": "https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz",
+        "bytes": 1502830,
+        "sha256": "bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16"
+      }
+    ],
+    "selection_boundary": "Recorded full-build metadata and pinned producer recipe, not source-to-binary reproducibility"
+  },
+  "native_wheels": [
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "architecture": "aarch64",
+      "filename": "cffi-2.1.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/44/de/f98430906df1545ffde0d543dd124a7a439bc2cd32b36b9c53f805df7333/cffi-2.1.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "bytes": 222389,
+      "sha256": "68e62fe11f30d5ca8289242866f0a5291402d8529ca2178ab8afc5c9694ae890"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "architecture": "x86_64",
+      "filename": "cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/b1/db/dceb9dd5b231e1da801793f8acc9f3c52a7e1afe40bb1aae37e02b0faad5/cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 221822,
+      "sha256": "c1453022f490d2459a11819d83ad1d586e9ff65a12ac3e705ffebd46d3685dcf"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "architecture": "aarch64",
+      "filename": "cryptography-50.0.0-cp311-abi3-manylinux_2_34_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/32/98/8a151d64367204cbc63ec65d37502f1d9c53cf4bfc6ec3c532614dbec60d/cryptography-50.0.0-cp311-abi3-manylinux_2_34_aarch64.whl",
+      "bytes": 4724529,
+      "sha256": "07949c449a1abcf60d1ee6e88956d89404c7df3c8258f46589e912988e551987"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "architecture": "x86_64",
+      "filename": "cryptography-50.0.0-cp311-abi3-manylinux_2_34_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/da/3a/f05e32c99d440c9bb891ea0e36c9091891e36be5a9a87ab2ee6ea20729f6/cryptography-50.0.0-cp311-abi3-manylinux_2_34_x86_64.whl",
+      "bytes": 4734462,
+      "sha256": "82148ec5bddac30b51a5b3c1945075f896fa022cb93f8e4a01e9f6ee95292c5f"
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.0",
+      "architecture": "aarch64",
+      "filename": "protobuf-7.36.0-cp310-abi3-manylinux2014_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/f0/15/5162230af4912697f0fe406f6800f80760945babcff0e2c2fe6c84ef2d5d/protobuf-7.36.0-cp310-abi3-manylinux2014_aarch64.whl",
+      "bytes": 341436,
+      "sha256": "bf94a5917c71058262de683669bc0a797a7669d3de71f0b36d058e3194f47b44"
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.0",
+      "architecture": "x86_64",
+      "filename": "protobuf-7.36.0-cp310-abi3-manylinux2014_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/c7/f8/bd5804695ba400e423c33fd4d9f58c28d86633d5ba1945c36ff3967d98cb/protobuf-7.36.0-cp310-abi3-manylinux2014_x86_64.whl",
+      "bytes": 340439,
+      "sha256": "70f5ec8eb0da81a44360c0dc0beac99a0d78071d21956a7076bae8bd2051841b"
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "architecture": "aarch64",
+      "filename": "pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/8e/bc/f47d1ff9cbb1620e1b5b697eef06010035735f07820180e74178226b27b3/pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "bytes": 1975742,
+      "sha256": "8233f2947cf85404441fd7e0085f53b10c93e0ee78611099b5c7237e36aacbf7"
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "architecture": "x86_64",
+      "filename": "pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/5f/97/2aab507d3d00ca626e8e57c1eac6a79e4e5fbcc63eb99733ff55d1717f65/pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 2094516,
+      "sha256": "926c9541b14b12b1681dca8a0b75feb510b06c6341b70a8e500c2fdcff837cce"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "architecture": "aarch64",
+      "filename": "rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/21/63/4239893be1c4d09b709b1a8f6be4188f0870084ff547f46606b8a75f1b03/rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "bytes": 368180,
+      "sha256": "55927d532399c2c646100ff7feb48eaa940ad70f42cd68e1328f3ded9f81ca24"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "architecture": "x86_64",
+      "filename": "rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/04/8f/d2f3f532616be4d06c316ef119683e832bd3d41e112bf3a88f4151c95b17/rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 366189,
+      "sha256": "ecabd69db66de867690f9797f2f8fa27ba501bbc24540cbdbdc649cd15888ba6"
+    },
+    {
+      "name": "tink",
+      "version": "1.16.1",
+      "architecture": "aarch64",
+      "filename": "tink-1.16.1-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/fa/19/ad7313e5fc3750104dd1a4fd7c72314b6c1c0e466ef71861867a9c629cd8/tink-1.16.1-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "bytes": 4088392,
+      "sha256": "e453324348208e5cb81e35d506717ed83c8c4cf2473f4b31f6269fd8bca81fb2"
+    },
+    {
+      "name": "tink",
+      "version": "1.16.1",
+      "architecture": "x86_64",
+      "filename": "tink-1.16.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/8e/ac/411c91392a2a86edb7db2637a7290ac708eec94a782b301e9806452f6373/tink-1.16.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 4280151,
+      "sha256": "af3519dfa01704e9f1ae1020db6076dcff89b5f799deba08a1adf901d977fc4e"
+    }
+  ],
+  "rust_sources": [
+    {
+      "name": "ahash",
+      "version": "0.8.12",
+      "url": "https://static.crates.io/crates/ahash/ahash-0.8.12.crate",
+      "sha256": "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75",
+      "archive_bytes": 43413,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "aho-corasick",
+      "version": "1.1.3",
+      "url": "https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.3.crate",
+      "sha256": "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916",
+      "archive_bytes": 183311,
+      "declared_license": "Unlicense OR MIT"
+    },
+    {
+      "name": "allocator-api2",
+      "version": "0.2.21",
+      "url": "https://static.crates.io/crates/allocator-api2/allocator-api2-0.2.21.crate",
+      "sha256": "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923",
+      "archive_bytes": 63622,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "archery",
+      "version": "1.2.2",
+      "url": "https://static.crates.io/crates/archery/archery-1.2.2.crate",
+      "sha256": "70e0a5f99dfebb87bb342d0f53bb92c81842e100bbb915223e38349580e5441d",
+      "archive_bytes": 16228,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "asn1",
+      "version": "0.24.1",
+      "url": "https://static.crates.io/crates/asn1/asn1-0.24.1.crate",
+      "sha256": "c9795210620c0cb3f9a7ce4f882808c38e1ef7b347c90591dceae0886e031fb1",
+      "archive_bytes": 50502,
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "asn1_derive",
+      "version": "0.24.1",
+      "url": "https://static.crates.io/crates/asn1_derive/asn1_derive-0.24.1.crate",
+      "sha256": "909e307f1cc32bb8bccbd98f446e6d1bf03fa30f7b53a4337da7181ad30fa11a",
+      "archive_bytes": 9534,
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "autocfg",
+      "version": "1.3.0",
+      "url": "https://static.crates.io/crates/autocfg/autocfg-1.3.0.crate",
+      "sha256": "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0",
+      "archive_bytes": 16524,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "base64",
+      "version": "0.22.1",
+      "url": "https://static.crates.io/crates/base64/base64-0.22.1.crate",
+      "sha256": "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6",
+      "archive_bytes": 81597,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "base64",
+      "version": "0.23.0",
+      "url": "https://static.crates.io/crates/base64/base64-0.23.0.crate",
+      "sha256": "b25655df2c3cdd83c5e5b293b88acd880332b2ddadd7c30ac43144fdc0033da9",
+      "archive_bytes": 93578,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.1",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.13.1.crate",
+      "sha256": "b588b76d00fde79687d7646a9b5bdf3cc0f655e0bbd080335a95d7e96f3587da",
+      "archive_bytes": 51395,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "bitflags",
+      "version": "2.9.1",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.9.1.crate",
+      "sha256": "1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967",
+      "archive_bytes": 47913,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "bitvec",
+      "version": "1.0.1",
+      "url": "https://static.crates.io/crates/bitvec/bitvec-1.0.1.crate",
+      "sha256": "1bc2832c24239b0141d5674bb9174f9d68a8b5b3f2753311927c172ca46f7e9c",
+      "archive_bytes": 224375,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "bumpalo",
+      "version": "3.19.0",
+      "url": "https://static.crates.io/crates/bumpalo/bumpalo-3.19.0.crate",
+      "sha256": "46c5e41b57b8bba42a04676d81cb89e9ee8e859a1a66f80a5a72e1cb76b34d43",
+      "archive_bytes": 96414,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "cc",
+      "version": "1.0.101",
+      "url": "https://static.crates.io/crates/cc/cc-1.0.101.crate",
+      "sha256": "ac367972e516d45567c7eafc73d24e1c193dcf200a8d94e9db7b3d38b349572d",
+      "archive_bytes": 79446,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "cc",
+      "version": "1.4.0",
+      "url": "https://static.crates.io/crates/cc/cc-1.4.0.crate",
+      "sha256": "5add81bb678e6cb321aff7fa0dc7689ad82b112dbc032cea19f91d6b8e3582b9",
+      "archive_bytes": 97878,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.0",
+      "url": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate",
+      "sha256": "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd",
+      "archive_bytes": 7934,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.4",
+      "url": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate",
+      "sha256": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+      "archive_bytes": 9360,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "displaydoc",
+      "version": "0.2.5",
+      "url": "https://static.crates.io/crates/displaydoc/displaydoc-0.2.5.crate",
+      "sha256": "97369cbbc041bc366949bc74d34658d6cda5621039731c6310521892a3a20ae0",
+      "archive_bytes": 24219,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "enum_dispatch",
+      "version": "0.3.13",
+      "url": "https://static.crates.io/crates/enum_dispatch/enum_dispatch-0.3.13.crate",
+      "sha256": "aa18ce2bc66555b3218614519ac839ddb759a7d6720732f979ef8d13be147ecd",
+      "archive_bytes": 29876,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "equivalent",
+      "version": "1.0.2",
+      "url": "https://static.crates.io/crates/equivalent/equivalent-1.0.2.crate",
+      "sha256": "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f",
+      "archive_bytes": 7419,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "find-msvc-tools",
+      "version": "0.1.9",
+      "url": "https://static.crates.io/crates/find-msvc-tools/find-msvc-tools-0.1.9.crate",
+      "sha256": "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582",
+      "archive_bytes": 31493,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "foldhash",
+      "version": "0.2.0",
+      "url": "https://static.crates.io/crates/foldhash/foldhash-0.2.0.crate",
+      "sha256": "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb",
+      "archive_bytes": 23329,
+      "declared_license": "Zlib"
+    },
+    {
+      "name": "foreign-types",
+      "version": "0.3.2",
+      "url": "https://static.crates.io/crates/foreign-types/foreign-types-0.3.2.crate",
+      "sha256": "f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1",
+      "archive_bytes": 7504,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "foreign-types-shared",
+      "version": "0.1.1",
+      "url": "https://static.crates.io/crates/foreign-types-shared/foreign-types-shared-0.1.1.crate",
+      "sha256": "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b",
+      "archive_bytes": 5672,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "form_urlencoded",
+      "version": "1.2.2",
+      "url": "https://static.crates.io/crates/form_urlencoded/form_urlencoded-1.2.2.crate",
+      "sha256": "cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf",
+      "archive_bytes": 9347,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "funty",
+      "version": "2.0.0",
+      "url": "https://static.crates.io/crates/funty/funty-2.0.0.crate",
+      "sha256": "e6d5a32815ae3f33302d95fdcb2ce17862f8c65363dcfd29360480ba1001fc9c",
+      "archive_bytes": 13160,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "getrandom",
+      "version": "0.3.3",
+      "url": "https://static.crates.io/crates/getrandom/getrandom-0.3.3.crate",
+      "sha256": "26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4",
+      "archive_bytes": 49493,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.16.1",
+      "url": "https://static.crates.io/crates/hashbrown/hashbrown-0.16.1.crate",
+      "sha256": "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100",
+      "archive_bytes": 147785,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "heck",
+      "version": "0.5.0",
+      "url": "https://static.crates.io/crates/heck/heck-0.5.0.crate",
+      "sha256": "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea",
+      "archive_bytes": 11517,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "hex",
+      "version": "0.4.3",
+      "url": "https://static.crates.io/crates/hex/hex-0.4.3.crate",
+      "sha256": "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70",
+      "archive_bytes": 13299,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "icu_collections",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_collections/icu_collections-1.5.0.crate",
+      "sha256": "db2fa452206ebee18c4b5c2274dbf1de17008e874b4dc4f0aea9d01ca79e4526",
+      "archive_bytes": 82762,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_locid",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid/icu_locid-1.5.0.crate",
+      "sha256": "13acbb8371917fc971be86fc8057c41a64b521c184808a698c02acc242dbf637",
+      "archive_bytes": 55131,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_locid_transform",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid_transform/icu_locid_transform-1.5.0.crate",
+      "sha256": "01d11ac35de8e40fdeda00d9e1e9d92525f3f9d887cdd7aa81d727596788b54e",
+      "archive_bytes": 29094,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_locid_transform_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid_transform_data/icu_locid_transform_data-1.5.0.crate",
+      "sha256": "fdc8ff3388f852bede6b579ad4e978ab004f139284d7b28715f773507b946f6e",
+      "archive_bytes": 44727,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_normalizer",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_normalizer/icu_normalizer-1.5.0.crate",
+      "sha256": "19ce3e0da2ec68599d193c93d088142efd7f9c5d6fc9b803774855747dc6a84f",
+      "archive_bytes": 53113,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_normalizer_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_normalizer_data/icu_normalizer_data-1.5.0.crate",
+      "sha256": "f8cafbf7aa791e9b22bec55a167906f9e1215fd475cd22adfcf660e03e989516",
+      "archive_bytes": 50561,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_properties",
+      "version": "1.5.1",
+      "url": "https://static.crates.io/crates/icu_properties/icu_properties-1.5.1.crate",
+      "sha256": "93d6020766cfc6302c15dbbc9c8778c37e62c14427cb7f6e601d849e092aeef5",
+      "archive_bytes": 64479,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_properties_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_properties_data/icu_properties_data-1.5.0.crate",
+      "sha256": "67a8effbc3dd3e4ba1afa8ad918d5684b8868b3b26500753effea8d2eed19569",
+      "archive_bytes": 227993,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_provider",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_provider/icu_provider-1.5.0.crate",
+      "sha256": "6ed421c8a8ef78d3e2dbc98a973be2f3770cb42b606e3ab18d6237c4dfde68d9",
+      "archive_bytes": 52722,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "icu_provider_macros",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_provider_macros/icu_provider_macros-1.5.0.crate",
+      "sha256": "1ec89e9337638ecdc08744df490b221a7399bf8d164eb52a665454e60e075ad6",
+      "archive_bytes": 6436,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "idna",
+      "version": "1.1.0",
+      "url": "https://static.crates.io/crates/idna/idna-1.1.0.crate",
+      "sha256": "3b0875f23caa03898994f6ddc501886a45c7d3d62d04d2d90788d47be1b1e4de",
+      "archive_bytes": 148747,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "idna_adapter",
+      "version": "1.2.0",
+      "url": "https://static.crates.io/crates/idna_adapter/idna_adapter-1.2.0.crate",
+      "sha256": "daca1df1c957320b2cf139ac61e7bd64fed304c5040df000a745aa1de3b4ef71",
+      "archive_bytes": 8206,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.11",
+      "url": "https://static.crates.io/crates/itoa/itoa-1.0.11.crate",
+      "sha256": "49f1f14873335454500d59611f1cf4a4b0f786f9ac11f4312a78e4cf2566695b",
+      "archive_bytes": 10563,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.18",
+      "url": "https://static.crates.io/crates/itoa/itoa-1.0.18.crate",
+      "sha256": "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682",
+      "archive_bytes": 15935,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "jiter",
+      "version": "0.14.0",
+      "url": "https://static.crates.io/crates/jiter/jiter-0.14.0.crate",
+      "sha256": "b6f3b5d3f84b36f4ad09fd1da896d23d9852a1aa86556578dd0289f43dce311d",
+      "archive_bytes": 155564,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "js-sys",
+      "version": "0.3.77",
+      "url": "https://static.crates.io/crates/js-sys/js-sys-0.3.77.crate",
+      "sha256": "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f",
+      "archive_bytes": 55538,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "lexical-parse-float",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/lexical-parse-float/lexical-parse-float-1.0.5.crate",
+      "sha256": "de6f9cb01fb0b08060209a057c048fcbab8717b4c1ecd2eac66ebfe39a65b0f2",
+      "archive_bytes": 186731,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "lexical-parse-integer",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/lexical-parse-integer/lexical-parse-integer-1.0.5.crate",
+      "sha256": "72207aae22fc0a121ba7b6d479e42cbfea549af1479c3f3a4f12c70dd66df12e",
+      "archive_bytes": 36912,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "lexical-util",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/lexical-util/lexical-util-1.0.6.crate",
+      "sha256": "5a82e24bf537fd24c177ffbbdc6ebcc8d54732c35b50a3f28cc3f4e4c949a0b3",
+      "archive_bytes": 106117,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.177",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.177.crate",
+      "sha256": "2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976",
+      "archive_bytes": 792045,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.185",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.185.crate",
+      "sha256": "52ff2c0fe9bc6cb6b14a0592c2ff4fa9ceb83eea9db979b0487cd054946a2b8f",
+      "archive_bytes": 821775,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.189",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.189.crate",
+      "sha256": "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
+      "archive_bytes": 851502,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "litemap",
+      "version": "0.7.3",
+      "url": "https://static.crates.io/crates/litemap/litemap-0.7.3.crate",
+      "sha256": "643cb0b8d4fcc284004d5fd0d67ccf61dfffadb7f75e1e71bc420f4688a3a704",
+      "archive_bytes": 28728,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "log",
+      "version": "0.4.27",
+      "url": "https://static.crates.io/crates/log/log-0.4.27.crate",
+      "sha256": "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94",
+      "archive_bytes": 48120,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "lru",
+      "version": "0.16.3",
+      "url": "https://static.crates.io/crates/lru/lru-0.16.3.crate",
+      "sha256": "a1dc47f592c06f33f8e3aea9591776ec7c9f9e4124778ff8a3c3b87159f7e593",
+      "archive_bytes": 16743,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "memchr",
+      "version": "2.7.4",
+      "url": "https://static.crates.io/crates/memchr/memchr-2.7.4.crate",
+      "sha256": "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3",
+      "archive_bytes": 96670,
+      "declared_license": "Unlicense OR MIT"
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.6",
+      "url": "https://static.crates.io/crates/num-bigint/num-bigint-0.4.6.crate",
+      "sha256": "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9",
+      "archive_bytes": 102801,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.46",
+      "url": "https://static.crates.io/crates/num-integer/num-integer-0.1.46.crate",
+      "sha256": "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f",
+      "archive_bytes": 22331,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "url": "https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate",
+      "sha256": "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841",
+      "archive_bytes": 51631,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.3",
+      "url": "https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate",
+      "sha256": "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d",
+      "archive_bytes": 34534,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.4",
+      "url": "https://static.crates.io/crates/once_cell/once_cell-1.21.4.crate",
+      "sha256": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50",
+      "archive_bytes": 35010,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "openssl",
+      "version": "0.10.81",
+      "url": "https://static.crates.io/crates/openssl/openssl-0.10.81.crate",
+      "sha256": "77823a27f0babb03091cb9ed9ef80af3b39dbc82f97e8fa530374b7dafd87a45",
+      "archive_bytes": 311187,
+      "declared_license": "Apache-2.0"
+    },
+    {
+      "name": "openssl-macros",
+      "version": "0.1.1",
+      "url": "https://static.crates.io/crates/openssl-macros/openssl-macros-0.1.1.crate",
+      "sha256": "a948666b637a0f465e8564c73e89d4dde00d72d4d473cc972f390fc3dcee7d9c",
+      "archive_bytes": 5601,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "openssl-sys",
+      "version": "0.9.117",
+      "url": "https://static.crates.io/crates/openssl-sys/openssl-sys-0.9.117.crate",
+      "sha256": "b47e7e6bb2c38cd930d25a23b40fa52e068c10e85f3e03a7f5ba5aaca5713695",
+      "archive_bytes": 76045,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "pem",
+      "version": "4.0.0",
+      "url": "https://static.crates.io/crates/pem/pem-4.0.0.crate",
+      "sha256": "d354a98a3d1251555de99e8fdd8afda05573c31b82f59063a7b0a29b5527f120",
+      "archive_bytes": 18770,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "percent-encoding",
+      "version": "2.3.2",
+      "url": "https://static.crates.io/crates/percent-encoding/percent-encoding-2.3.2.crate",
+      "sha256": "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220",
+      "archive_bytes": 11583,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pkg-config",
+      "version": "0.3.33",
+      "url": "https://static.crates.io/crates/pkg-config/pkg-config-0.3.33.crate",
+      "sha256": "19f132c84eca552bf34cab8ec81f1c1dcc229b811638f9d283dceabe58c5569e",
+      "archive_bytes": 21590,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "portable-atomic",
+      "version": "1.14.0",
+      "url": "https://static.crates.io/crates/portable-atomic/portable-atomic-1.14.0.crate",
+      "sha256": "3d20d5497ef88037a52ff98267d066e7f11fcc5e99bbfbd58a42336193aacec3",
+      "archive_bytes": 200703,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "portable-atomic",
+      "version": "1.6.0",
+      "url": "https://static.crates.io/crates/portable-atomic/portable-atomic-1.6.0.crate",
+      "sha256": "7170ef9988bc169ba16dd36a7fa041e5c4cbeb6a35b76d4c03daded371eae7c0",
+      "archive_bytes": 140689,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.103",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.103.crate",
+      "sha256": "5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8",
+      "archive_bytes": 60024,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.107.crate",
+      "sha256": "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9",
+      "archive_bytes": 59588,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.86",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.86.crate",
+      "sha256": "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77",
+      "archive_bytes": 48958,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3/pyo3-0.28.3.crate",
+      "sha256": "91fd8e38a3b50ed1167fb981cd6fd60147e091784c427b8f7183a7ee32c31c12",
+      "archive_bytes": 1204476,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3/pyo3-0.29.0.crate",
+      "sha256": "cd274650b21d4bfc26a0a47587962c1edb425f69287324355cd040c3ea66071c",
+      "archive_bytes": 1241253,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-build-config",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-build-config/pyo3-build-config-0.28.3.crate",
+      "sha256": "e368e7ddfdeb98c9bca7f8383be1648fd84ab466bf2bc015e94008db6d35611e",
+      "archive_bytes": 35961,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-build-config",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-build-config/pyo3-build-config-0.29.0.crate",
+      "sha256": "c5e2a7d2f0d013342f295c048ad19237add5154a55b1c5a254c0ec93d4109078",
+      "archive_bytes": 39616,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-ffi",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-ffi/pyo3-ffi-0.28.3.crate",
+      "sha256": "7f29e10af80b1f7ccaf7f69eace800a03ecd13e883acfacc1e5d0988605f651e",
+      "archive_bytes": 80881,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-ffi",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-ffi/pyo3-ffi-0.29.0.crate",
+      "sha256": "ca85c467da1bbc8d866eea5deff9cf29ea5f7785054a17da36e65bda9c05845b",
+      "archive_bytes": 88184,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-macros",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-macros/pyo3-macros-0.28.3.crate",
+      "sha256": "df6e520eff47c45997d2fc7dd8214b25dd1310918bbb2642156ef66a67f29813",
+      "archive_bytes": 8963,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-macros",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-macros/pyo3-macros-0.29.0.crate",
+      "sha256": "9ac53762fd065daa3194dd09337a38bd793a188100fd1a9304c4ab312d901771",
+      "archive_bytes": 8915,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-macros-backend",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-macros-backend/pyo3-macros-backend-0.28.3.crate",
+      "sha256": "c4cdc218d835738f81c2338f822078af45b4afdf8b2e33cbb5916f108b813acb",
+      "archive_bytes": 88063,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "pyo3-macros-backend",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-macros-backend/pyo3-macros-backend-0.29.0.crate",
+      "sha256": "4ca3a1557399783172dc5bf39cfca835157732532cba56b71d2292161e53b362",
+      "archive_bytes": 91943,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "python3-dll-a",
+      "version": "0.2.14",
+      "url": "https://static.crates.io/crates/python3-dll-a/python3-dll-a-0.2.14.crate",
+      "sha256": "d381ef313ae70b4da5f95f8a4de773c6aa5cd28f73adec4b4a31df70b66780d8",
+      "archive_bytes": 103489,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.42",
+      "url": "https://static.crates.io/crates/quote/quote-1.0.42.crate",
+      "sha256": "a338cc41d27e6cc6dce6cefc13a0729dfbb81c262b1f519331575dd80ef3067f",
+      "archive_bytes": 31504,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.44",
+      "url": "https://static.crates.io/crates/quote/quote-1.0.44.crate",
+      "sha256": "21b2ebcf727b7760c461f091f9f0f539b77b8e87f2fd88131e7f1b433b3cece4",
+      "archive_bytes": 31629,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47",
+      "url": "https://static.crates.io/crates/quote/quote-1.0.47.crate",
+      "sha256": "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001",
+      "archive_bytes": 31622,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "r-efi",
+      "version": "5.2.0",
+      "url": "https://static.crates.io/crates/r-efi/r-efi-5.2.0.crate",
+      "sha256": "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5",
+      "archive_bytes": 64764,
+      "declared_license": "MIT OR Apache-2.0 OR LGPL-2.1-or-later"
+    },
+    {
+      "name": "radium",
+      "version": "0.7.0",
+      "url": "https://static.crates.io/crates/radium/radium-0.7.0.crate",
+      "sha256": "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09",
+      "archive_bytes": 10906,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "regex",
+      "version": "1.12.3",
+      "url": "https://static.crates.io/crates/regex/regex-1.12.3.crate",
+      "sha256": "e10754a14b9137dd7b1e3e5b0493cc9171fdd105e0ab477f51b72e7f3ac0e276",
+      "archive_bytes": 153392,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.13",
+      "url": "https://static.crates.io/crates/regex-automata/regex-automata-0.4.13.crate",
+      "sha256": "5276caf25ac86c8d810222b3dbb938e512c55c6831a10f3e6ed1c93b84041f1c",
+      "archive_bytes": 625250,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.5",
+      "url": "https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.5.crate",
+      "sha256": "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c",
+      "archive_bytes": 357541,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "rpds",
+      "version": "1.2.1",
+      "url": "https://static.crates.io/crates/rpds/rpds-1.2.1.crate",
+      "sha256": "e025feb26210bc196b908e72deb063b1b4000754304341cbc168a1e72c857ebc",
+      "archive_bytes": 75113,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "rustversion",
+      "version": "1.0.17",
+      "url": "https://static.crates.io/crates/rustversion/rustversion-1.0.17.crate",
+      "sha256": "955d28af4278de8121b7ebeb796b6a45735dc01436d898801014aced2773a3d6",
+      "archive_bytes": 17621,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "self_cell",
+      "version": "1.3.0",
+      "url": "https://static.crates.io/crates/self_cell/self_cell-1.3.0.crate",
+      "sha256": "2ab42ca02749e120097e328d91d415325bdf43b1c72c4c8badf37375fe40a813",
+      "archive_bytes": 23869,
+      "declared_license": "Apache-2.0 OR GPL-2.0-only"
+    },
+    {
+      "name": "serde",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde/serde-1.0.228.crate",
+      "sha256": "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e",
+      "archive_bytes": 83652,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate",
+      "sha256": "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad",
+      "archive_bytes": 63111,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "serde_derive",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde_derive/serde_derive-1.0.228.crate",
+      "sha256": "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79",
+      "archive_bytes": 59605,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.149",
+      "url": "https://static.crates.io/crates/serde_json/serde_json-1.0.149.crate",
+      "sha256": "83fc039473c5595ace860d8c4fafa220ff474b3fc6bfdb4293327f1a37e94d86",
+      "archive_bytes": 155994,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "shlex",
+      "version": "2.0.1",
+      "url": "https://static.crates.io/crates/shlex/shlex-2.0.1.crate",
+      "sha256": "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba",
+      "archive_bytes": 19332,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "smallvec",
+      "version": "1.15.1",
+      "url": "https://static.crates.io/crates/smallvec/smallvec-1.15.1.crate",
+      "sha256": "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03",
+      "archive_bytes": 38116,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "speedate",
+      "version": "0.17.0",
+      "url": "https://static.crates.io/crates/speedate/speedate-0.17.0.crate",
+      "sha256": "aba069c070b5e213f2a094deb7e5ed50ecb092be36102a4f4042e8d2056d060e",
+      "archive_bytes": 40124,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "stable_deref_trait",
+      "version": "1.2.0",
+      "url": "https://static.crates.io/crates/stable_deref_trait/stable_deref_trait-1.2.0.crate",
+      "sha256": "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3",
+      "archive_bytes": 8054,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "static_assertions",
+      "version": "1.1.0",
+      "url": "https://static.crates.io/crates/static_assertions/static_assertions-1.1.0.crate",
+      "sha256": "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f",
+      "archive_bytes": 18480,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "strum",
+      "version": "0.27.2",
+      "url": "https://static.crates.io/crates/strum/strum-0.27.2.crate",
+      "sha256": "af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf",
+      "archive_bytes": 8489,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "strum_macros",
+      "version": "0.27.2",
+      "url": "https://static.crates.io/crates/strum_macros/strum_macros-0.27.2.crate",
+      "sha256": "7695ce3845ea4b33927c055a39dc438a45b059f7c1b3d91d38d10355fb8cbca7",
+      "archive_bytes": 30522,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.111",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.111.crate",
+      "sha256": "390cc9a294ab71bdb1aa2e99d13be9c753cd2d7bd6560c77118597410c4d2e87",
+      "archive_bytes": 302117,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.119",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.119.crate",
+      "sha256": "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297",
+      "archive_bytes": 307407,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.82",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.82.crate",
+      "sha256": "83540f837a8afc019423a8edb95b52a8effe46957ee402287f4292fae35be021",
+      "archive_bytes": 272300,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "synstructure",
+      "version": "0.13.1",
+      "url": "https://static.crates.io/crates/synstructure/synstructure-0.13.1.crate",
+      "sha256": "c8af7666ab7b6390ab78131fb5b0fce11d6b7a6951602017c35fa82800708971",
+      "archive_bytes": 18327,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "tap",
+      "version": "1.0.1",
+      "url": "https://static.crates.io/crates/tap/tap-1.0.1.crate",
+      "sha256": "55937e1799185b12863d447f42597ed69d9928686b8d88a1df17376a097d8369",
+      "archive_bytes": 11316,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "target-lexicon",
+      "version": "0.13.3",
+      "url": "https://static.crates.io/crates/target-lexicon/target-lexicon-0.13.3.crate",
+      "sha256": "df7f62577c25e07834649fc3b39fafdc597c0a3527dc1c60129201ccfcbaa50c",
+      "archive_bytes": 28498,
+      "declared_license": "Apache-2.0 WITH LLVM-exception"
+    },
+    {
+      "name": "target-lexicon",
+      "version": "0.13.4",
+      "url": "https://static.crates.io/crates/target-lexicon/target-lexicon-0.13.4.crate",
+      "sha256": "b1dd07eb858a2067e2f3c7155d54e929265c264e6f37efe3ee7a8d1b5a1dd0ba",
+      "archive_bytes": 26832,
+      "declared_license": "Apache-2.0 WITH LLVM-exception"
+    },
+    {
+      "name": "target-lexicon",
+      "version": "0.13.5",
+      "url": "https://static.crates.io/crates/target-lexicon/target-lexicon-0.13.5.crate",
+      "sha256": "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca",
+      "archive_bytes": 26928,
+      "declared_license": "Apache-2.0 WITH LLVM-exception"
+    },
+    {
+      "name": "tinystr",
+      "version": "0.7.6",
+      "url": "https://static.crates.io/crates/tinystr/tinystr-0.7.6.crate",
+      "sha256": "9117f5d4db391c1cf6927e7bea3db74b9a1c1add8f7eda9ffd5364f40f57b82f",
+      "archive_bytes": 16971,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "triomphe",
+      "version": "0.1.15",
+      "url": "https://static.crates.io/crates/triomphe/triomphe-0.1.15.crate",
+      "sha256": "dd69c5aa8f924c7519d6372789a74eac5b94fb0f8fcf0d4a97eb0bfc3e785f39",
+      "archive_bytes": 34711,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.12",
+      "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.12.crate",
+      "sha256": "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b",
+      "archive_bytes": 42168,
+      "declared_license": "(MIT OR Apache-2.0) AND Unicode-DFS-2016"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.22",
+      "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.22.crate",
+      "sha256": "9312f7c4f6ff9069b165498234ce8be658059c6728633667c526e27dc2cf1df5",
+      "archive_bytes": 47919,
+      "declared_license": "(MIT OR Apache-2.0) AND Unicode-3.0"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.24",
+      "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sha256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "archive_bytes": 49298,
+      "declared_license": "(MIT OR Apache-2.0) AND Unicode-3.0"
+    },
+    {
+      "name": "url",
+      "version": "2.5.8",
+      "url": "https://static.crates.io/crates/url/url-2.5.8.crate",
+      "sha256": "ff67a8a4397373c3ef660812acab3268222035010ab8680ec4215f38ba3d0eed",
+      "archive_bytes": 86512,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "utf16_iter",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/utf16_iter/utf16_iter-1.0.5.crate",
+      "sha256": "c8232dd3cdaed5356e0f716d285e4b40b932ac434100fe9b7e0e8e935b9e6246",
+      "archive_bytes": 9736,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "utf8_iter",
+      "version": "1.0.4",
+      "url": "https://static.crates.io/crates/utf8_iter/utf8_iter-1.0.4.crate",
+      "sha256": "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be",
+      "archive_bytes": 10437,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "uuid",
+      "version": "1.23.0",
+      "url": "https://static.crates.io/crates/uuid/uuid-1.23.0.crate",
+      "sha256": "5ac8b6f42ead25368cf5b098aeb3dc8a1a2c05a3eee8a9a1a68c640edbfc79d9",
+      "archive_bytes": 63006,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "vcpkg",
+      "version": "0.2.15",
+      "url": "https://static.crates.io/crates/vcpkg/vcpkg-0.2.15.crate",
+      "sha256": "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426",
+      "archive_bytes": 228735,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "version_check",
+      "version": "0.9.5",
+      "url": "https://static.crates.io/crates/version_check/version_check-0.9.5.crate",
+      "sha256": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a",
+      "archive_bytes": 15554,
+      "declared_license": "MIT/Apache-2.0"
+    },
+    {
+      "name": "wasi",
+      "version": "0.14.2+wasi-0.2.4",
+      "url": "https://static.crates.io/crates/wasi/wasi-0.14.2+wasi-0.2.4.crate",
+      "sha256": "9683f9a5a998d873c0d21fcbe3c083009670149a8fab228644b8bd36b2c48cb3",
+      "archive_bytes": 140921,
+      "declared_license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+    },
+    {
+      "name": "wasm-bindgen",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen/wasm-bindgen-0.2.100.crate",
+      "sha256": "1edc8929d7499fc4e8f0be2262a241556cfc54a0bea223790e71446f2aab1ef5",
+      "archive_bytes": 48288,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "wasm-bindgen-backend",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-backend/wasm-bindgen-backend-0.2.100.crate",
+      "sha256": "2f0a0651a5c2bc21487bde11ee802ccaf4c51935d0d3d42a6101f98161700bc6",
+      "archive_bytes": 32111,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "wasm-bindgen-macro",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro/wasm-bindgen-macro-0.2.100.crate",
+      "sha256": "7fe63fc6d09ed3792bd0897b314f53de8e16568c2b3f7982f468c0bf9bd0b407",
+      "archive_bytes": 9663,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "wasm-bindgen-macro-support",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro-support/wasm-bindgen-macro-support-0.2.100.crate",
+      "sha256": "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de",
+      "archive_bytes": 26243,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "wasm-bindgen-shared",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-shared/wasm-bindgen-shared-0.2.100.crate",
+      "sha256": "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d",
+      "archive_bytes": 8570,
+      "declared_license": "MIT OR Apache-2.0"
+    },
+    {
+      "name": "wit-bindgen-rt",
+      "version": "0.39.0",
+      "url": "https://static.crates.io/crates/wit-bindgen-rt/wit-bindgen-rt-0.39.0.crate",
+      "sha256": "6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1",
+      "archive_bytes": 12241,
+      "declared_license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+    },
+    {
+      "name": "write16",
+      "version": "1.0.0",
+      "url": "https://static.crates.io/crates/write16/write16-1.0.0.crate",
+      "sha256": "d1890f4022759daae28ed4fe62859b1236caebfc61ede2f63ed4e695f3f6d936",
+      "archive_bytes": 7218,
+      "declared_license": "Apache-2.0 OR MIT"
+    },
+    {
+      "name": "writeable",
+      "version": "0.5.5",
+      "url": "https://static.crates.io/crates/writeable/writeable-0.5.5.crate",
+      "sha256": "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51",
+      "archive_bytes": 22354,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "wyz",
+      "version": "0.5.1",
+      "url": "https://static.crates.io/crates/wyz/wyz-0.5.1.crate",
+      "sha256": "05f360fc0b24296329c78fda852a1e9ae82de9cf7b27dae4b7f62f118f77b9ed",
+      "archive_bytes": 18790,
+      "declared_license": "MIT"
+    },
+    {
+      "name": "yoke",
+      "version": "0.7.4",
+      "url": "https://static.crates.io/crates/yoke/yoke-0.7.4.crate",
+      "sha256": "6c5b1314b079b0930c31e3af543d8ee1757b1951ae1e1565ec704403a7240ca5",
+      "archive_bytes": 27781,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "yoke-derive",
+      "version": "0.7.4",
+      "url": "https://static.crates.io/crates/yoke-derive/yoke-derive-0.7.4.crate",
+      "sha256": "28cc31741b18cb6f1d5ff12f5b7523e3d6eb0852bbbad19d73905511d9849b95",
+      "archive_bytes": 7470,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "zerocopy",
+      "version": "0.8.25",
+      "url": "https://static.crates.io/crates/zerocopy/zerocopy-0.8.25.crate",
+      "sha256": "a1702d9583232ddb9174e01bb7c15a2ab8fb1bc6f227aa1233858c351a3ba0cb",
+      "archive_bytes": 252714,
+      "declared_license": "BSD-2-Clause OR Apache-2.0 OR MIT"
+    },
+    {
+      "name": "zerocopy-derive",
+      "version": "0.8.25",
+      "url": "https://static.crates.io/crates/zerocopy-derive/zerocopy-derive-0.8.25.crate",
+      "sha256": "28a6e20d751156648aa063f3800b706ee209a32c0b4d9f24be3d980b01be55ef",
+      "archive_bytes": 87671,
+      "declared_license": "BSD-2-Clause OR Apache-2.0 OR MIT"
+    },
+    {
+      "name": "zerofrom",
+      "version": "0.1.4",
+      "url": "https://static.crates.io/crates/zerofrom/zerofrom-0.1.4.crate",
+      "sha256": "91ec111ce797d0e0784a1116d0ddcdbea84322cd79e5d5ad173daeba4f93ab55",
+      "archive_bytes": 5044,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "zerofrom-derive",
+      "version": "0.1.4",
+      "url": "https://static.crates.io/crates/zerofrom-derive/zerofrom-derive-0.1.4.crate",
+      "sha256": "0ea7b4a3637ea8669cedf0f1fd5c286a17f3de97b8dd5a70a6c167a1730e63a5",
+      "archive_bytes": 8232,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "zerovec",
+      "version": "0.10.4",
+      "url": "https://static.crates.io/crates/zerovec/zerovec-0.10.4.crate",
+      "sha256": "aa2b893d79df23bfb12d5461018d408ea19dfafe76c2c7ef6d4eba614f8ff079",
+      "archive_bytes": 126398,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "zerovec-derive",
+      "version": "0.10.3",
+      "url": "https://static.crates.io/crates/zerovec-derive/zerovec-derive-0.10.3.crate",
+      "sha256": "6eafa6dfb17584ea3e2bd6e76e0cc15ad7af12b09abdd1ca55961bed9b1063c6",
+      "archive_bytes": 19438,
+      "declared_license": "Unicode-3.0"
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/zmij/zmij-1.0.6.crate",
+      "sha256": "aac060176f7020d62c3bcc1cdbcec619d54f48b07ad1963a3f80ce7a0c17755f",
+      "archive_bytes": 21298,
+      "declared_license": "MIT"
+    }
+  ],
+  "rust_scope": "Conservative wheel-SBOM superset, including build and other-target crates",
+  "rust_notice_supplements": [
+    {
+      "path": "LICENSE-APACHE",
+      "bytes": 10847,
+      "git_blob_sha1": "16fe87b06e802f094b3fbb0894b137bca2b16ef1",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-APACHE"
+    },
+    {
+      "path": "LICENSE-Apache-2.0_WITH_LLVM-exception",
+      "bytes": 12243,
+      "git_blob_sha1": "f9d81955f4bcb8f96a025e2ecc46f39ec536d465",
+      "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+      "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-Apache-2.0_WITH_LLVM-exception"
+    },
+    {
+      "path": "LICENSE-MIT",
+      "bytes": 1023,
+      "git_blob_sha1": "31aa79387f27e730e33d871925e152e35e428031",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-MIT"
+    }
+  ],
+  "native_library_sources": [
+    {
+      "component": "tink_cc",
+      "version": "2.8.0",
+      "url": "https://github.com/tink-crypto/tink-cc/releases/download/v2.8.0/tink-cc-2.8.0.zip",
+      "bytes": 3583768,
+      "format": "zip",
+      "basis": "Pinned BCR source and upstream recipe, not an exact linker graph",
+      "sha256": "ee8397a163c29843e8336edb64e994f6ff39a993ec6681588ad069185bfec2bc",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "abseil-cpp",
+      "version": "20260526.0",
+      "url": "https://github.com/abseil/abseil-cpp/releases/download/20260526.0/abseil-cpp-20260526.0.tar.gz",
+      "bytes": 2391476,
+      "format": "tar.gz",
+      "basis": "Pinned BCR source and upstream recipe, not an exact linker graph",
+      "sha256": "6e1aee535473414164bf83e4ebc40240dec71a4701f8a642d906e95bea1aea0c",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "protobuf-30.1",
+      "version": "30.1",
+      "url": "https://github.com/protocolbuffers/protobuf/releases/download/v30.1/protobuf-30.1.zip",
+      "bytes": 11318393,
+      "format": "zip",
+      "basis": "Pinned BCR source and upstream recipe, not an exact linker graph",
+      "sha256": "e8962ceb9d4318d904720cb20aba02f6b0cce77932aecea37a5af9a990fc7e0f",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "protobuf-30.2",
+      "version": "30.2",
+      "url": "https://github.com/protocolbuffers/protobuf/releases/download/v30.2/protobuf-30.2.zip",
+      "bytes": 11320032,
+      "format": "zip",
+      "basis": "Pinned BCR source and upstream recipe, not an exact linker graph",
+      "sha256": "6544e5ceec7f29d00397193360435ca8b3c4e843de3cf5698a99d36b72d65342",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "openssl-wheel",
+      "version": "4.0.1",
+      "url": "https://github.com/openssl/openssl/releases/download/openssl-4.0.1/openssl-4.0.1.tar.gz",
+      "bytes": 55079428,
+      "format": "tar.gz",
+      "basis": "Matching SHA-256 in both wheel SBOMs and release asset metadata",
+      "sha256": "2db3f3a0d6ea4b59e1f094ace2c8cd536dffb87cdc39084c5afa1e6f7f37dd09",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "libffi",
+      "version": "3.4.6",
+      "url": "https://codeload.github.com/libffi/libffi/tar.gz/refs/tags/v3.4.6",
+      "bytes": 598175,
+      "format": "tar.gz",
+      "source_commit": "3d0ce1e6fcf19f853894862abcbac0ae78a7be60",
+      "basis": "Pinned upstream recipe; archive hash is first observation, not an upstream declaration",
+      "sha256": "9ac790464c1eb2f5ab5809e978a1683e9393131aede72d1b0a0703771d3c6cda",
+      "hash_origin": "First observed exact-tag archive, not an upstream hash declaration"
+    },
+    {
+      "component": "pybind11",
+      "version": "3.0.1",
+      "url": "https://codeload.github.com/pybind/pybind11/tar.gz/refs/tags/v3.0.1",
+      "bytes": 918227,
+      "format": "tar.gz",
+      "source_commit": "f5fbe867d2d26e4a0a9177a51f6e568868ad3dc8",
+      "basis": "Pinned upstream recipe and declared archive hash",
+      "sha256": "741633da746b7c738bb71f1854f957b9da660bcd2dce68d71949037f0969d0ca",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    },
+    {
+      "component": "boringssl",
+      "version": "0.20260413.0",
+      "url": "https://github.com/google/boringssl/releases/download/0.20260413.0/boringssl-0.20260413.0.tar.gz",
+      "bytes": 70098624,
+      "format": "tar.gz",
+      "basis": "Pinned BCR source and upstream recipe, not an exact linker graph",
+      "sha256": "3560f7dd3f08e16b9f84d877a5be21ec62071564783009571af5fcc6fad734d2",
+      "hash_origin": "Pinned upstream source specification or wheel SBOM"
+    }
+  ],
+  "native_library_scope": "Pinned upstream recipes and wheel SBOMs, including both protobuf declarations; not a reconstructed linker graph",
+  "source_archives_executed": false,
+  "source_to_binary_reproducibility_claimed": false
+}

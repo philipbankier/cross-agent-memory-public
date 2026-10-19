@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "version": "0.1.0",
+  "runtime_base_commit": "601ae55b03f3de4019174a77ffe6624ec904b311",
+  "runtime_base_tree": "c1807fd03c7cbf4d9003b87c999a85972dbb6944",
+  "inherited_checks": {
+    "installed_tests_per_platform": 703,
+    "platforms": ["macOS", "Linux", "Linux amd64 image", "Linux arm64 image"],
+    "runtime_dependencies_build_recipe_and_tests": "unchanged from the qualified base"
+  },
+  "release_overlay": [
+    "public setup and contribution guidance",
+    "security reporting policy, requiring live private-reporting verification at publication",
+    "manual package/image attestation workflows with distinct asset names",
+    "consumer checksum and authenticated provenance instructions"
+  ],
+  "identity": "The current clean Git commit identifies this source; workflows bind artifacts to that revision.",
+  "historical_provenance": "PILOT-SOURCE.json retains the inherited archive/overlay history, not the current installed revision.",
+  "limits": [
+    "Inherited tests are not a friend-owned trial or universal answer-quality proof.",
+    "Release signing, public reporting and independent public install need actual publication results."
+  ]
+}

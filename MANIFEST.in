@@ -1,0 +1,9 @@
+include LICENSE cam_build.py requirements.lock requirements-bootstrap.lock requirements-dev.lock Containerfile .dockerignore compose.yaml
+include docs/third-party/README.md docs/third-party/notices.txt docs/third-party/source-index.json
+recursive-include script *
+recursive-include src/cross_assistant_memory *.py _build_provenance.json
+recursive-include src/cross_assistant_memory/static *.html
+include ui/memory-app/package.json ui/memory-app/package-lock.json ui/memory-app/tsconfig.json ui/memory-app/build.mjs
+recursive-include ui/memory-app/src *.ts *.html
+recursive-include ui/memory-app/test *.ts *.mjs
+global-exclude *.pyc

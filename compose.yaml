@@ -1,0 +1,37 @@
+services:
+  node:
+    build:
+      context: ${CAM_BUILD_CONTEXT:-.}
+      dockerfile: Containerfile
+      args:
+        VCS_REF: ${CAM_BUILD_REVISION:-unknown}
+    image: ${CAM_IMAGE:-cross-assistant-memory:local}
+    command:
+      - serve
+      - --transport
+      - streamable-http
+      - --host
+      - 127.0.0.1
+      - --port
+      - ${CAM_PORT:-8765}
+    environment:
+      CAM_HOME: /var/lib/cross-assistant-memory
+      CAM_PORT: ${CAM_PORT:-8765}
+      HOME: /home/cam
+    network_mode: host
+    read_only: true
+    user: "65532:65532"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    volumes:
+      - cam-data:/var/lib/cross-assistant-memory
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+volumes:
+  cam-data:

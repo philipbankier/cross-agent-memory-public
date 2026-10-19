@@ -1,0 +1,159 @@
+{
+  "format_version": 1,
+  "status": "private_friends_alpha_not_public_release",
+  "source_archive_sha256": "3069bf4c01aeb1dfac565adb0d5086a8130186766356c2a665ea48c07af99199",
+  "source_archive_runtime_revision": "720cee4adc7b6e04da5c6d1c35af829781746ce5",
+  "source_upstream_revision": "788828ada05266525487ca86d37c89b9cec9168a",
+  "git_edition": "Runtime Python, dependency locks and LICENSE retain the verified source archive except for the verified overlays below. Git-specific documentation and runtime-only setup wrappers are retained. Git builds use their current clean commit, not the historical archive revision; the archive build stamp is not copied.",
+  "verified_overlays": [
+    {
+      "source_upstream_revision": "3ddbc7b3fa19dbdd19f8a38228752bd26be3a111",
+      "change": "Unpublished snapshot copies use exclusive locking and rollback journaling to remain self-contained. Source journal mode, source bytes, existing artifacts and privacy guards are unchanged. Two pilot regressions are derived from the upstream backup regression.",
+      "files": {
+        "src/cross_assistant_memory/backup.py": "a07a36b53c3e8eab838c6833c75a05dfb2dca9050f512574c02c5a92ec1e5240"
+      }
+    },
+    {
+      "source_upstream_revision": "8576c9b667d676b07ebd91db443b45fdb0a0d3d5",
+      "change": "Patched locked Python HTTP/JWT dependencies and the exact App client/core SDK pair. Rebuilt App bundle; runtime source, permissions and UI source are unchanged. The non-shipped Cloudflare development toolchain is not added.",
+      "files": {
+        "pyproject.toml": "53663624f10fdaaccf2371de9bf63012f4836f53cf56a8e667a5168f034c6c7e",
+        "requirements.lock": "e904da73f0057af43c42371278beb9b7c62bfa7df225074e851e83ad3992ea88",
+        "ui/memory-app/package.json": "55ad53d4f16904e49635708bf198c8214b0184c5bd0bd41e1385f84fc641afa5",
+        "ui/memory-app/package-lock.json": "6a44dcdf3c61136d97f841186e4427f6e8cb26f889ac88b484d91a565c3a7501",
+        "src/cross_assistant_memory/static/memory-app.html": "b0019b1f9553ccdc59744e5cba117c4ef67d3d3b0dc3b290cf96edae5a60fff2"
+      }
+    },
+    {
+      "source_upstream_revision": "be5cd345ccd90341ad617a5e4fdd91b56bbadb3e",
+      "change": "Assigned scope, project and flexible contexts remain present on deliberate selected-evidence handoff; unknown metadata stays distinct from explicit unassigned contexts. Existing delivery and 64 KiB limits remain unchanged.",
+      "files": {
+        "ui/memory-app/src/app.ts": "b8977bf9051a5c7321df99c060361aabe61b46d0ccede880b66073a8f7be6dbe",
+        "ui/memory-app/src/app.html": "0260157d0532b0737b344e6192567364f880c09160106f9338804b33ef02f798",
+        "ui/memory-app/test/app.test.mjs": "f0ee32272ef74a0e5c95c74f562fe113e46a1710af6e960a91a6823c56ee83e7",
+        "ui/memory-app/test/host.ts": "8e7085d5a3005615f7d79233b8b9dd9603a9c3faebae915ef74329181f5738d1",
+        "src/cross_assistant_memory/static/memory-app.html": "ca5808628e9f616bb7a6606174ab2751a99f62d74e14d9492940b55ef8bf5a3c"
+      }
+    },
+    {
+      "source_upstream_revision": "9012b90b3fbc15edf8cf0471f3e0858c53b1d9d1",
+      "change": "Explicit normalized-text byte completeness in selected assistant context; raw-record withholding and retrieval remain unchanged.",
+      "files": {
+        "ui/memory-app/src/app.ts": "cb884149ef855f4b08800c17093ba04c7f65523796204995e3a1a8e6e4dd1263",
+        "ui/memory-app/test/app.test.mjs": "1368d1f38e4aff72c8ce22b57e9ecebc1ce60d887e165d0ae7e9f7063266b944",
+        "ui/memory-app/test/host.ts": "b2a5cea74879562d1f8bc5914dfd3bcbe98300716bb5e1679ce76b548ff07d97",
+        "src/cross_assistant_memory/static/memory-app.html": "54d59a9358407601bb261d9cafaa8c19cd2df2474c7050a2e585d546691e5c61"
+      }
+    },
+    {
+      "source_upstream_revision": "a6ccb246a278019f879a2f3ddc93d8d19a22822a",
+      "change": "One exact Codex reference-only producer, 0.159.0-alpha.12.1, with unchanged parser version, upload identity, physical cursor and copied-history guards.",
+      "files": {
+        "src/cross_assistant_memory/parsers/codex.py": "974069ee65c5c4f926f421fc70d8b3aa4dbf87ca794138adc465b0ee12405957"
+      }
+    },
+    {
+      "source_upstream_revision": "2ffa2ec8acccb19e5cce4f684b6eabfafb1b7150",
+      "change": "Normalize only verified unpublished legacy clones and inspect restored mutable nodes using live read-only semantics. Portable verification sees committed WAL-only index and credential rows. Frozen artifact and source guards, keys, schemas and transports are unchanged. Three pilot regressions cover the legacy artifact and portable WAL refusals.",
+      "files": {
+        "src/cross_assistant_memory/backup.py": "1013a5fed21f8b4a50a17177048ae5e09836de4f4d1b8b8b7f762b6f37e992ec",
+        "src/cross_assistant_memory/snapshot_materialization.py": "5f63f63a1d5ef955333bd1190159faf8b4314d2ae8b615e29b99ef2b24afdb43",
+        "src/cross_assistant_memory/recovery.py": "301871cfb8e98e21f9a7412cd0028ca4427269fbc2211b4baeb650fc659b2766",
+        "src/cross_assistant_memory/portable.py": "4229abbdaec544dd309fab81602407a6dd4f8b538cc0ad659fa7f4e3b5a753d2"
+      }
+    },
+    {
+      "source_upstream_revision": "534ed3ad3120fac2057a85e0e62475b090e3dc70",
+      "change": "Read-only setup inspection holds the existing writer-file lease and accepts only unchanged, owned checkpointed WAL/SHM pairs with an empty WAL. Uncheckpointed, incomplete, unsafe and changing state still refuses; frozen artifact guards are unchanged. The complete setup regression file is copied without private data.",
+      "files": {
+        "src/cross_assistant_memory/setup_workflow.py": "c5e070118780b37b41bfa5fdfcabc1137c0a1da8a1a227e919325903ac925e27",
+        "docs/deployment/agent-guided-setup.md": "0af30b6df9d9475b1bbe412733d32bd4753a7d941472672e5f3c47664db30398",
+        "tests/test_setup_workflow.py": "a2dcba2f2403d5fed19648bedf08b203050b1851a6e480ac137c134663d6f868"
+      }
+    },
+    {
+      "source_upstream_revision": "ee06b45151cc1a9d1aefdf10be7039442bccf935",
+      "change": "Exact qualified Claude parser supports the verified newer producers, bounded stop-hook UUID links and two/three-generation copied histories. Suppress inherited messages, keep immediate-parent lineage and physical cursors, preserve parser 0.4.2/upload identity, and refuse unknown or invalid chains. Sixty source-only regressions retain upstream assertions with self-contained synthetic fixtures.",
+      "files": {
+        "src/cross_assistant_memory/parsers/claude_code.py": "9476930833d424c9c7974b6f2c7b7aa67818e6b5ea7dbd251e9f2463d8c5ce33"
+      }
+    },
+    {
+      "source_upstream_revision": "2bab3b08bce60de69face2fcdf33513637f5bfae",
+      "change": "Three exact qualified Codex reference-only producers, 0.160.0, 0.160.1 and 0.162.0-alpha.2. Physical child cursors, parser 0.2.3, upload identity and copied-history refusal remain unchanged. Logical fork cutoffs and creator metadata do not grant parent-file access or change authority.",
+      "files": {
+        "src/cross_assistant_memory/parsers/codex.py": "30306e55e7e4bd30170eccbafa13d079d4251ef26555a93e9c0709b7d04f4eed"
+      }
+    },
+    {
+      "source_upstream_revision": "ee8a298b11cce270a0bb67c491ed05c9984f4070",
+      "change": "Byte-identical qualified Claude parser adds verified 2.1.280 stop-hook and 2.1.289 producer/stop-hook pins, plus exact 2.1.281 SessionStart child-link and earlier-parent assistant repairs. Preserves 2.1.271 support, parser 0.4.2, upload identity, physical cursors, inherited-message suppression and bounded refusal guards. Standalone regressions adapt synthetic imports/constructors without importing private data. The old pilot-only 2.1.280 refusal now matches the qualified positive contract; an unverified 2.1.237 stop-hook refusal remains covered.",
+      "synthetic_test_sources": [
+        "tests/test_claude_start_hook_forks.py",
+        "tests/test_claude_restamped_forks.py",
+        "tests/test_claude_system_forks.py",
+        "tests/test_claude_code_forks.py"
+      ],
+      "files": {
+        "src/cross_assistant_memory/parsers/claude_code.py": "a7132b845c7995a1b59dccde7215e88bd00cdb5d74a74f28b9a07d1b5b2c1341",
+        "tests/test_claude_start_hook_forks.py": "7a12cca14ad373fba04c8f24b279844d1bf522f89a7e7e61c2db7a472441f559",
+        "tests/test_claude_restamped_forks.py": "9a0d1c0a8c4084da7d5229a5c9ff6cf50e8689ac55d5d73eb40878cc75650922",
+        "tests/test_claude_system_forks.py": "e6d953a30f2fd1bc0fad2a17469a47dd02e4e635df62172837e92b27b7420636"
+      }
+    },
+    {
+      "source_upstream_revision": "e2e91b3425d10eaa443db43fae4bba97fa58b84f",
+      "change": "Byte-identical qualified Codex parser adds only exact reference producer 0.162.0-alpha.17.2. Preserves parser 0.2.3, upload identity, physical child cursors, copied-history refusal and noninteractive authority. Synthetic regressions cover exact/adjacent versions, fork metadata, physical cursors and stored tool observations without treating them as child messages or opening parent files.",
+      "synthetic_test_sources": [
+        "tests/test_codex_referenced_history.py"
+      ],
+      "files": {
+        "src/cross_assistant_memory/parsers/codex.py": "6335afe1ff6d64e61f08540f2f0336e3949bfd700229b4689f7ff9dd441a2877",
+        "tests/test_codex_reference_producers.py": "b8989cbfa10206521b055c3506e159b4da3c543df1630e784cb540905263ff63"
+      }
+    },
+    {
+      "source_upstream_revision": "d8dc0574820eea927c13d20f9a62d6c3c9afb3ee",
+      "change": "Backport only writable HTTP writer-contention refusal, not whole upstream modules. Upload and enrollment yield sanitized 503 responses while read-only authentication/queries remain available; retain existing encrypted retry batches, cursors and enrollment codes. Default CLI locking and owning-token behavior stay unchanged. Preserve the pilot's patched dependencies, fork parsers, schema, access and capture scope. Standalone regressions retain qualified lock, cleanup and timeout assertions. Adapt missing synthetic helpers, select the platform temporary directory outside the host user's home, and bind child workers to the same source-checkout or installed pilot runtime as the parent. This is not Linux qualification.",
+      "synthetic_test_sources": [
+        "tests/test_native_maintenance_backpressure.py",
+        "tests/test_ledger_maintenance_locks.py"
+      ],
+      "files": {
+        "src/cross_assistant_memory/storage.py": "8a80907a63cf99a58d60b17c47d053718226ae2c62fdcad01d999761393f76d8",
+        "src/cross_assistant_memory/mcp_server.py": "ab8b866bbfbcb2c5d1e7a6fe545c55e9321f22d7ee999c6353c78abd7ea99fa4",
+        "docs/deployment/native-collector-service.md": "7c3c6e20f5c424a1d34fdcae44c4132e46a7702c68eef4b2c628cfac02169585",
+        "tests/test_native_maintenance_backpressure.py": "4f2cb42078d25b82395585f51a545f6894e781bc0581aa6ca4bd2816ac16e021",
+        "tests/test_ledger_maintenance_locks.py": "295b6fdcb3124e67a5cf5474d8f0eacafd4e66094372660550fb0e3209dda232"
+      }
+    },
+    {
+      "source_upstream_revision": "ffc91be89a2668200602e9c5628d25e12f0503ce",
+      "change": "Backport only the qualified current-schema generation read in one validated maintenance transaction, including the caller's checkpointed/live-sidecar choice. Preserve legacy schema handling, source stamp checks, rotation/schema validation, and the pilot's existing unpublished-copy journal normalization. Two exact synthetic regression cases cover an active WAL and a checkpointed source, reject a second ledger opening and verify unchanged source bytes. Historical-capture resume is not included in this overlay.",
+      "synthetic_test_sources": [
+        "tests/test_backup.py"
+      ],
+      "files": {
+        "src/cross_assistant_memory/backup.py": "e7edc07efcf7b5252c86a8753044f27b61e5aec70e8b2fc2ae11d7c2b04145bf",
+        "tests/test_backup_snapshot.py": "a8eb3ee58b58d747f6e1df6b8b9a2c7d0316d4ade5fa3b60eb00e784875cbd97"
+      }
+    },
+    {
+      "source_upstream_revision": "ae4e91fe6fff619161a9a6e06890879b65ee49e7",
+      "change": "Backport the five exact qualified historical B2 capture-resume functions and byte-identical CLI. Preserve the pilot's existing unpublished-copy and restored-reader handling instead of replacing those functions. Only an explicitly named, complete authenticated retained preparation or published kit can resume after newer admissions; retained content, provenance, access and object identity remain checked. Ignore only noncanonical stream observation timestamps, disclose original versus current generation, preserve strict default retries and refuse cleanup/backend conflicts. Twenty-five existing synthetic fixture/test definitions retain their upstream ASTs; three additional cases verify incompatible backend/cleanup refusal. This is not live provider acceptance. The container guide discloses the retained conditional native/DNS findings from primary advisory review.",
+      "synthetic_test_sources": [
+        "tests/test_b2_recovery.py",
+        "tests/test_b2_object_store.py",
+        "tests/test_recovery.py",
+        "tests/conftest.py"
+      ],
+      "files": {
+        "src/cross_assistant_memory/recovery.py": "1721b6f40902e2395549f50c3d4682f7c5027ae06a04a2aa5ab24e044b6ee888",
+        "src/cross_assistant_memory/cli.py": "1c7d24d88da095b37d853790f842905a16ce152d2b007f25678d21e4fad65a44",
+        "tests/test_b2_capture_resume.py": "8fead0deffc3172cb4ede022207599abf55cc9ce6b78b18afa3caf9041086af3",
+        "README.md": "911bdde75b213ef990e1e8da5420cdec8d2c6a625fc1c05ba128548e0668ca4b",
+        "docs/deployment/container-profile.md": "6a48c12cafb3f2314a2645b3cecf15c1a663d2c6790682c8752e376f1e4407d1"
+      }
+    }
+  ]
+}

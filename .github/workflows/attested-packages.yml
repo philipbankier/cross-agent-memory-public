@@ -1,0 +1,102 @@
+name: Attested Python packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: Exact sanitized public source revision approved by the owner
+        required: true
+        type: string
+      publication_approved:
+        description: The owner has approved this source and public attestation
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  packages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    env:
+      EXPECTED_REVISION: ${{ inputs.expected_revision }}
+      PUBLICATION_APPROVED: ${{ inputs.publication_approved }}
+      REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_CACHE_DIR: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Refuse unapproved or private execution
+        run: |
+          test "$PUBLICATION_APPROVED" = true
+          test "$REPOSITORY_PRIVATE" = false
+          [[ "$EXPECTED_REVISION" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_REVISION" = "$GITHUB_SHA"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Build with the existing verified backend and hash-locked tools
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_REVISION"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          test -z "${CAM_BUILD_REVISION:-}"
+          python -m venv "$RUNNER_TEMP/package-builder"
+          "$RUNNER_TEMP/package-builder/bin/python" -m pip install \
+            --only-binary=:all: --require-hashes -r requirements-bootstrap.lock
+          "$RUNNER_TEMP/package-builder/bin/python" -B - <<'PY'
+          from pathlib import Path
+          from setuptools import build_meta
+
+          assert not Path("dist").exists()
+          build_meta.build_sdist("dist")
+          build_meta.build_wheel("dist")
+          assert len(list(Path("dist").glob("*.tar.gz"))) == 1
+          assert len(list(Path("dist").glob("*.whl"))) == 1
+          PY
+          (cd dist && sha256sum -- *.whl *.tar.gz > python-SHA256SUMS)
+      - name: Attest these exact build outputs
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            ${{ github.workspace }}/dist/*.whl
+            ${{ github.workspace }}/dist/*.tar.gz
+            ${{ github.workspace }}/dist/python-SHA256SUMS
+          push-to-registry: false
+          create-storage-record: false
+      - name: Retain and verify the signed bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          cp -- "$BUNDLE_PATH" dist/python-attestation.json
+          (cd dist && sha256sum --check --strict python-SHA256SUMS)
+          gh --version
+          for artifact in dist/*.whl dist/*.tar.gz dist/python-SHA256SUMS; do
+            gh attestation verify "$artifact" \
+              --bundle dist/python-attestation.json \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/attested-packages.yml" \
+              --signer-digest "$EXPECTED_REVISION" \
+              --source-digest "$EXPECTED_REVISION" \
+              --deny-self-hosted-runners
+          done
+      - name: Retain only the public build outputs and bundle
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: attested-python-packages-${{ github.sha }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7

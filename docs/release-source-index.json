@@ -1,0 +1,3239 @@
+{
+  "format_version": 1,
+  "status": "prepared index, not published or legal clearance",
+  "application": {
+    "revision": "260384529e7db0f5712d3ee6123af49fb98ca6e3",
+    "source": "https://github.com/philipbankier/cross-agent-memory/tree/260384529e7db0f5712d3ee6123af49fb98ca6e3",
+    "repository_private_at_preparation": true,
+    "build_input_sha256": {
+      "Containerfile": "6e71b58a7b164b0cfdc4456bb6dc94436b3e7dd4655e11312b36882f13ef3b16",
+      ".dockerignore": "ea1fe7d3964c05d737b6ebeb9a711a469b799a8d0a8aeba7c1fa3f5bfe529806",
+      "pyproject.toml": "53663624f10fdaaccf2371de9bf63012f4836f53cf56a8e667a5168f034c6c7e",
+      "cam_build.py": "95bdb40935d2b02249631570177683d614d2c391f4573b72b4e49e9ff53b69b6",
+      "requirements.lock": "e904da73f0057af43c42371278beb9b7c62bfa7df225074e851e83ad3992ea88",
+      "requirements-bootstrap.lock": "f23b6ebf62265ead51c6d9df5c74e93331230a625a23a84b23c0576153391eb9",
+      "ui/memory-app/package-lock.json": "6a44dcdf3c61136d97f841186e4427f6e8cb26f889ac88b484d91a565c3a7501"
+    }
+  },
+  "tested_image_ids": {
+    "linux/amd64": "sha256:89da9c751d5219d0687fd1c360d8c912340b438ed31083518485972c7f795bd6",
+    "linux/arm64": "sha256:c4446a353cdc1dad42152cbe5231e03963d963d64d76372b0e64091b37db7d8a"
+  },
+  "python_runtime": {
+    "version": "3.12.15",
+    "release": "20261013",
+    "producer_commit": "9e40cba825ca0997a01cab9f60a0b15ffb976af2",
+    "producer_source": "https://github.com/astral-sh/python-build-standalone/tree/9e40cba825ca0997a01cab9f60a0b15ffb976af2",
+    "producer_download_table_sha256": "0a176490488b79448ef66087e480bf0966c8450849ff0c168a9a26cd1756abea",
+    "producer_download_table": {
+      "autoconf": {
+        "upstream_url": "https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz",
+        "url": "https://astral-sh.github.io/mirror/files/autoconf-2.72.tar.gz",
+        "size": 2143794,
+        "sha256": "afb181a76e1ee72832f6581c0eddf8df032b83e2e0239ef79ebedc4467d92d6e",
+        "version": "2.72"
+      },
+      "bdb": {
+        "_comment": "6.0.19 is the last version licensed under the Sleepycat license.",
+        "url": "https://ftp.osuosl.org/pub/blfs/conglomeration/db/db-6.0.19.tar.gz",
+        "size": 36541923,
+        "sha256": "2917c28f60903908c2ca4587ded1363b812c4e830a5326aaa77c9879d13ae18e",
+        "version": "6.0.19",
+        "library_names": [
+          "db"
+        ],
+        "licenses": [
+          "Sleepycat"
+        ],
+        "license_file": "LICENSE.bdb.txt"
+      },
+      "binutils": {
+        "upstream_url": "https://ftp.gnu.org/gnu/binutils/binutils-2.43.tar.xz",
+        "url": "https://astral-sh.github.io/mirror/files/binutils-2.43.tar.xz",
+        "size": 28175768,
+        "sha256": "b53606f443ac8f01d1d5fc9c39497f2af322d99e14cea5c0b4b124d630379365",
+        "version": "2.43"
+      },
+      "bzip2": {
+        "upstream_url": "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+        "url": "https://astral-sh.github.io/mirror/files/bzip2-1.0.8.tar.gz",
+        "size": 810029,
+        "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+        "version": "1.0.8",
+        "library_names": [
+          "bz2"
+        ],
+        "licenses": [
+          "bzip2-1.0.6"
+        ],
+        "license_file": "LICENSE.bzip2.txt"
+      },
+      "cpython-3.10": {
+        "url": "https://www.python.org/ftp/python/3.10.22/Python-3.10.22.tar.xz",
+        "size": 19907500,
+        "sha256": "c61fe9b1a1a7ec2a0b0388e664187c378a5325a89e3606d220abf5bdfccb2543",
+        "version": "3.10.22",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp310"
+      },
+      "cpython-3.11": {
+        "url": "https://www.python.org/ftp/python/3.11.17/Python-3.11.17.tar.xz",
+        "size": 20352864,
+        "sha256": "bfb74ad39efae27cda510f134ab408e00f9992c56851cfc0b1cdb5646da11599",
+        "version": "3.11.17",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp311"
+      },
+      "cpython-3.12": {
+        "url": "https://www.python.org/ftp/python/3.12.15/Python-3.12.15.tar.xz",
+        "size": 20829824,
+        "sha256": "c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a",
+        "version": "3.12.15",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp312"
+      },
+      "cpython-3.13": {
+        "url": "https://www.python.org/ftp/python/3.13.16/Python-3.13.16.tar.xz",
+        "size": 23225704,
+        "sha256": "f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+        "version": "3.13.16",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp313"
+      },
+      "cpython-3.14": {
+        "url": "https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tar.xz",
+        "size": 24130644,
+        "sha256": "c2215904f02b175596dc49351585104f4bc20341e1c47378b26a2c274360ce73",
+        "version": "3.14.8",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp314"
+      },
+      "cpython-3.15": {
+        "url": "https://www.python.org/ftp/python/3.15.0/Python-3.15.0.tar.xz",
+        "size": 35688820,
+        "sha256": "ba4bed1ba346b916890b76d9e320451420aa69f6408997d33c66482eeae3d575",
+        "version": "3.15.0",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp315"
+      },
+      "cpython-3.16": {
+        "url": "https://www.python.org/ftp/python/3.16.0/Python-3.16.0a1.tar.xz",
+        "size": 35379848,
+        "sha256": "dcaa9029436b723e33412c68ca17f0130be73058e47a3a7c049cb8cdf6034ee9",
+        "version": "3.16.0a1",
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "license_file": "LICENSE.cpython.txt",
+        "python_tag": "cp316"
+      },
+      "expat": {
+        "url": "https://github.com/libexpat/libexpat/releases/download/R_2_9_0/expat-2.9.0.tar.xz",
+        "size": 534052,
+        "sha256": "1e6371862cc31999b368c3b89b49994f0677e1bab5f1b2b85ae3741f5d803051",
+        "version": "2.9.0",
+        "library_names": [
+          "expat"
+        ],
+        "licenses": [
+          "MIT"
+        ],
+        "license_file": "LICENSE.expat.txt"
+      },
+      "jom-windows-bin": {
+        "url": "http://download.qt.io/official_releases/jom/jom_1_1_4.zip",
+        "size": 1696930,
+        "sha256": "d533c1ef49214229681e90196ed2094691e8c4a0a0bef0b2c901debcb562682b",
+        "version": "1.1.4"
+      },
+      "libedit": {
+        "url": "https://thrysoee.dk/editline/libedit-20240808-3.1.tar.gz",
+        "size": 538611,
+        "sha256": "5f0573349d77c4a48967191cdd6634dd7aa5f6398c6a57fe037cc02696d6099f",
+        "version": "20240808-3.1",
+        "library_names": [
+          "edit"
+        ],
+        "licenses": [
+          "BSD-3-Clause"
+        ],
+        "license_file": "LICENSE.libedit.txt"
+      },
+      "libffi": {
+        "url": "https://github.com/libffi/libffi/releases/download/v3.8.0/libffi-3.8.0.tar.gz",
+        "size": 1581626,
+        "sha256": "7da3e2d9a171eb0a038f592ecad3ff2bb2550f3496d87b3b29ad0cf4430c0db4",
+        "version": "3.8.0",
+        "library_names": [
+          "ffi"
+        ],
+        "licenses": [
+          "MIT"
+        ],
+        "license_file": "LICENSE.libffi.txt"
+      },
+      "libpthread-stubs": {
+        "url": "https://www.x.org/archive/individual/lib/libpthread-stubs-0.5.tar.gz",
+        "size": 74938,
+        "sha256": "593196cc746173d1e25cb54a93a87fd749952df68699aab7e02c085530e87747",
+        "version": "0.5"
+      },
+      "libX11": {
+        "url": "https://www.x.org/releases/individual/lib/libX11-1.8.13.tar.gz",
+        "size": 3217264,
+        "sha256": "acf0e7cd7541110e6330ecb539441a2d53061f386ec7be6906dfde0de2598470",
+        "version": "1.8.13",
+        "library_names": [
+          "X11",
+          "X11-xcb"
+        ],
+        "licenses": [
+          "MIT",
+          "X11"
+        ],
+        "license_file": "LICENSE.libX11.txt"
+      },
+      "libXau": {
+        "url": "https://www.x.org/releases/individual/lib/libXau-1.0.12.tar.gz",
+        "size": 418722,
+        "sha256": "2402dd938da4d0a332349ab3d3586606175e19cb32cb9fe013c19f1dc922dcee",
+        "version": "1.0.12",
+        "library_names": [
+          "Xau"
+        ],
+        "licenses": [
+          "MIT"
+        ],
+        "license_file": "LICENSE.libXau.txt"
+      },
+      "libxcb": {
+        "url": "https://xcb.freedesktop.org/dist/libxcb-1.17.0.tar.gz",
+        "size": 661593,
+        "sha256": "2c69287424c9e2128cb47ffe92171e10417041ec2963bceafb65cb3fcf8f0b85",
+        "version": "1.17.0",
+        "library_names": [
+          "xcb"
+        ],
+        "licenses": [
+          "MIT"
+        ],
+        "license_file": "LICENSE.libxcb.txt"
+      },
+      "linux-uapi": {
+        "_comment": "Pre-sanitized Linux UAPI headers from Debian 13 backports. This does not change the glibc headers or libraries used by selected targets.",
+        "url": "https://snapshot.debian.org/archive/debian/20260624T024300Z/pool/main/l/linux/linux-libc-dev_7.0.12-2~bpo13+1_all.deb",
+        "size": 2637888,
+        "sha256": "162ba55a6e6eca68b32a80e6774f8dda4e145bd68049fb2e85760ec1546bee3c",
+        "version": "7.0.12-2~bpo13+1"
+      },
+      "llvm-aarch64-linux": {
+        "url": "https://github.com/astral-sh/llvm-build/releases/download/20261008/llvm-23.1.3+20261008-gnu_only-aarch64-unknown-linux-gnu.tar.zst",
+        "size": 219519268,
+        "sha256": "8a1fdd0ecab2a9fa655beeb2614601cd6651278dad0d9ffb7ac6b993158392f3",
+        "version": "23.1.3+20261008"
+      },
+      "llvm-x86_64-linux": {
+        "url": "https://github.com/astral-sh/llvm-build/releases/download/20261008/llvm-23.1.3+20261008-gnu_only-x86_64-unknown-linux-gnu.tar.zst",
+        "size": 227968490,
+        "sha256": "32ea722bc3fb74fd37bbace1463f1dd2d86aeeefcfa6ccac4b74fce89387017e",
+        "version": "23.1.3+20261008"
+      },
+      "llvm-aarch64-macos": {
+        "url": "https://github.com/astral-sh/llvm-build/releases/download/20261008/llvm-23.1.3+20261008-aarch64-apple-darwin.tar.zst",
+        "size": 165486444,
+        "sha256": "33c600c213de9a1f4b360fb0737918bda609c6268e0a46b3ec255ff1a5ebb981",
+        "version": "23.1.3+20261008"
+      },
+      "m4": {
+        "upstream_url": "https://ftp.gnu.org/gnu/m4/m4-1.4.19.tar.xz",
+        "url": "https://astral-sh.github.io/mirror/files/m4-1.4.19.tar.xz",
+        "size": 1654908,
+        "sha256": "63aede5c6d33b6d9b13511cd0be2cac046f2e70fd0a07aa9573a04a82783af96",
+        "version": "1.4.19"
+      },
+      "mpdecimal": {
+        "upstream_url": "https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-4.0.0.tar.gz",
+        "url": "https://astral-sh.github.io/mirror/files/mpdecimal-4.0.0.tar.gz",
+        "size": 315325,
+        "sha256": "942445c3245b22730fd41a67a7c5c231d11cb1b9936b9c0f76334fb7d0b4468c",
+        "version": "4.0.0",
+        "library_names": [
+          "mpdec"
+        ],
+        "licenses": [
+          "BSD-2-Clause"
+        ],
+        "license_file": "LICENSE.mpdecimal.txt"
+      },
+      "musl": {
+        "_comment": "The musl toolchain for shared / dynamically linked builds",
+        "url": "https://musl.libc.org/releases/musl-1.2.2.tar.gz",
+        "size": 1055220,
+        "sha256": "9b969322012d796dc23dda27a35866034fa67d8fb67e0e2c45c913c3d43219dd",
+        "version": "1.2.2"
+      },
+      "musl-static": {
+        "_comment": "The musl toolchain for static builds",
+        "url": "https://musl.libc.org/releases/musl-1.2.5.tar.gz",
+        "size": 1080786,
+        "sha256": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+        "version": "1.2.5"
+      },
+      "ncurses": {
+        "upstream_url": "https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.5.tar.gz",
+        "url": "https://astral-sh.github.io/mirror/files/ncurses-6.5.tar.gz",
+        "size": 3688489,
+        "sha256": "136d91bc269a9a5785e5f9e980bc76ab57428f604ce3e5a5a90cebc767971cc6",
+        "version": "6.5",
+        "library_names": [
+          "ncurses",
+          "ncursesw",
+          "panel",
+          "panelw"
+        ],
+        "licenses": [
+          "X11"
+        ],
+        "license_file": "LICENSE.ncurses.txt"
+      },
+      "openssl-1.1": {
+        "_comment": "Remember to update OPENSSL_VERSION_INFO in pythonbuild/disttests/ whenever upgrading.",
+        "url": "https://www.openssl.org/source/openssl-1.1.1w.tar.gz",
+        "size": 9893384,
+        "sha256": "cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8",
+        "version": "1.1.1w",
+        "library_names": [
+          "crypto",
+          "ssl"
+        ],
+        "licenses": [
+          "OpenSSL"
+        ],
+        "license_file": "LICENSE.openssl-1.1.txt"
+      },
+      "openssl-3.5": {
+        "_comment": "Remember to update OPENSSL_VERSION_INFO in pythonbuild/disttests/ whenever upgrading.",
+        "url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.9/openssl-3.5.9.tar.gz",
+        "size": 53279637,
+        "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a",
+        "version": "3.5.9",
+        "library_names": [
+          "crypto",
+          "ssl"
+        ],
+        "licenses": [
+          "Apache-2.0"
+        ],
+        "license_file": "LICENSE.openssl-3.txt"
+      },
+      "nasm-windows-bin": {
+        "upstream_url": "https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/win64/nasm-2.16.03-win64.zip",
+        "url": "https://astral-sh.github.io/mirror/files/nasm-2.16.03-win64.zip",
+        "size": 513543,
+        "sha256": "3ee4782247bcb874378d02f7eab4e294a84d3d15f3f6ee2de2f47a46aa7226e6",
+        "version": "2.16.03"
+      },
+      "patchelf": {
+        "url": "https://github.com/NixOS/patchelf/releases/download/0.13.1/patchelf-0.13.1.tar.bz2",
+        "size": 173598,
+        "sha256": "39e8aeccd7495d54df094d2b4a7c08010ff7777036faaf24f28e07777d1598e2",
+        "version": "0.13.1"
+      },
+      "pkgconf": {
+        "url": "https://github.com/pkgconf/pkgconf/releases/download/pkgconf-3.0.3/pkgconf-3.0.3.tar.xz",
+        "size": 415512,
+        "sha256": "aa033abb2b777ba4e66635495a931e53c49d86e4e4e38af68c0f76d666cbd8cf",
+        "version": "3.0.3"
+      },
+      "pip": {
+        "url": "https://files.pythonhosted.org/packages/f3/6e/1736e5b4ae2b778ef2f81c47d797de9f891d4d8acb047a24ca37a60294dd/pip-26.2.1-py3-none-any.whl",
+        "size": 1816632,
+        "sha256": "71138adf1f4ca900cdb7d289c21b7494329f2332b6d85f0e1c42108c0384ed3e",
+        "version": "26.2.1"
+      },
+      "setuptools": {
+        "url": "https://files.pythonhosted.org/packages/95/9c/c510029fc6ef33a6275cd2c5d3cecd6613dfd6aa401d57c54f1c18852ccf/setuptools-84.0.0-py3-none-any.whl",
+        "size": 818216,
+        "sha256": "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670",
+        "version": "84.0.0"
+      },
+      "sqlite": {
+        "_comment": "Remember to update pythonbuild/disttests/ when version changed.",
+        "url": "https://www.sqlite.org/2026/sqlite-autoconf-3530100.tar.gz",
+        "size": 3275272,
+        "sha256": "83e6b2020a034e9a7ad4a72feea59e1ad52f162e09cbd26735a3ffb98359fc4f",
+        "version": "3530100",
+        "actual_version": "3.53.1.0",
+        "library_names": [
+          "sqlite3"
+        ],
+        "licenses": [],
+        "license_file": "LICENSE.sqlite.txt",
+        "license_public_domain": true
+      },
+      "strawberryperl": {
+        "url": "https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit-portable.zip",
+        "size": 264199638,
+        "sha256": "ea451686065d6338d7e4d4a04c9af49f17951d15aa4c2e19ab8cb56fa2373440",
+        "version": "5.38.2.2"
+      },
+      "tcl": {
+        "url": "https://prdownloads.sourceforge.net/tcl/tcl9.0.4-src.tar.gz",
+        "size": 11866337,
+        "sha256": "d0aed49230bc02a65c1e0229e65f34590a4b037ec40d546f32573b467f7551ea",
+        "version": "9.0.4",
+        "library_names": [
+          "tcl9.0"
+        ],
+        "licenses": [
+          "TCL"
+        ],
+        "license_file": "LICENSE.tcl.txt"
+      },
+      "tix": {
+        "url": "https://github.com/python/cpython-source-deps/archive/tix-8.4.3.6.tar.gz",
+        "size": 1836451,
+        "sha256": "f7b21d115867a41ae5fd7c635a4c234d3ca25126c3661eb36028c6e25601f85e",
+        "version": "8.4.3.6",
+        "licenses": [
+          "TCL"
+        ],
+        "license_file": "LICENSE.tix.txt"
+      },
+      "tk": {
+        "url": "https://prdownloads.sourceforge.net/tcl/tk9.0.4-src.tar.gz",
+        "size": 4613019,
+        "sha256": "d7a146d2917eb8b5cc95276dbf0e3d03c7464d2b19c1675357857c989301dbb4",
+        "version": "9.0.4",
+        "library_names": [
+          "tk9.0"
+        ],
+        "licenses": [
+          "TCL"
+        ],
+        "license_file": "LICENSE.tcl.txt"
+      },
+      "tk-windows-bin-904": {
+        "url": "https://github.com/python/cpython-bin-deps/archive/907f3f4de820cb74fc8fb4431a39beae4c690915.tar.gz",
+        "size": 15632291,
+        "sha256": "e7aaa6417b7c2301ecd876307cced7e5bc4575a0b96e66dd08fcb6ab0d5d87a8",
+        "version": "9.0.4",
+        "git_commit": "907f3f4de820cb74fc8fb4431a39beae4c690915",
+        "licenses": [
+          "TCL"
+        ],
+        "license_file": "LICENSE.tcl.txt"
+      },
+      "tk-windows-bin-8615": {
+        "url": "https://github.com/python/cpython-bin-deps/archive/c807be2b19bafc06767b2ed8afec4d5f9a9553b2.tar.gz",
+        "size": 10421420,
+        "sha256": "3c661a23751be04d901ce96611c325f88e970273dcbf5394982c1745100a6d8c",
+        "version": "8.6.15",
+        "git_commit": "c807be2b19bafc06767b2ed8afec4d5f9a9553b2",
+        "licenses": [
+          "TCL"
+        ],
+        "license_file": "LICENSE.tcl.txt"
+      },
+      "uuid": {
+        "url": "https://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz",
+        "size": 318256,
+        "sha256": "46af3275291091009ad7f1b899de3d0cea0252737550e7919d17237997db5644",
+        "version": "1.0.3",
+        "library_names": [
+          "uuid"
+        ],
+        "licenses": [
+          "BSD-3-Clause"
+        ],
+        "license_file": "LICENSE.libuuid.txt"
+      },
+      "x11-util-macros": {
+        "url": "https://www.x.org/archive/individual/util/util-macros-1.20.2.tar.gz",
+        "size": 105410,
+        "sha256": "f642f8964d81acdf06653fdf9dbc210c43ce4bd308bd644a8d573148d0ced76b",
+        "version": "1.20.2"
+      },
+      "xcb-proto": {
+        "url": "https://xcb.freedesktop.org/dist/xcb-proto-1.17.0.tar.xz",
+        "size": 151748,
+        "sha256": "2c1bacd2110f4799f74de6ebb714b94cf6f80fb112316b1219480fd22562148c",
+        "version": "1.17.0"
+      },
+      "xorgproto": {
+        "url": "https://www.x.org/releases/individual/proto/xorgproto-2025.1.tar.gz",
+        "size": 1127613,
+        "sha256": "d6f89f65bafb8c9b735e0515882b8a1511e8e864dde5e9513e191629369f2256",
+        "version": "2025.1"
+      },
+      "xtrans": {
+        "url": "https://www.x.org/archive/individual/lib/xtrans-1.6.0.tar.gz",
+        "size": 239113,
+        "sha256": "936b74c60b19c317c3f3cb1b114575032528dbdaf428740483200ea874c2ca0a",
+        "version": "1.6.0"
+      },
+      "xz": {
+        "_comment": "IMPORTANT: xz 5.6.0 was released with a backdoor (CVE-2024-3094). This has been resolved. Be cautious before taking any xz upgrades given this past behavior. liblzma is licensed as 0BSD. Other parts of code have different licenses. But we only use liblzma.",
+        "url": "https://github.com/tukaani-project/xz/releases/download/v5.8.4/xz-5.8.4.tar.gz",
+        "size": 2799797,
+        "sha256": "0014c7886930454fe8bd4228665b51af55eeae560ea135c9c4cd33f55b2591d9",
+        "version": "5.8.4",
+        "library_names": [
+          "lzma"
+        ],
+        "licenses": [
+          "0BSD"
+        ],
+        "license_file": "LICENSE.liblzma.txt"
+      },
+      "zlib": {
+        "url": "https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz",
+        "size": 1502830,
+        "sha256": "bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16",
+        "version": "1.3.2",
+        "library_names": [
+          "z"
+        ],
+        "licenses": [
+          "Zlib"
+        ],
+        "license_file": "LICENSE.zlib.txt"
+      },
+      "zlib-ng": {
+        "url": "https://github.com/python/cpython-source-deps/archive/refs/tags/zlib-ng-2.2.4.tar.gz",
+        "size": 2415819,
+        "sha256": "00bbd88709bc416cb96160ab61d3e1c8f76e106799af7328d0fe434dc7dd5004",
+        "version": "2.2.4",
+        "library_names": [
+          "z"
+        ],
+        "licenses": [
+          "Zlib"
+        ],
+        "license_file": "LICENSE.zlib-ng.txt"
+      },
+      "zstd": {
+        "url": "https://github.com/python/cpython-source-deps/archive/refs/tags/zstd-1.5.7.tar.gz",
+        "size": 2440298,
+        "sha256": "f24b52470d12f466e9fa4fcc94e6c530625ada51d7b36de7fdc6ed7e6f499c8e",
+        "version": "1.5.7",
+        "library_names": [
+          "zstd"
+        ],
+        "licenses": [
+          "BSD-3-Clause"
+        ],
+        "license_file": "LICENSE.zstd.txt"
+      }
+    },
+    "download_table_is_overinclusive_not_all_components_shipped": true,
+    "full_build_metadata_prefix_only_not_full_archive_hash_verified": true,
+    "build_archives": [
+      {
+        "architecture": "x86_64",
+        "archive_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261013/cpython-3.12.15%2B20261013-x86_64-unknown-linux-gnu-pgo%2Blto-full.tar.zst",
+        "producer_advertised_archive_digest": "sha256:dfb784f8d467e0c64c16d67a151c9145e64a0a11caa0ff699bc92899898cbb52",
+        "archive_bytes": 100716913,
+        "downloaded_prefix_bytes": 2097152,
+        "prefix_sha256": "83741b88770a497af4c8182b07f43c6db7b684908298bb8a72abcb285204496e",
+        "metadata_sha256": "eab4ac657040166405de383cc77b63c08d66e05c91996d6cf4421c0068091549",
+        "metadata_bytes": 121962,
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "build_options": "pgo+lto"
+      },
+      {
+        "architecture": "aarch64",
+        "archive_url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261013/cpython-3.12.15%2B20261013-aarch64-unknown-linux-gnu-pgo%2Blto-full.tar.zst",
+        "producer_advertised_archive_digest": "sha256:61f2cf59139a23d20ec7f529fabe570efa888b61ab411e04287eaec66ad79644",
+        "archive_bytes": 88403313,
+        "downloaded_prefix_bytes": 2097152,
+        "prefix_sha256": "a224ef001bf64a3a52b1405ba7d1ce24ae776d2cb71ec0cf0cf888b5cf4ece53",
+        "metadata_sha256": "12a47cc5c1d48efbba46013e0cea400b9a1490538e3f7edabea06960eb55163f",
+        "metadata_bytes": 121269,
+        "licenses": [
+          "Python-2.0",
+          "CNRI-Python"
+        ],
+        "build_options": "pgo+lto"
+      }
+    ]
+  },
+  "debian": {
+    "installed_binary_packages": 80,
+    "source_inventory_platform": "linux/arm64",
+    "amd64_reuse_boundary": "79 identical binary versions; grep has an ARM64-only +b1 binary rebuild of the same 3.11-4 source. Not a separate AMD64 dpkg source inspection.",
+    "binary_version_differences": [
+      {
+        "name": "grep",
+        "arm64": "3.11-4+b1",
+        "amd64": "3.11-4",
+        "source_version": "3.11-4"
+      }
+    ],
+    "source_releases": [
+      {
+        "source": "acl",
+        "version": "2.3.2-2",
+        "installed_binaries": [
+          "libacl1:arm64"
+        ],
+        "files": [
+          {
+            "name": "acl_2.3.2-2.debian.tar.xz",
+            "bytes": 24296,
+            "snapshot_sha1": "a69f6cb6c5eeb21e17debd698968c5c9c03782b6",
+            "url": "https://snapshot.debian.org/file/a69f6cb6c5eeb21e17debd698968c5c9c03782b6",
+            "dsc_declared_sha256": "e27b6e194c0a7554595d76f96acdceb800631bdc46c36457b73bc7e4a0c5f2ee",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "acl_2.3.2-2.dsc",
+            "bytes": 2604,
+            "snapshot_sha1": "a78c0a5e511ee122ba5976bbd7cabeff0fd7cbe6",
+            "url": "https://snapshot.debian.org/file/a78c0a5e511ee122ba5976bbd7cabeff0fd7cbe6",
+            "verified_dsc_sha256": "1f42130ccb5442fe2db2aee1dcc03c51a31512dd2519a38e8fc9270c5abbc807"
+          },
+          {
+            "name": "acl_2.3.2.orig.tar.xz",
+            "bytes": 371680,
+            "snapshot_sha1": "2674394a4061791c77d80fd2089a39c3675a5980",
+            "url": "https://snapshot.debian.org/file/2674394a4061791c77d80fd2089a39c3675a5980",
+            "dsc_declared_sha256": "97203a72cae99ab89a067fe2210c1cbf052bc492b479eca7d226d9830883b0bd",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "acl_2.3.2.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "884c1cae6bbc52db9deba2f5523f6624df796201",
+            "url": "https://snapshot.debian.org/file/884c1cae6bbc52db9deba2f5523f6624df796201",
+            "dsc_declared_sha256": "184c6a903490885a096095db67b433a04542c6569f167cbe8115268c0f227273",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "apt",
+        "version": "3.0.3",
+        "installed_binaries": [
+          "apt",
+          "libapt-pkg7.0:arm64"
+        ],
+        "files": [
+          {
+            "name": "apt_3.0.3.dsc",
+            "bytes": 3091,
+            "snapshot_sha1": "75cc2d8a7adec664f1b1058dcab263372da25df5",
+            "url": "https://snapshot.debian.org/file/75cc2d8a7adec664f1b1058dcab263372da25df5",
+            "verified_dsc_sha256": "ccf1666e5b268d76bf62aafb22db089a2fdae9c17d1d1c446546b3621768add7"
+          },
+          {
+            "name": "apt_3.0.3.tar.xz",
+            "bytes": 2422096,
+            "snapshot_sha1": "d5db7bec0f62e2ef71d140c17977e6153bb2d09b",
+            "url": "https://snapshot.debian.org/file/d5db7bec0f62e2ef71d140c17977e6153bb2d09b",
+            "dsc_declared_sha256": "5b5f6f6d26121742a83aa80d4ed0eb0c6ce9bea259518db412edefd95760e4ef",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "attr",
+        "version": "1:2.5.2-3",
+        "installed_binaries": [
+          "libattr1:arm64"
+        ],
+        "files": [
+          {
+            "name": "attr_2.5.2-3.debian.tar.xz",
+            "bytes": 32260,
+            "snapshot_sha1": "9f7fbe109938c86fa973dae5e77f3bda24d0574c",
+            "url": "https://snapshot.debian.org/file/9f7fbe109938c86fa973dae5e77f3bda24d0574c",
+            "dsc_declared_sha256": "153f98c87575277ea021e24dae36293b7738699174438a2060b47e8312b771e3",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "attr_2.5.2-3.dsc",
+            "bytes": 2576,
+            "snapshot_sha1": "cd31cdd7a10abf9f6edd5a3050bed9eaf4cd4c9d",
+            "url": "https://snapshot.debian.org/file/cd31cdd7a10abf9f6edd5a3050bed9eaf4cd4c9d",
+            "verified_dsc_sha256": "c2ae3e15db059029030ddf4fdac179d8f90d423f2310a6ef8c745ba28ac18b0a"
+          },
+          {
+            "name": "attr_2.5.2.orig.tar.xz",
+            "bytes": 334180,
+            "snapshot_sha1": "dfced877779583861401389eea82dfeb88cb5d3a",
+            "url": "https://snapshot.debian.org/file/dfced877779583861401389eea82dfeb88cb5d3a",
+            "dsc_declared_sha256": "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "attr_2.5.2.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "eee0e22675431900d88d16eab9d76c122cffb89e",
+            "url": "https://snapshot.debian.org/file/eee0e22675431900d88d16eab9d76c122cffb89e",
+            "dsc_declared_sha256": "eeac729088d3c6379e91b7596cb3582e46b047c47f0fa3c5c77f9c9e84dc3a4c",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "audit",
+        "version": "1:4.0.2-2+deb13u1",
+        "installed_binaries": [
+          "libaudit-common",
+          "libaudit1:arm64"
+        ],
+        "files": [
+          {
+            "name": "audit_4.0.2-2+deb13u1.debian.tar.xz",
+            "bytes": 25008,
+            "snapshot_sha1": "65bf7227fb8ee21bdbdf6d9493ad0ceb6a25acc4",
+            "url": "https://snapshot.debian.org/file/65bf7227fb8ee21bdbdf6d9493ad0ceb6a25acc4",
+            "dsc_declared_sha256": "ab39cb2d6dc6b0440da37f085b643dffc86d8cc5370b5cc6502d36b53edaa862",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "audit_4.0.2-2+deb13u1.dsc",
+            "bytes": 2761,
+            "snapshot_sha1": "f318926afbbfa4cc8f96188d7907199116567d72",
+            "url": "https://snapshot.debian.org/file/f318926afbbfa4cc8f96188d7907199116567d72",
+            "verified_dsc_sha256": "f72198219d4a50967e328a143c9c0a7ba981c8f3790b2880465b8a80ac33850e"
+          },
+          {
+            "name": "audit_4.0.2.orig.tar.gz",
+            "bytes": 1198769,
+            "snapshot_sha1": "fcb0bdecdaa649d1e688196713a824c332f37d65",
+            "url": "https://snapshot.debian.org/file/fcb0bdecdaa649d1e688196713a824c332f37d65",
+            "dsc_declared_sha256": "d5d1b5d50ee4a2d0d17875bc6ae6bd6a7d5b34d9557ea847a39faec531faaa0a",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "base-files",
+        "version": "13.8+deb13u7",
+        "installed_binaries": [
+          "base-files"
+        ],
+        "files": [
+          {
+            "name": "base-files_13.8+deb13u7.dsc",
+            "bytes": 1247,
+            "snapshot_sha1": "09c6e9bef6e1c0234e4cd91d2a7ac5d52f6dc8b3",
+            "url": "https://snapshot.debian.org/file/09c6e9bef6e1c0234e4cd91d2a7ac5d52f6dc8b3",
+            "verified_dsc_sha256": "6240b5a02fc32bd6d925bb7776e00c467e80d930f8cf3c4a20c299ce692dc7e4"
+          },
+          {
+            "name": "base-files_13.8+deb13u7.tar.xz",
+            "bytes": 83444,
+            "snapshot_sha1": "967e7c01534a5ffee64590239c8c22371619c1aa",
+            "url": "https://snapshot.debian.org/file/967e7c01534a5ffee64590239c8c22371619c1aa",
+            "dsc_declared_sha256": "be32803b9408ac9aa46b96f68c83ee45e88d04d89854a87999986efc4cb34c69",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "base-passwd",
+        "version": "3.6.7",
+        "installed_binaries": [
+          "base-passwd"
+        ],
+        "files": [
+          {
+            "name": "base-passwd_3.6.7.dsc",
+            "bytes": 1891,
+            "snapshot_sha1": "c9a3fe0b6da25cfac124b9ace5c5882606f9235b",
+            "url": "https://snapshot.debian.org/file/c9a3fe0b6da25cfac124b9ace5c5882606f9235b",
+            "verified_dsc_sha256": "23dafe71f85d7595d9e20efba17729c1c975a33bd469cf09bfad9e96b1f542f3"
+          },
+          {
+            "name": "base-passwd_3.6.7.tar.xz",
+            "bytes": 60872,
+            "snapshot_sha1": "96b8461fab82edcbd97e75db607c4c134b40e990",
+            "url": "https://snapshot.debian.org/file/96b8461fab82edcbd97e75db607c4c134b40e990",
+            "dsc_declared_sha256": "cf869870fed7862b57bfa9e99cd5cd6f365e2349705a1b65af7fc182629bd1ab",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "bash",
+        "version": "5.2.37-2",
+        "installed_binaries": [
+          "bash"
+        ],
+        "files": [
+          {
+            "name": "bash_5.2.37-2.debian.tar.xz",
+            "bytes": 88360,
+            "snapshot_sha1": "a1af1bbde88b868738d336b2804dbbe72cebe648",
+            "url": "https://snapshot.debian.org/file/a1af1bbde88b868738d336b2804dbbe72cebe648",
+            "dsc_declared_sha256": "42e03ef523258b61fa765b8c9719d7bf461f2a274260d07fbe45ca7e4627923a",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "bash_5.2.37-2.dsc",
+            "bytes": 2162,
+            "snapshot_sha1": "d32750d217c43dabc3b63b1d6431071e6cd506dc",
+            "url": "https://snapshot.debian.org/file/d32750d217c43dabc3b63b1d6431071e6cd506dc",
+            "verified_dsc_sha256": "7e5f6d5a26093e812f8841d5cf3245054102e86986017d8edd859417b03707f9"
+          },
+          {
+            "name": "bash_5.2.37.orig.tar.xz",
+            "bytes": 5600932,
+            "snapshot_sha1": "cf4da6fb3798f10b9510ab13fc69a5a9bf75e86e",
+            "url": "https://snapshot.debian.org/file/cf4da6fb3798f10b9510ab13fc69a5a9bf75e86e",
+            "dsc_declared_sha256": "370704c9c859f4060b7df19055e43bb9b5fa09d887699cf6ba87885c5485d36a",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "bzip2",
+        "version": "1.0.8-6",
+        "installed_binaries": [
+          "libbz2-1.0:arm64"
+        ],
+        "files": [
+          {
+            "name": "bzip2_1.0.8-6.debian.tar.bz2",
+            "bytes": 26991,
+            "snapshot_sha1": "339a767cb2f05ec32402bae7269d98fd14413428",
+            "url": "https://snapshot.debian.org/file/339a767cb2f05ec32402bae7269d98fd14413428",
+            "dsc_declared_sha256": "648ed0dac9a041ba6951e0cca521628aa39947cefee78139f7b934a5dc502095",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "bzip2_1.0.8-6.dsc",
+            "bytes": 1604,
+            "snapshot_sha1": "d6f4c6bc376a703658ee6a6811c4e876944c3f13",
+            "url": "https://snapshot.debian.org/file/d6f4c6bc376a703658ee6a6811c4e876944c3f13",
+            "verified_dsc_sha256": "cd3bfd77254a6b5ef1be144bdc90a0dd374bc8206afd98ba4abf828741b79820"
+          },
+          {
+            "name": "bzip2_1.0.8.orig.tar.gz",
+            "bytes": 810029,
+            "snapshot_sha1": "bf7badf7e248e0ecf465d33c2f5aeec774209227",
+            "url": "https://snapshot.debian.org/file/bf7badf7e248e0ecf465d33c2f5aeec774209227",
+            "dsc_declared_sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "ca-certificates",
+        "version": "20250419",
+        "installed_binaries": [
+          "ca-certificates"
+        ],
+        "files": [
+          {
+            "name": "ca-certificates_20250419.dsc",
+            "bytes": 1766,
+            "snapshot_sha1": "a101569da0577fb5df37889d4206eab6f2e2948d",
+            "url": "https://snapshot.debian.org/file/a101569da0577fb5df37889d4206eab6f2e2948d",
+            "verified_dsc_sha256": "3fc919369a3b84e34a959faa8bdffb9bd2c5a7d4a948a4b07a09a5d43e257030"
+          },
+          {
+            "name": "ca-certificates_20250419.tar.xz",
+            "bytes": 277504,
+            "snapshot_sha1": "6e0ea4bd2ac108fec5edec1187dc69c0b1f94f2d",
+            "url": "https://snapshot.debian.org/file/6e0ea4bd2ac108fec5edec1187dc69c0b1f94f2d",
+            "dsc_declared_sha256": "33b44ef78653ecd3f0f2f13e5bba6be466be2e7da72182f737912b81798ba5d2",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "cdebconf",
+        "version": "0.280",
+        "installed_binaries": [
+          "libdebconfclient0:arm64"
+        ],
+        "files": [
+          {
+            "name": "cdebconf_0.280.dsc",
+            "bytes": 2703,
+            "snapshot_sha1": "94a37e191c3df033a9ae39bfbe6d7acd11c8d996",
+            "url": "https://snapshot.debian.org/file/94a37e191c3df033a9ae39bfbe6d7acd11c8d996",
+            "verified_dsc_sha256": "36cdaa45fca445d2164fbdd81faad9918d748fa703678d8af237354d5744b1d1"
+          },
+          {
+            "name": "cdebconf_0.280.tar.xz",
+            "bytes": 286132,
+            "snapshot_sha1": "eaddf7a38a41aa060d81a5cdf659561d1ab0a4e3",
+            "url": "https://snapshot.debian.org/file/eaddf7a38a41aa060d81a5cdf659561d1ab0a4e3",
+            "dsc_declared_sha256": "c42115131939845e452a323ceded937efad3b2e3e1b80a1a186f9d5c494a43a2",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "coreutils",
+        "version": "9.7-3",
+        "installed_binaries": [
+          "coreutils"
+        ],
+        "files": [
+          {
+            "name": "coreutils_9.7-3.debian.tar.xz",
+            "bytes": 26820,
+            "snapshot_sha1": "850e25c476de51e09af13540425ec42669d0a210",
+            "url": "https://snapshot.debian.org/file/850e25c476de51e09af13540425ec42669d0a210",
+            "dsc_declared_sha256": "483f77876a080577f63da1d004cc1cf17d16df65d6925aefdd3294c6101eccfb",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "coreutils_9.7-3.dsc",
+            "bytes": 2122,
+            "snapshot_sha1": "8cab01ea1c688c66c5b76274f92f6a36d27aba71",
+            "url": "https://snapshot.debian.org/file/8cab01ea1c688c66c5b76274f92f6a36d27aba71",
+            "verified_dsc_sha256": "c3a207e3aaad165765c7a6fab89045f5fd20035fea6830b9f9ebbb92ebfbff89"
+          },
+          {
+            "name": "coreutils_9.7.orig.tar.xz",
+            "bytes": 6158960,
+            "snapshot_sha1": "920791e12e7471479565a066e116a087edcc0df9",
+            "url": "https://snapshot.debian.org/file/920791e12e7471479565a066e116a087edcc0df9",
+            "dsc_declared_sha256": "e8bb26ad0293f9b5a1fc43fb42ba970e312c66ce92c1b0b16713d7500db251bf",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "coreutils_9.7.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "10ba8173099a993fdb9cac8a7a3042b455ce54f5",
+            "url": "https://snapshot.debian.org/file/10ba8173099a993fdb9cac8a7a3042b455ce54f5",
+            "dsc_declared_sha256": "5070e9428bd372a7fa1f66b395b81092bb40c98f9f56a2e2bc55c47fd387e901",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "dash",
+        "version": "0.5.12-12",
+        "installed_binaries": [
+          "dash"
+        ],
+        "files": [
+          {
+            "name": "dash_0.5.12-12.debian.tar.xz",
+            "bytes": 47300,
+            "snapshot_sha1": "0302a1006f740bc89faf8f4cf3d8f3f5dd1cbfd2",
+            "url": "https://snapshot.debian.org/file/0302a1006f740bc89faf8f4cf3d8f3f5dd1cbfd2",
+            "dsc_declared_sha256": "a278acb5d9a1f5d9a086d36a547287cbf3105b8f33c0e62d86d264decf5ba1ad",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "dash_0.5.12-12.dsc",
+            "bytes": 1460,
+            "snapshot_sha1": "6dfbaf7435adb82d03033aabb3f06783fc7cbb23",
+            "url": "https://snapshot.debian.org/file/6dfbaf7435adb82d03033aabb3f06783fc7cbb23",
+            "verified_dsc_sha256": "589efc4d87a4ae4745c273bdb33198d7c4f28a71736a8ece81d3677cf9c6e5ce"
+          },
+          {
+            "name": "dash_0.5.12.orig.tar.gz",
+            "bytes": 246054,
+            "snapshot_sha1": "e15444a93853f693774df003f87d9040ab600a5e",
+            "url": "https://snapshot.debian.org/file/e15444a93853f693774df003f87d9040ab600a5e",
+            "dsc_declared_sha256": "6a474ac46e8b0b32916c4c60df694c82058d3297d8b385b74508030ca4a8f28a",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "db5.3",
+        "version": "5.3.28+dfsg2-9",
+        "installed_binaries": [
+          "libdb5.3t64:arm64"
+        ],
+        "files": [
+          {
+            "name": "db5.3_5.3.28+dfsg2-9.debian.tar.xz",
+            "bytes": 36412,
+            "snapshot_sha1": "b22b47d5420774557ddbed0a50f1e2d9f100c911",
+            "url": "https://snapshot.debian.org/file/b22b47d5420774557ddbed0a50f1e2d9f100c911",
+            "dsc_declared_sha256": "21fe6ee0491c83d0c34fe52e0e0e423946172eff68262584a0cc8ef880c36b74",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "db5.3_5.3.28+dfsg2-9.dsc",
+            "bytes": 2373,
+            "snapshot_sha1": "5a9565fb65d95f3c03d77fe053950451242c133f",
+            "url": "https://snapshot.debian.org/file/5a9565fb65d95f3c03d77fe053950451242c133f",
+            "verified_dsc_sha256": "045f392c75dffc9d4f3bd44978b90ca8d45b935cf0ae4202bf79a760f2ce07b1"
+          },
+          {
+            "name": "db5.3_5.3.28+dfsg2.orig.tar.xz",
+            "bytes": 21287688,
+            "snapshot_sha1": "c2e52e52021c4df2ebff57f1fb68e2879d65376a",
+            "url": "https://snapshot.debian.org/file/c2e52e52021c4df2ebff57f1fb68e2879d65376a",
+            "dsc_declared_sha256": "ad41b507415dec8316e828b2230242af2251d2c86eefa3c7aa9ef47c5239ef33",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "debconf",
+        "version": "1.5.91",
+        "installed_binaries": [
+          "debconf"
+        ],
+        "files": [
+          {
+            "name": "debconf_1.5.91.dsc",
+            "bytes": 2035,
+            "snapshot_sha1": "258e67779a4053a81b60528b1dd4e25b587d2fcf",
+            "url": "https://snapshot.debian.org/file/258e67779a4053a81b60528b1dd4e25b587d2fcf",
+            "verified_dsc_sha256": "1aa3ceaef24ef533cfffe7f9ca750c6325dbaea86a7abca77cb4439ceae930d8"
+          },
+          {
+            "name": "debconf_1.5.91.tar.xz",
+            "bytes": 609964,
+            "snapshot_sha1": "0cd43ac0c9b8d69755c00876128ca1c969d35997",
+            "url": "https://snapshot.debian.org/file/0cd43ac0c9b8d69755c00876128ca1c969d35997",
+            "dsc_declared_sha256": "18f3f43924ccc870be483d7c5f1a9be59e51ae1da403059d654666b5a175bf15",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "debian-archive-keyring",
+        "version": "2025.1",
+        "installed_binaries": [
+          "debian-archive-keyring"
+        ],
+        "files": [
+          {
+            "name": "debian-archive-keyring_2025.1.dsc",
+            "bytes": 1267,
+            "snapshot_sha1": "1629ea8905ffbf6d25ce63553d086c2db6fc2835",
+            "url": "https://snapshot.debian.org/file/1629ea8905ffbf6d25ce63553d086c2db6fc2835",
+            "verified_dsc_sha256": "09604bd8d4562a1e942e5d1a19a6b82447cbdeb2e7c7f0df7c32a2503647ea47"
+          },
+          {
+            "name": "debian-archive-keyring_2025.1.tar.xz",
+            "bytes": 138248,
+            "snapshot_sha1": "dc99ba5c567a918dbc1f7c10c45964c95a3a9773",
+            "url": "https://snapshot.debian.org/file/dc99ba5c567a918dbc1f7c10c45964c95a3a9773",
+            "dsc_declared_sha256": "2d019c3fa19c42da4d37571e473c296286dad0214cb3bd5cafd99f04a8bf5471",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "diffutils",
+        "version": "1:3.10-4",
+        "installed_binaries": [
+          "diffutils"
+        ],
+        "files": [
+          {
+            "name": "diffutils_3.10-4.debian.tar.xz",
+            "bytes": 14304,
+            "snapshot_sha1": "82f441d0158e30c292ee6039abda0168e983bd55",
+            "url": "https://snapshot.debian.org/file/82f441d0158e30c292ee6039abda0168e983bd55",
+            "dsc_declared_sha256": "8588b6ffb897ccff46c583e58ef50500b2511eee41949b21e8afa5439712c2c7",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "diffutils_3.10-4.dsc",
+            "bytes": 1875,
+            "snapshot_sha1": "0cb61e8a7c5802e7bf8c70c9168105d9eebec476",
+            "url": "https://snapshot.debian.org/file/0cb61e8a7c5802e7bf8c70c9168105d9eebec476",
+            "verified_dsc_sha256": "087b414ddfc92161a30186926bc4b4ac02c7cba589b0323561cacd54c8b48392"
+          },
+          {
+            "name": "diffutils_3.10.orig.tar.xz",
+            "bytes": 1624240,
+            "snapshot_sha1": "c16a9cf107ad1f0f791b6d00852dc5e961c1c451",
+            "url": "https://snapshot.debian.org/file/c16a9cf107ad1f0f791b6d00852dc5e961c1c451",
+            "dsc_declared_sha256": "90e5e93cc724e4ebe12ede80df1634063c7a855692685919bfe60b556c9bd09e",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "diffutils_3.10.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "7712d36db350c347a6c44bd1483996f84ac3bc52",
+            "url": "https://snapshot.debian.org/file/7712d36db350c347a6c44bd1483996f84ac3bc52",
+            "dsc_declared_sha256": "a94faf8f1baa04ff220f7b2ccb137c16337284e023ebc4a1d5df475c08d810f7",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "dpkg",
+        "version": "1.22.22",
+        "installed_binaries": [
+          "dpkg"
+        ],
+        "files": [
+          {
+            "name": "dpkg_1.22.22.dsc",
+            "bytes": 3449,
+            "snapshot_sha1": "e0dbbfa6400dc9a838176b4e046b7a57ce844c85",
+            "url": "https://snapshot.debian.org/file/e0dbbfa6400dc9a838176b4e046b7a57ce844c85",
+            "verified_dsc_sha256": "fc481d9b87cd4416cd55673cc1fa716b57480a6b23253ac0d87c1abbfad4c964"
+          },
+          {
+            "name": "dpkg_1.22.22.tar.xz",
+            "bytes": 5746724,
+            "snapshot_sha1": "3f562f6937e1df756e7275a303914f0efaa3c377",
+            "url": "https://snapshot.debian.org/file/3f562f6937e1df756e7275a303914f0efaa3c377",
+            "dsc_declared_sha256": "d5ea9f132deec8030b50ab2a02ade2b49f0c7a195805a302c8301156fe833a57",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "findutils",
+        "version": "4.10.0-3",
+        "installed_binaries": [
+          "findutils"
+        ],
+        "files": [
+          {
+            "name": "findutils_4.10.0-3.debian.tar.xz",
+            "bytes": 33364,
+            "snapshot_sha1": "7adc5849ee272795be86d66a1eda10e8f37a6bf5",
+            "url": "https://snapshot.debian.org/file/7adc5849ee272795be86d66a1eda10e8f37a6bf5",
+            "dsc_declared_sha256": "7d19668508523a6fcfb7731f5646305a8b1a00a3105ee3f0a5f167adf93a8a46",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "findutils_4.10.0-3.dsc",
+            "bytes": 2291,
+            "snapshot_sha1": "c2274f0252eda9175f71c9233e9fef87be421678",
+            "url": "https://snapshot.debian.org/file/c2274f0252eda9175f71c9233e9fef87be421678",
+            "verified_dsc_sha256": "fa6b67056d9e5b4d8edbfc8ab95ac15ac769b140284426973f6a1ef07a4594ec"
+          },
+          {
+            "name": "findutils_4.10.0.orig.tar.xz",
+            "bytes": 2240712,
+            "snapshot_sha1": "aa0646445da9aba2ab7823d7298f3a9a40a6b6ad",
+            "url": "https://snapshot.debian.org/file/aa0646445da9aba2ab7823d7298f3a9a40a6b6ad",
+            "dsc_declared_sha256": "1387e0b67ff247d2abde998f90dfbf70c1491391a59ddfecb8ae698789f0a4f5",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "findutils_4.10.0.orig.tar.xz.asc",
+            "bytes": 488,
+            "snapshot_sha1": "f0dfd4608b3c2215868b3f0ac9a32ea97151db2e",
+            "url": "https://snapshot.debian.org/file/f0dfd4608b3c2215868b3f0ac9a32ea97151db2e",
+            "dsc_declared_sha256": "7f53670eea6bd114e014571221eb652855c1129a3ed99f2a9257c2a313cc216f",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "gcc-14",
+        "version": "14.2.0-19",
+        "installed_binaries": [
+          "gcc-14-base:arm64",
+          "libgcc-s1:arm64",
+          "libstdc++6:arm64"
+        ],
+        "files": [
+          {
+            "name": "gcc-14_14.2.0-19.debian.tar.xz",
+            "bytes": 2577016,
+            "snapshot_sha1": "47c1fc8b2b6a5643058a6d903ba5734cae7c03b7",
+            "url": "https://snapshot.debian.org/file/47c1fc8b2b6a5643058a6d903ba5734cae7c03b7",
+            "dsc_declared_sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "gcc-14_14.2.0-19.dsc",
+            "bytes": 47347,
+            "snapshot_sha1": "065b6e84c53e405389c312739057e1a42e41b44c",
+            "url": "https://snapshot.debian.org/file/065b6e84c53e405389c312739057e1a42e41b44c",
+            "verified_dsc_sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+          },
+          {
+            "name": "gcc-14_14.2.0.orig.tar.gz",
+            "bytes": 94299633,
+            "snapshot_sha1": "40f4fae7a993865facd67321c28b95ef19aa7ab1",
+            "url": "https://snapshot.debian.org/file/40f4fae7a993865facd67321c28b95ef19aa7ab1",
+            "dsc_declared_sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "glibc",
+        "version": "2.41-12+deb13u4",
+        "installed_binaries": [
+          "libc-bin",
+          "libc6:arm64"
+        ],
+        "files": [
+          {
+            "name": "glibc_2.41-12+deb13u4.debian.tar.xz",
+            "bytes": 499524,
+            "snapshot_sha1": "57751ec678751a3cf5bf3badb54f6ab6b9760eea",
+            "url": "https://snapshot.debian.org/file/57751ec678751a3cf5bf3badb54f6ab6b9760eea",
+            "dsc_declared_sha256": "dda4153511bfd543502d18e5bc9323110996fe9c531f14ae3fad6eb17f027c7d",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "glibc_2.41-12+deb13u4.dsc",
+            "bytes": 7576,
+            "snapshot_sha1": "f291d4082eef7e094241a1a87585f275cf336149",
+            "url": "https://snapshot.debian.org/file/f291d4082eef7e094241a1a87585f275cf336149",
+            "verified_dsc_sha256": "0915324aa646bb99abfaa9aa6ecb734b30babd28454a3e51f3152912370fbd3e"
+          },
+          {
+            "name": "glibc_2.41.orig.tar.xz",
+            "bytes": 20323540,
+            "snapshot_sha1": "ecf54de179ba3fb468949af843c8270979e53cc8",
+            "url": "https://snapshot.debian.org/file/ecf54de179ba3fb468949af843c8270979e53cc8",
+            "dsc_declared_sha256": "f24aa441021121a79266f0d75242706cab8843a47901fefe74527491807f1998",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "gmp",
+        "version": "2:6.3.0+dfsg-3",
+        "installed_binaries": [
+          "libgmp10:arm64"
+        ],
+        "files": [
+          {
+            "name": "gmp_6.3.0+dfsg-3.debian.tar.xz",
+            "bytes": 19912,
+            "snapshot_sha1": "917f804f224e3b64179f8672905a6517cdc38e4d",
+            "url": "https://snapshot.debian.org/file/917f804f224e3b64179f8672905a6517cdc38e4d",
+            "dsc_declared_sha256": "1d890bbe25dd649d2ddba1926483176520e50f22115a00566f250b613b8c20ad",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "gmp_6.3.0+dfsg-3.dsc",
+            "bytes": 2251,
+            "snapshot_sha1": "89d865c92f775ca7c7affc74388c204365268ac2",
+            "url": "https://snapshot.debian.org/file/89d865c92f775ca7c7affc74388c204365268ac2",
+            "verified_dsc_sha256": "f7b64af28f52b7346bb8581e01d3c19daf769639345f234f8ae1e29c42171443"
+          },
+          {
+            "name": "gmp_6.3.0+dfsg.orig.tar.xz",
+            "bytes": 1870556,
+            "snapshot_sha1": "72323f8cf07aa5d338aff92ef42eea622569ed2c",
+            "url": "https://snapshot.debian.org/file/72323f8cf07aa5d338aff92ef42eea622569ed2c",
+            "dsc_declared_sha256": "bd2966e6d277f79328e894a5a9f3ba3fbf2ed2be81def5f48623e30c23fb1572",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "grep",
+        "version": "3.11-4",
+        "installed_binaries": [
+          "grep"
+        ],
+        "files": [
+          {
+            "name": "grep_3.11-4.debian.tar.xz",
+            "bytes": 20468,
+            "snapshot_sha1": "3686e9c246f03108dad1379f3e1d666fbd065d91",
+            "url": "https://snapshot.debian.org/file/3686e9c246f03108dad1379f3e1d666fbd065d91",
+            "dsc_declared_sha256": "f10394b7589c58ca7de4b580692b1b59431f898cb2068e86222c174e093fdf49",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "grep_3.11-4.dsc",
+            "bytes": 1642,
+            "snapshot_sha1": "11e1b405ff336ae264c25f1ee8aed46031f91e11",
+            "url": "https://snapshot.debian.org/file/11e1b405ff336ae264c25f1ee8aed46031f91e11",
+            "verified_dsc_sha256": "dd6f8eb933bc05446e483f7792c8bf0a1aba9d498e65c6ccafe64e9bf27ac054"
+          },
+          {
+            "name": "grep_3.11.orig.tar.xz",
+            "bytes": 1703776,
+            "snapshot_sha1": "955146a0a4887eca33606e391481bbef37055b86",
+            "url": "https://snapshot.debian.org/file/955146a0a4887eca33606e391481bbef37055b86",
+            "dsc_declared_sha256": "1db2aedde89d0dea42b16d9528f894c8d15dae4e190b59aecc78f5a951276eab",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "grep_3.11.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "55d07b1247899b99e5b6cb956b0720491c235f32",
+            "url": "https://snapshot.debian.org/file/55d07b1247899b99e5b6cb956b0720491c235f32",
+            "dsc_declared_sha256": "89ec23ffd59b68822732dc8204fc89883c3af30a90ae390feb94346d9d09a589",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "gzip",
+        "version": "1.13-1+deb13u1",
+        "installed_binaries": [
+          "gzip"
+        ],
+        "files": [
+          {
+            "name": "gzip_1.13-1+deb13u1.debian.tar.xz",
+            "bytes": 21364,
+            "snapshot_sha1": "8a722d74425395decd1588fb5b79a2ca97d5e549",
+            "url": "https://snapshot.debian.org/file/8a722d74425395decd1588fb5b79a2ca97d5e549",
+            "dsc_declared_sha256": "ffc69d13290009f42dbb4d10a34839350eff3fdaf4be1fda03d10b238ba2f77d",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "gzip_1.13-1+deb13u1.dsc",
+            "bytes": 1708,
+            "snapshot_sha1": "da29a1d6cbffd22cf19ba0acb51355aedae2c985",
+            "url": "https://snapshot.debian.org/file/da29a1d6cbffd22cf19ba0acb51355aedae2c985",
+            "verified_dsc_sha256": "0c25763da4f7242fbe7e9185b69bcb3f986011b04446b66a84c52bbdf731d308"
+          },
+          {
+            "name": "gzip_1.13.orig.tar.xz",
+            "bytes": 838248,
+            "snapshot_sha1": "a793e107a54769576adc16703f97c39ee7afdd4e",
+            "url": "https://snapshot.debian.org/file/a793e107a54769576adc16703f97c39ee7afdd4e",
+            "dsc_declared_sha256": "7454eb6935db17c6655576c2e1b0fabefd38b4d0936e0f87f48cd062ce91a057",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "hostname",
+        "version": "3.25",
+        "installed_binaries": [
+          "hostname"
+        ],
+        "files": [
+          {
+            "name": "hostname_3.25.dsc",
+            "bytes": 1519,
+            "snapshot_sha1": "bdc52533af77ed664f9f91ecb72e786e4ff90251",
+            "url": "https://snapshot.debian.org/file/bdc52533af77ed664f9f91ecb72e786e4ff90251",
+            "verified_dsc_sha256": "80aadf116c3423044be69a4cef8ba2766f412bd4d46a500aacb61f303c19c4ef"
+          },
+          {
+            "name": "hostname_3.25.tar.xz",
+            "bytes": 12804,
+            "snapshot_sha1": "5c3ce185949d8440dda78a4639819802480c693d",
+            "url": "https://snapshot.debian.org/file/5c3ce185949d8440dda78a4639819802480c693d",
+            "dsc_declared_sha256": "5bb5d1be011158090157c9e7587ae5606c262a5020ecdc5caac6686b9910592e",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "init-system-helpers",
+        "version": "1.69~deb13u1",
+        "installed_binaries": [
+          "init-system-helpers"
+        ],
+        "files": [
+          {
+            "name": "init-system-helpers_1.69~deb13u1.dsc",
+            "bytes": 2266,
+            "snapshot_sha1": "b79c1fca08ca8c538a5967b46f9af5fd767308ae",
+            "url": "https://snapshot.debian.org/file/b79c1fca08ca8c538a5967b46f9af5fd767308ae",
+            "verified_dsc_sha256": "873082d72727267b6207e38df47e3002aeb0ed554f876db17c7bbfeb26174ee6"
+          },
+          {
+            "name": "init-system-helpers_1.69~deb13u1.tar.xz",
+            "bytes": 45852,
+            "snapshot_sha1": "a9f896dadb2cb3ac8fb63ceaf22a7908f3611d60",
+            "url": "https://snapshot.debian.org/file/a9f896dadb2cb3ac8fb63ceaf22a7908f3611d60",
+            "dsc_declared_sha256": "bbd65c63420b6335b91cbf5daad9a70632a087657eb9078ea000f0a16c2d83da",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libbsd",
+        "version": "0.12.2-2",
+        "installed_binaries": [
+          "libbsd0:arm64"
+        ],
+        "files": [
+          {
+            "name": "libbsd_0.12.2-2.debian.tar.xz",
+            "bytes": 18688,
+            "snapshot_sha1": "c60b41226e738fc9872fc8a633fd2f501465f954",
+            "url": "https://snapshot.debian.org/file/c60b41226e738fc9872fc8a633fd2f501465f954",
+            "dsc_declared_sha256": "36c878a32c1f190ca2cb474de5c6139990a6c029906493d3566770b1ebd569bf",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libbsd_0.12.2-2.dsc",
+            "bytes": 2446,
+            "snapshot_sha1": "a3e0557ef167fd83e16803225c4de6abd69c26bf",
+            "url": "https://snapshot.debian.org/file/a3e0557ef167fd83e16803225c4de6abd69c26bf",
+            "verified_dsc_sha256": "01eb1d0c896096f9038213f5f00376ecfd1c0d1def21b7042f28ae070e4837e3"
+          },
+          {
+            "name": "libbsd_0.12.2.orig.tar.xz",
+            "bytes": 446032,
+            "snapshot_sha1": "c8f49920dec71e8e72f2b19f6c209b440a367d3a",
+            "url": "https://snapshot.debian.org/file/c8f49920dec71e8e72f2b19f6c209b440a367d3a",
+            "dsc_declared_sha256": "b88cc9163d0c652aaf39a99991d974ddba1c3a9711db8f1b5838af2a14731014",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libbsd_0.12.2.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "e234fc7862bd78065ebf5222f7dcc54ae6b33786",
+            "url": "https://snapshot.debian.org/file/e234fc7862bd78065ebf5222f7dcc54ae6b33786",
+            "dsc_declared_sha256": "620dc92f158ebe0a650c0e92214a8121b927276895dc9a1dcaa38f627fa0fcb0",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libcap-ng",
+        "version": "0.8.5-4",
+        "installed_binaries": [
+          "libcap-ng0:arm64"
+        ],
+        "files": [
+          {
+            "name": "libcap-ng_0.8.5-4.debian.tar.xz",
+            "bytes": 7816,
+            "snapshot_sha1": "77af6afc188df68af65da122de5f56a8533f906a",
+            "url": "https://snapshot.debian.org/file/77af6afc188df68af65da122de5f56a8533f906a",
+            "dsc_declared_sha256": "f5d4e7f38bdbca87de77317ce95f973883081370ef257019b484e29e3368a20d",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libcap-ng_0.8.5-4.dsc",
+            "bytes": 1710,
+            "snapshot_sha1": "9b8a214e343e0cad71743b2e4e8ce4500c79554f",
+            "url": "https://snapshot.debian.org/file/9b8a214e343e0cad71743b2e4e8ce4500c79554f",
+            "verified_dsc_sha256": "a5745b7d68a11068ae5beddcc7fbc94cd87dd81cb2d7495e7d48610603be3526"
+          },
+          {
+            "name": "libcap-ng_0.8.5.orig.tar.gz",
+            "bytes": 59265,
+            "snapshot_sha1": "37693cccf2a13576c7b642a19f83db298fd1979d",
+            "url": "https://snapshot.debian.org/file/37693cccf2a13576c7b642a19f83db298fd1979d",
+            "dsc_declared_sha256": "e4be07fdd234f10b866433f224d183626003c65634ed0552b02e654a380244c2",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libcap2",
+        "version": "1:2.75-10+deb13u1",
+        "installed_binaries": [
+          "libcap2:arm64"
+        ],
+        "files": [
+          {
+            "name": "libcap2_2.75-10+deb13u1.debian.tar.xz",
+            "bytes": 24628,
+            "snapshot_sha1": "6295bbcaf6a5ffad653da306d98370d1e8966ecb",
+            "url": "https://snapshot.debian.org/file/6295bbcaf6a5ffad653da306d98370d1e8966ecb",
+            "dsc_declared_sha256": "d375de2f743f112835fc0eef2a9c305c1109371954cf53e109b7f046fe58c1bc",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libcap2_2.75-10+deb13u1.dsc",
+            "bytes": 2714,
+            "snapshot_sha1": "c8c3bd695ab0cac34ea0ac0c395fa0777dec1105",
+            "url": "https://snapshot.debian.org/file/c8c3bd695ab0cac34ea0ac0c395fa0777dec1105",
+            "verified_dsc_sha256": "cb6af220de216655ec55bb1f5abf3fa8f03e82c9956f120b313056e895c02ea6"
+          },
+          {
+            "name": "libcap2_2.75.orig.tar.xz",
+            "bytes": 197868,
+            "snapshot_sha1": "1551cef1dd86c56a41c6e5793a79d7a7a9c648fb",
+            "url": "https://snapshot.debian.org/file/1551cef1dd86c56a41c6e5793a79d7a7a9c648fb",
+            "dsc_declared_sha256": "de4e7e064c9ba451d5234dd46e897d7c71c96a9ebf9a0c445bc04f4742d83632",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libcap2_2.75.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "fe47ee3715175c88a5261a6f6275ea6eddf426dd",
+            "url": "https://snapshot.debian.org/file/fe47ee3715175c88a5261a6f6275ea6eddf426dd",
+            "dsc_declared_sha256": "c71b593e7c3160fd7f406641074d93462bbc4906c9243937a0e232f42d5c54d2",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libmd",
+        "version": "1.1.0-2",
+        "installed_binaries": [
+          "libmd0:arm64"
+        ],
+        "files": [
+          {
+            "name": "libmd_1.1.0-2.debian.tar.xz",
+            "bytes": 8244,
+            "snapshot_sha1": "7073624fcfe38f68b4faddd51c3af703883946a2",
+            "url": "https://snapshot.debian.org/file/7073624fcfe38f68b4faddd51c3af703883946a2",
+            "dsc_declared_sha256": "3b6ff35fc921eb5450fa9bf2d300c9e058e3771f96f8f13f759768fadd53324c",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libmd_1.1.0-2.dsc",
+            "bytes": 2280,
+            "snapshot_sha1": "1240d4d6fa5945654e74f7e4e7084c79b57f3171",
+            "url": "https://snapshot.debian.org/file/1240d4d6fa5945654e74f7e4e7084c79b57f3171",
+            "verified_dsc_sha256": "46cc951cd6d71bbfeff4522de66f968fb92601ec4cc622b07f6ac0a2a36ac5f0"
+          },
+          {
+            "name": "libmd_1.1.0.orig.tar.xz",
+            "bytes": 271228,
+            "snapshot_sha1": "72718d5ffad112b702ba84fd40900486f8179642",
+            "url": "https://snapshot.debian.org/file/72718d5ffad112b702ba84fd40900486f8179642",
+            "dsc_declared_sha256": "1bd6aa42275313af3141c7cf2e5b964e8b1fd488025caf2f971f43b00776b332",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libmd_1.1.0.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "36302180a69e21afb53f5e30c1c2df3d75db61a9",
+            "url": "https://snapshot.debian.org/file/36302180a69e21afb53f5e30c1c2df3d75db61a9",
+            "dsc_declared_sha256": "402fd3024e43ab975733d09e661804a58ca58697194e4b15216b1217cfe1dadb",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libseccomp",
+        "version": "2.6.0-2",
+        "installed_binaries": [
+          "libseccomp2:arm64"
+        ],
+        "files": [
+          {
+            "name": "libseccomp_2.6.0-2.debian.tar.xz",
+            "bytes": 20800,
+            "snapshot_sha1": "2e7b2ad26b39ade9ee22652047d2c2c40a04991b",
+            "url": "https://snapshot.debian.org/file/2e7b2ad26b39ade9ee22652047d2c2c40a04991b",
+            "dsc_declared_sha256": "ed705ec85719403e77d004c99c0b06b795f090c66fcae265c4bcf37ffea9cc27",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libseccomp_2.6.0-2.dsc",
+            "bytes": 2622,
+            "snapshot_sha1": "6cfdde70eba246af6ae8fc25814318164e80f72f",
+            "url": "https://snapshot.debian.org/file/6cfdde70eba246af6ae8fc25814318164e80f72f",
+            "verified_dsc_sha256": "d05f94536558d34fa339326c6f958a3357b51efac8234470b5d97b69472db765"
+          },
+          {
+            "name": "libseccomp_2.6.0.orig.tar.gz",
+            "bytes": 685655,
+            "snapshot_sha1": "2eb0222d379756bd5f0a52c0488a20e3311bbf00",
+            "url": "https://snapshot.debian.org/file/2eb0222d379756bd5f0a52c0488a20e3311bbf00",
+            "dsc_declared_sha256": "83b6085232d1588c379dc9b9cae47bb37407cf262e6e74993c61ba72d2a784dc",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libseccomp_2.6.0.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "a3a445eac376025b8b55998ac7c9ceb92db9a0d3",
+            "url": "https://snapshot.debian.org/file/a3a445eac376025b8b55998ac7c9ceb92db9a0d3",
+            "dsc_declared_sha256": "52e338fa958128293cbd25d2be189e34da41c4f4abbb1b641cf58f373c001f94",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libselinux",
+        "version": "3.8.1-1",
+        "installed_binaries": [
+          "libselinux1:arm64"
+        ],
+        "files": [
+          {
+            "name": "libselinux_3.8.1-1.debian.tar.xz",
+            "bytes": 37812,
+            "snapshot_sha1": "5999a5d34d86dbf2379f1a41abe8cb9706721d8d",
+            "url": "https://snapshot.debian.org/file/5999a5d34d86dbf2379f1a41abe8cb9706721d8d",
+            "dsc_declared_sha256": "1af25952374f083cf3d6d0edd5beb938f2e53c30eb404afa1e32fcd1cb127db7",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libselinux_3.8.1-1.dsc",
+            "bytes": 3013,
+            "snapshot_sha1": "6af7920fefad36d817bb5f4e39507de9a08668dd",
+            "url": "https://snapshot.debian.org/file/6af7920fefad36d817bb5f4e39507de9a08668dd",
+            "verified_dsc_sha256": "e430b782a396e266f86c32fa779efadebfd40e6a0d10ddbd786fc47905f723b9"
+          },
+          {
+            "name": "libselinux_3.8.1.orig.tar.gz",
+            "bytes": 204411,
+            "snapshot_sha1": "e039453ee0b5ebb980ddf082a2b1024171913834",
+            "url": "https://snapshot.debian.org/file/e039453ee0b5ebb980ddf082a2b1024171913834",
+            "dsc_declared_sha256": "ec2d2789f931152d21c1db1eb4bc202ce4eccede34d9be9e360e3b45243cee2c",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libselinux_3.8.1.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "f43f4b604b59642e23e41713fb7ba465094f5fd3",
+            "url": "https://snapshot.debian.org/file/f43f4b604b59642e23e41713fb7ba465094f5fd3",
+            "dsc_declared_sha256": "7f983714a780d89f7677e7ba140ce29974022b8ba225f60246b6c33de1477dd6",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libsemanage",
+        "version": "3.8.1-1",
+        "installed_binaries": [
+          "libsemanage-common",
+          "libsemanage2:arm64"
+        ],
+        "files": [
+          {
+            "name": "libsemanage_3.8.1-1.debian.tar.xz",
+            "bytes": 37572,
+            "snapshot_sha1": "b3faa24ae0a937771fa9338e66650cacc22e2a53",
+            "url": "https://snapshot.debian.org/file/b3faa24ae0a937771fa9338e66650cacc22e2a53",
+            "dsc_declared_sha256": "6d1e5bd4d06bbd25ced1b75fba394c3e2157bd604cf1cd33fb581793d70bd7b8",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libsemanage_3.8.1-1.dsc",
+            "bytes": 2992,
+            "snapshot_sha1": "74bd19c38e0821c833f2c3b70f0dd14e5dad7b20",
+            "url": "https://snapshot.debian.org/file/74bd19c38e0821c833f2c3b70f0dd14e5dad7b20",
+            "verified_dsc_sha256": "b22bfc4ab2cd47fac46cc9e45d418bb30eb540c3e5c1052d6c669f53e180e4e5"
+          },
+          {
+            "name": "libsemanage_3.8.1.orig.tar.gz",
+            "bytes": 184618,
+            "snapshot_sha1": "6cd27679ad83becede4ac4d92beea54dabbe695a",
+            "url": "https://snapshot.debian.org/file/6cd27679ad83becede4ac4d92beea54dabbe695a",
+            "dsc_declared_sha256": "7b39127b219cc70bfd935a4af6b0f2ba83d4b35c916f253c7e942c23ab490f07",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libsemanage_3.8.1.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "13e857e719133b658b5ce7870e2fd8629364ce9e",
+            "url": "https://snapshot.debian.org/file/13e857e719133b658b5ce7870e2fd8629364ce9e",
+            "dsc_declared_sha256": "5b4856cb5823fba1b247ff1b5355692706da68a4df61a936d1b33b1f9e9b2f3d",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libsepol",
+        "version": "3.8.1-1",
+        "installed_binaries": [
+          "libsepol2:arm64"
+        ],
+        "files": [
+          {
+            "name": "libsepol_3.8.1-1.debian.tar.xz",
+            "bytes": 21432,
+            "snapshot_sha1": "7ba9eb7910f59be4932f4d0b1a0bd8d35f0aaa46",
+            "url": "https://snapshot.debian.org/file/7ba9eb7910f59be4932f4d0b1a0bd8d35f0aaa46",
+            "dsc_declared_sha256": "7aac515a941f8dd19581b16c664b3098962e6a8ed7fa0afdafd306a85c667619",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libsepol_3.8.1-1.dsc",
+            "bytes": 2347,
+            "snapshot_sha1": "fc4625ed3b1317ca6ced73b6a64a9438fa7946f5",
+            "url": "https://snapshot.debian.org/file/fc4625ed3b1317ca6ced73b6a64a9438fa7946f5",
+            "verified_dsc_sha256": "0351ffc8c3f66918c9e4ecae9244ae2af27857d8795e424e384ddda794718c34"
+          },
+          {
+            "name": "libsepol_3.8.1.orig.tar.gz",
+            "bytes": 513830,
+            "snapshot_sha1": "7ae668832ae5456c363bda01cc2698c5d142102f",
+            "url": "https://snapshot.debian.org/file/7ae668832ae5456c363bda01cc2698c5d142102f",
+            "dsc_declared_sha256": "0e78705305f955abd4c0654d37a5477ee26349ab74db9e2b03a7868897ae1ddf",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libsepol_3.8.1.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "6ef55c7f475df3fca85be45bd6570e539d8fa255",
+            "url": "https://snapshot.debian.org/file/6ef55c7f475df3fca85be45bd6570e539d8fa255",
+            "dsc_declared_sha256": "183f6cf96054986704d4224f89518e9139370385c43a533078f45ca688dca8b6",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libxcrypt",
+        "version": "1:4.4.38-1",
+        "installed_binaries": [
+          "libcrypt1:arm64"
+        ],
+        "files": [
+          {
+            "name": "libxcrypt_4.4.38-1.debian.tar.xz",
+            "bytes": 8512,
+            "snapshot_sha1": "a153f83a63de70924cdd8c04d06f6e3edef57505",
+            "url": "https://snapshot.debian.org/file/a153f83a63de70924cdd8c04d06f6e3edef57505",
+            "dsc_declared_sha256": "6b87bcb5325e417ab3f4c01c364233444b4c9008a69ec1d6fababb3f6e693a5e",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libxcrypt_4.4.38-1.dsc",
+            "bytes": 1573,
+            "snapshot_sha1": "554bbfe851512b6f83b8035d8608591d8311d1cf",
+            "url": "https://snapshot.debian.org/file/554bbfe851512b6f83b8035d8608591d8311d1cf",
+            "verified_dsc_sha256": "feba1874a84616791c1c17f9a290c9e97562b2904b3b0200edc82a2db54f3f07"
+          },
+          {
+            "name": "libxcrypt_4.4.38.orig.tar.xz",
+            "bytes": 394216,
+            "snapshot_sha1": "1ddb65a7d360d026586ee83b35430b0d1da39b34",
+            "url": "https://snapshot.debian.org/file/1ddb65a7d360d026586ee83b35430b0d1da39b34",
+            "dsc_declared_sha256": "6a275a356622c64ba9f693892215dbb399c003a7a4afeed9c4c74070eaab20f4",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "libzstd",
+        "version": "1.5.7+dfsg-1",
+        "installed_binaries": [
+          "libzstd1:arm64"
+        ],
+        "files": [
+          {
+            "name": "libzstd_1.5.7+dfsg-1.debian.tar.xz",
+            "bytes": 23036,
+            "snapshot_sha1": "899c78a644062eefb4cb056a23e22c5aed8cd4f4",
+            "url": "https://snapshot.debian.org/file/899c78a644062eefb4cb056a23e22c5aed8cd4f4",
+            "dsc_declared_sha256": "5e88424d919941291f79e1bfada6cb1a6f748671d9de7d4b7d931f361f183a15",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "libzstd_1.5.7+dfsg-1.dsc",
+            "bytes": 2371,
+            "snapshot_sha1": "5882e87bb6e8f39c83044b4aefa3b819b1310e67",
+            "url": "https://snapshot.debian.org/file/5882e87bb6e8f39c83044b4aefa3b819b1310e67",
+            "verified_dsc_sha256": "8f6ab97fa772d921334e50fa5756a0951e23c718dc913e43a228f28c1a23adf9"
+          },
+          {
+            "name": "libzstd_1.5.7+dfsg.orig.tar.xz",
+            "bytes": 1834780,
+            "snapshot_sha1": "232037627d9d8bd80033e4316bdb62f737c9968f",
+            "url": "https://snapshot.debian.org/file/232037627d9d8bd80033e4316bdb62f737c9968f",
+            "dsc_declared_sha256": "0c092ef267edce57ba7f3f2645c861f72eaf5e76273c6c3632869423464b90a5",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "lz4",
+        "version": "1.10.0-4",
+        "installed_binaries": [
+          "liblz4-1:arm64"
+        ],
+        "files": [
+          {
+            "name": "lz4_1.10.0-4.debian.tar.xz",
+            "bytes": 8080,
+            "snapshot_sha1": "1a12361295cb206d28afa6461cfe1e2466bfd1e8",
+            "url": "https://snapshot.debian.org/file/1a12361295cb206d28afa6461cfe1e2466bfd1e8",
+            "dsc_declared_sha256": "8d276c3254182c2c9cf319b9a6504cf257c56b441f37d3db8ad97d33d46a0911",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "lz4_1.10.0-4.dsc",
+            "bytes": 1941,
+            "snapshot_sha1": "6d870247eeda54129ef9a6b7a81d7f8d5377ff31",
+            "url": "https://snapshot.debian.org/file/6d870247eeda54129ef9a6b7a81d7f8d5377ff31",
+            "verified_dsc_sha256": "394c635aa75a21cd5896680e48821c05336645072ae866b2717d53f36b9ba851"
+          },
+          {
+            "name": "lz4_1.10.0.orig.tar.gz",
+            "bytes": 387114,
+            "snapshot_sha1": "e6a01c6d457365f9e26bc440394daab80ab0aff0",
+            "url": "https://snapshot.debian.org/file/e6a01c6d457365f9e26bc440394daab80ab0aff0",
+            "dsc_declared_sha256": "537512904744b35e232912055ccf8ec66d768639ff3abe5788d90d792ec5f48b",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "mawk",
+        "version": "1.3.4.20250131-1",
+        "installed_binaries": [
+          "mawk"
+        ],
+        "files": [
+          {
+            "name": "mawk_1.3.4.20250131-1.debian.tar.xz",
+            "bytes": 16008,
+            "snapshot_sha1": "6ce8be9766f59cec41c4463ea632649eed5676fc",
+            "url": "https://snapshot.debian.org/file/6ce8be9766f59cec41c4463ea632649eed5676fc",
+            "dsc_declared_sha256": "23dea8244bf4f116ec3cd202ab5d4693207d82d986cd0a3d79442b916be4e2b7",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "mawk_1.3.4.20250131-1.dsc",
+            "bytes": 2969,
+            "snapshot_sha1": "8f63fbdec6d94845289d707e25efdb74f0a1ac8e",
+            "url": "https://snapshot.debian.org/file/8f63fbdec6d94845289d707e25efdb74f0a1ac8e",
+            "verified_dsc_sha256": "147dd01670e2ebf61f3c78470e0025b87d14e69c7ba9cfafd54da32a355dea84"
+          },
+          {
+            "name": "mawk_1.3.4.20250131.orig.tar.gz",
+            "bytes": 433213,
+            "snapshot_sha1": "cc9d8dfb14c35a4d06e4ef3cf694d8e960e266e3",
+            "url": "https://snapshot.debian.org/file/cc9d8dfb14c35a4d06e4ef3cf694d8e960e266e3",
+            "dsc_declared_sha256": "51bcb82d577b141d896d9d9c3077d7aaa209490132e9f2b9573ba8511b3835be",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "mawk_1.3.4.20250131.orig.tar.gz.asc",
+            "bytes": 729,
+            "snapshot_sha1": "77ccc0eef274106391fe509ab0adfcfcc745a676",
+            "url": "https://snapshot.debian.org/file/77ccc0eef274106391fe509ab0adfcfcc745a676",
+            "dsc_declared_sha256": "bc83f127727edb42a91d516770c8d0d3cdb5f6e541aa3cb5213b79dae494db95",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "ncurses",
+        "version": "6.5+20250216-2",
+        "installed_binaries": [
+          "libtinfo6:arm64",
+          "ncurses-base",
+          "ncurses-bin"
+        ],
+        "files": [
+          {
+            "name": "ncurses_6.5+20250216-2.debian.tar.xz",
+            "bytes": 50420,
+            "snapshot_sha1": "025a3164026bef20a1872b0cc9107236d5738a4a",
+            "url": "https://snapshot.debian.org/file/025a3164026bef20a1872b0cc9107236d5738a4a",
+            "dsc_declared_sha256": "546930a8992ae3325d8c38378f290265d969cf6333cfae9648ac6d69e1e8a8a6",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "ncurses_6.5+20250216-2.dsc",
+            "bytes": 3890,
+            "snapshot_sha1": "69f4cedccc8fe157ec94ea231017d65e37cde091",
+            "url": "https://snapshot.debian.org/file/69f4cedccc8fe157ec94ea231017d65e37cde091",
+            "verified_dsc_sha256": "00539cc2bc6bb84be1b8a8a5decf606682e14b6f39b76b9aa090e65d2c2d4580"
+          },
+          {
+            "name": "ncurses_6.5+20250216.orig.tar.gz",
+            "bytes": 3774714,
+            "snapshot_sha1": "e9a1792b02cd603c5a094dadc5046d5440723c4b",
+            "url": "https://snapshot.debian.org/file/e9a1792b02cd603c5a094dadc5046d5440723c4b",
+            "dsc_declared_sha256": "b37baafa436e7133bb12a185cb8f60e1599b1947e9f0181c76f3190acf28b6eb",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "ncurses_6.5+20250216.orig.tar.gz.asc",
+            "bytes": 729,
+            "snapshot_sha1": "df154cc6de3378e3705f4db1ce663d38a9c765d9",
+            "url": "https://snapshot.debian.org/file/df154cc6de3378e3705f4db1ce663d38a9c765d9",
+            "dsc_declared_sha256": "64f4d17923322176c44079f18f170e2164a59d551d7e4e9c1a6e4eebedc5dd6f",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "nettle",
+        "version": "3.10.1-1",
+        "installed_binaries": [
+          "libhogweed6t64:arm64",
+          "libnettle8t64:arm64"
+        ],
+        "files": [
+          {
+            "name": "nettle_3.10.1-1.debian.tar.xz",
+            "bytes": 25036,
+            "snapshot_sha1": "a893d45b20ec91e65f1a8645e50619e788e277b7",
+            "url": "https://snapshot.debian.org/file/a893d45b20ec91e65f1a8645e50619e788e277b7",
+            "dsc_declared_sha256": "2d40d02ddac5985d8833532a17a0ef96cb685ee0547ee9617ec13793b22e34c6",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "nettle_3.10.1-1.dsc",
+            "bytes": 2053,
+            "snapshot_sha1": "9f8922b81b23705fcacf6c8f5dcd6727523250b2",
+            "url": "https://snapshot.debian.org/file/9f8922b81b23705fcacf6c8f5dcd6727523250b2",
+            "verified_dsc_sha256": "7b440850ce04b341363f3f5e23dfb9f96ebf7d52e0ef7ba2d07120c90ca61b3c"
+          },
+          {
+            "name": "nettle_3.10.1.orig.tar.gz",
+            "bytes": 2643267,
+            "snapshot_sha1": "7b2881587b42d0748de55a39491c14f96adde821",
+            "url": "https://snapshot.debian.org/file/7b2881587b42d0748de55a39491c14f96adde821",
+            "dsc_declared_sha256": "b0fcdd7fc0cdea6e80dcf1dd85ba794af0d5b4a57e26397eee3bc193272d9132",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "openssl",
+        "version": "3.5.7-1~deb13u3",
+        "installed_binaries": [
+          "libssl3t64:arm64",
+          "openssl",
+          "openssl-provider-legacy"
+        ],
+        "files": [
+          {
+            "name": "openssl_3.5.7-1~deb13u3.debian.tar.xz",
+            "bytes": 147344,
+            "snapshot_sha1": "11a6b388b1ce45f8c60021ed66f8772f7c963c62",
+            "url": "https://snapshot.debian.org/file/11a6b388b1ce45f8c60021ed66f8772f7c963c62",
+            "dsc_declared_sha256": "0a427fdc3e773f4119a7dd5b36d1f0903a163cf4ea15d812bb823b251ff1cbc5",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "openssl_3.5.7-1~deb13u3.dsc",
+            "bytes": 2710,
+            "snapshot_sha1": "db56cd5070f847d98b8fec3dde05ce8ee276ba64",
+            "url": "https://snapshot.debian.org/file/db56cd5070f847d98b8fec3dde05ce8ee276ba64",
+            "verified_dsc_sha256": "9cdb0d9daf0773ca5c0f3f5ea1fc59b1106a99e005a5c048948b826e8d3b47e1"
+          },
+          {
+            "name": "openssl_3.5.7.orig.tar.gz",
+            "bytes": 53153930,
+            "snapshot_sha1": "53d331880fbde8e6fe25870d5325a61201f6264d",
+            "url": "https://snapshot.debian.org/file/53d331880fbde8e6fe25870d5325a61201f6264d",
+            "dsc_declared_sha256": "a8c0d28a529ca480f9f36cf5792e2cd21984552a3c8e4aa11a24aa31aeac98e8",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "openssl_3.5.7.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "9408998095f984b36591732286ef1df1ba7ce492",
+            "url": "https://snapshot.debian.org/file/9408998095f984b36591732286ef1df1ba7ce492",
+            "dsc_declared_sha256": "d3d082bee3f658c31db53af625eceecf29d777c7010394bed5787ebcc98abdf2",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "pam",
+        "version": "1.7.0-5",
+        "installed_binaries": [
+          "libpam-modules-bin",
+          "libpam-modules:arm64",
+          "libpam-runtime",
+          "libpam0g:arm64"
+        ],
+        "files": [
+          {
+            "name": "pam_1.7.0-5.debian.tar.xz",
+            "bytes": 145640,
+            "snapshot_sha1": "e27bfdcceb1294670f95467e4ce4e2455ce841c7",
+            "url": "https://snapshot.debian.org/file/e27bfdcceb1294670f95467e4ce4e2455ce841c7",
+            "dsc_declared_sha256": "d776d7cb6fc8b08273f96b7f843299356ef13c6756e30468c594ab28faf1701c",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "pam_1.7.0-5.dsc",
+            "bytes": 2210,
+            "snapshot_sha1": "dc44d975a3cee93b2e116db4682b90abc8a11f31",
+            "url": "https://snapshot.debian.org/file/dc44d975a3cee93b2e116db4682b90abc8a11f31",
+            "verified_dsc_sha256": "5c127aa18c7cb52ec9ee91fa2099453b3a851bcc0088e79045384a2a508b341c"
+          },
+          {
+            "name": "pam_1.7.0.orig.tar.xz",
+            "bytes": 507824,
+            "snapshot_sha1": "935f3a737f834ac94a6600e4e3619de47e0cfa6a",
+            "url": "https://snapshot.debian.org/file/935f3a737f834ac94a6600e4e3619de47e0cfa6a",
+            "dsc_declared_sha256": "57dcd7a6b966ecd5bbd95e1d11173734691e16b68692fa59661cdae9b13b1697",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "pam_1.7.0.orig.tar.xz.asc",
+            "bytes": 801,
+            "snapshot_sha1": "0cc8ae9ba7a17610041e702b70eaba8765f93ced",
+            "url": "https://snapshot.debian.org/file/0cc8ae9ba7a17610041e702b70eaba8765f93ced",
+            "dsc_declared_sha256": "7a8ea18ec7d9dd1f8cbf9055c32128cbca8241aa63e9fea44d56ce6f0e15e441",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "pcre2",
+        "version": "10.46-1~deb13u3",
+        "installed_binaries": [
+          "libpcre2-8-0:arm64"
+        ],
+        "files": [
+          {
+            "name": "pcre2_10.46-1~deb13u3.diff.gz",
+            "bytes": 20405,
+            "snapshot_sha1": "205a17397d764e25a8b4e86af9d70263e74eff66",
+            "url": "https://snapshot.debian.org/file/205a17397d764e25a8b4e86af9d70263e74eff66",
+            "dsc_declared_sha256": "28734c85365f431a4494c2efe2cdb42ed432673f962e421826f3c3b7aa76c4cf",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "pcre2_10.46-1~deb13u3.dsc",
+            "bytes": 2406,
+            "snapshot_sha1": "e5fb135d6cf0465aa05ebdd5b5e72c3eb700a52b",
+            "url": "https://snapshot.debian.org/file/e5fb135d6cf0465aa05ebdd5b5e72c3eb700a52b",
+            "verified_dsc_sha256": "5f317534eff1e33f0a5690a866ba2f2c9399c60ce9b74c89039d4de372420c5c"
+          },
+          {
+            "name": "pcre2_10.46.orig.tar.gz",
+            "bytes": 2718545,
+            "snapshot_sha1": "6858f0eb287c8285f53a038c8a95dc43ba51c653",
+            "url": "https://snapshot.debian.org/file/6858f0eb287c8285f53a038c8a95dc43ba51c653",
+            "dsc_declared_sha256": "8d28d7f2c3b970c3a4bf3776bcbb5adfc923183ce74bc8df1ebaad8c1985bd07",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "perl",
+        "version": "5.40.1-6+deb13u1",
+        "installed_binaries": [
+          "perl-base"
+        ],
+        "files": [
+          {
+            "name": "perl_5.40.1-6+deb13u1.debian.tar.xz",
+            "bytes": 186360,
+            "snapshot_sha1": "1c181a089b69ccda8f7adce847dd5d8984e247a7",
+            "url": "https://snapshot.debian.org/file/1c181a089b69ccda8f7adce847dd5d8984e247a7",
+            "dsc_declared_sha256": "5ee76db601d6f4638433ab9b0f5bd5cfb15b102a79d902ff282e762becb7e724",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "perl_5.40.1-6+deb13u1.dsc",
+            "bytes": 2404,
+            "snapshot_sha1": "735f1a33e381a4037b22f895726d2ffce281b39a",
+            "url": "https://snapshot.debian.org/file/735f1a33e381a4037b22f895726d2ffce281b39a",
+            "verified_dsc_sha256": "92d1cfb32167d77fada7284f1c291de72f93eb896f5cfd58247d020182b403a8"
+          },
+          {
+            "name": "perl_5.40.1.orig-regen-configure.tar.xz",
+            "bytes": 421056,
+            "snapshot_sha1": "82d1edc45031c917619d2c412c6d5c34a50fde0a",
+            "url": "https://snapshot.debian.org/file/82d1edc45031c917619d2c412c6d5c34a50fde0a",
+            "dsc_declared_sha256": "4ea023d08101443f6ed9dc3bdd9bb5f5e08087678dc9e443d195df22da36209a",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "perl_5.40.1.orig.tar.xz",
+            "bytes": 13930924,
+            "snapshot_sha1": "4ffe5246c791df884363aed05ba81ba41cb02084",
+            "url": "https://snapshot.debian.org/file/4ffe5246c791df884363aed05ba81ba41cb02084",
+            "dsc_declared_sha256": "dfa20c2eef2b4af133525610bbb65dd13777ecf998c9c5b1ccf0d308e732ee3f",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "rust-sequoia-sqv",
+        "version": "1.3.0-3",
+        "installed_binaries": [
+          "sqv"
+        ],
+        "files": [
+          {
+            "name": "rust-sequoia-sqv_1.3.0-3.debian.tar.xz",
+            "bytes": 3876,
+            "snapshot_sha1": "b087e30e5a26d8e07eec12b6a3f921b0e0d4bad9",
+            "url": "https://snapshot.debian.org/file/b087e30e5a26d8e07eec12b6a3f921b0e0d4bad9",
+            "dsc_declared_sha256": "be04e0365bc1206617a3e55d507bfce2e972819fb737e23a1112a717cc89b9bc",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "rust-sequoia-sqv_1.3.0-3.dsc",
+            "bytes": 2704,
+            "snapshot_sha1": "2fa9c040526922b732991ab5e752c7f4b32c2006",
+            "url": "https://snapshot.debian.org/file/2fa9c040526922b732991ab5e752c7f4b32c2006",
+            "verified_dsc_sha256": "98ad852ed30d42d3b0d6ce40d2f56a96fb443cc6fa2caeaa12516fe5bbe544af"
+          },
+          {
+            "name": "rust-sequoia-sqv_1.3.0.orig.tar.gz",
+            "bytes": 140759,
+            "snapshot_sha1": "9178a31edda5e16a872c6c26593d3f0092473154",
+            "url": "https://snapshot.debian.org/file/9178a31edda5e16a872c6c26593d3f0092473154",
+            "dsc_declared_sha256": "8924571d26720b245292ad3c450e4061fcb24890461874790549747bffa35e60",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "sed",
+        "version": "4.9-2+deb13u1",
+        "installed_binaries": [
+          "sed"
+        ],
+        "files": [
+          {
+            "name": "sed_4.9-2+deb13u1.debian.tar.xz",
+            "bytes": 63644,
+            "snapshot_sha1": "c06297931461cd71d87fbf5115980a5a2722d5c7",
+            "url": "https://snapshot.debian.org/file/c06297931461cd71d87fbf5115980a5a2722d5c7",
+            "dsc_declared_sha256": "9c9aacda91e02802f33fb6a1a6e86f80be1bc67b92a4dae009e78f77e26e130a",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "sed_4.9-2+deb13u1.dsc",
+            "bytes": 2047,
+            "snapshot_sha1": "a20e0007bcf83fd3d4af77f6dfc40067dfb620b9",
+            "url": "https://snapshot.debian.org/file/a20e0007bcf83fd3d4af77f6dfc40067dfb620b9",
+            "verified_dsc_sha256": "9fcc5dffe5e712b4631757c057228ae57919aec1cca1c91a80e76719167f443b"
+          },
+          {
+            "name": "sed_4.9.orig.tar.xz",
+            "bytes": 1397092,
+            "snapshot_sha1": "8ded1b543f1f558cbd5d7b713602f6a8ee84bde4",
+            "url": "https://snapshot.debian.org/file/8ded1b543f1f558cbd5d7b713602f6a8ee84bde4",
+            "dsc_declared_sha256": "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "shadow",
+        "version": "1:4.17.4-2",
+        "installed_binaries": [
+          "login.defs",
+          "passwd"
+        ],
+        "files": [
+          {
+            "name": "shadow_4.17.4-2.debian.tar.xz",
+            "bytes": 167792,
+            "snapshot_sha1": "995c806c27f295af2fc46c9b7b565ada9b6ce9e9",
+            "url": "https://snapshot.debian.org/file/995c806c27f295af2fc46c9b7b565ada9b6ce9e9",
+            "dsc_declared_sha256": "97eaf0b3682a8a1a1ae6e4c4fac00885a7433d2487e636bde7c1c406e66bdb23",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "shadow_4.17.4-2.dsc",
+            "bytes": 2851,
+            "snapshot_sha1": "e4d18b937f954167778fbeb365b5661658a97780",
+            "url": "https://snapshot.debian.org/file/e4d18b937f954167778fbeb365b5661658a97780",
+            "verified_dsc_sha256": "920de0d3be5303f2c0511d5531c1815abc258b15af8f9c511c8aa6d8e1a91a86"
+          },
+          {
+            "name": "shadow_4.17.4.orig.tar.xz",
+            "bytes": 2326584,
+            "snapshot_sha1": "6472ed66405924de1f564d0a18f01f12e5ce44d0",
+            "url": "https://snapshot.debian.org/file/6472ed66405924de1f564d0a18f01f12e5ce44d0",
+            "dsc_declared_sha256": "554801054694ff7d8a7abdf0d6ece34e2f16e111673cc01b8c9ee1278451181e",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "shadow_4.17.4.orig.tar.xz.asc",
+            "bytes": 488,
+            "snapshot_sha1": "7bd20c7d3f803fa040e0778ff8fb01423b61fbdb",
+            "url": "https://snapshot.debian.org/file/7bd20c7d3f803fa040e0778ff8fb01423b61fbdb",
+            "dsc_declared_sha256": "82437d2b54790b3a6734c526b757e693cd0c734ec6afd69f9a9cf0eb1dad8dc4",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "sqlite3",
+        "version": "3.46.1-7+deb13u2",
+        "installed_binaries": [
+          "libsqlite3-0:arm64"
+        ],
+        "files": [
+          {
+            "name": "sqlite3_3.46.1-7+deb13u2.debian.tar.xz",
+            "bytes": 37084,
+            "snapshot_sha1": "9df0075462130032e1641d6646c01e691dbe0a40",
+            "url": "https://snapshot.debian.org/file/9df0075462130032e1641d6646c01e691dbe0a40",
+            "dsc_declared_sha256": "59d33bc436258603702bb051d645743ab03612b82f79e7c7d638c65127c21261",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "sqlite3_3.46.1-7+deb13u2.dsc",
+            "bytes": 2673,
+            "snapshot_sha1": "e9d9d4e7b5c82a96d3f233e46eb23a35376700eb",
+            "url": "https://snapshot.debian.org/file/e9d9d4e7b5c82a96d3f233e46eb23a35376700eb",
+            "verified_dsc_sha256": "46e1eec171e11108fc436e45309b635b601029726b6ffd3bf435bb474e511638"
+          },
+          {
+            "name": "sqlite3_3.46.1.orig-www.tar.xz",
+            "bytes": 5861820,
+            "snapshot_sha1": "17c0f982c06df44a531d8ef3aef8b226b65cf6cd",
+            "url": "https://snapshot.debian.org/file/17c0f982c06df44a531d8ef3aef8b226b65cf6cd",
+            "dsc_declared_sha256": "648df41a8e532882b1905df45919aae4bafaf74c455f66bc86f1f52f45c8b8f0",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "sqlite3_3.46.1.orig.tar.xz",
+            "bytes": 8456776,
+            "snapshot_sha1": "0a1dee600409dded148a8595d8f8b7b7c6a3c2a9",
+            "url": "https://snapshot.debian.org/file/0a1dee600409dded148a8595d8f8b7b7c6a3c2a9",
+            "dsc_declared_sha256": "d0cdd2ece271b29e7ce18095745d892517ee26d0f270065b3a25c2e9eb11639c",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "systemd",
+        "version": "257.13-1~deb13u1",
+        "installed_binaries": [
+          "libsystemd0:arm64",
+          "libudev1:arm64"
+        ],
+        "files": [
+          {
+            "name": "systemd_257.13-1~deb13u1.debian.tar.xz",
+            "bytes": 183128,
+            "snapshot_sha1": "6f9f1a95623f849371303ee6fd11b95c2b7a2493",
+            "url": "https://snapshot.debian.org/file/6f9f1a95623f849371303ee6fd11b95c2b7a2493",
+            "dsc_declared_sha256": "9c6e435d613b996efcdb3b7dd9a4cebaa745333a3f64dc722f3fad646f1fdc1a",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "systemd_257.13-1~deb13u1.dsc",
+            "bytes": 8696,
+            "snapshot_sha1": "fc07f2628e44c0ddbcc964768730cab7b094d627",
+            "url": "https://snapshot.debian.org/file/fc07f2628e44c0ddbcc964768730cab7b094d627",
+            "verified_dsc_sha256": "1b3405d671a82d1e20c9d99f52d4336aafe8543b28d04e91b7f1f586d3a667c7"
+          },
+          {
+            "name": "systemd_257.13.orig.tar.gz",
+            "bytes": 16543653,
+            "snapshot_sha1": "a30ac2421a76ec05eeb4627e19d94f653279dff0",
+            "url": "https://snapshot.debian.org/file/a30ac2421a76ec05eeb4627e19d94f653279dff0",
+            "dsc_declared_sha256": "1eb7d5f9ff8a426ff880a3cded9ce819613ba8003ac5ddde9eca162f14ddabe7",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "sysvinit",
+        "version": "3.14-4",
+        "installed_binaries": [
+          "sysvinit-utils"
+        ],
+        "files": [
+          {
+            "name": "sysvinit_3.14-4.debian.tar.xz",
+            "bytes": 122156,
+            "snapshot_sha1": "03d7606ab74829d04a9db953e2151c15b4391ca4",
+            "url": "https://snapshot.debian.org/file/03d7606ab74829d04a9db953e2151c15b4391ca4",
+            "dsc_declared_sha256": "2ba0aa763232112696bce50ee5acc707a515fcbd5b2c194193bfa7a0a525bff6",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "sysvinit_3.14-4.dsc",
+            "bytes": 2375,
+            "snapshot_sha1": "f8c0e7ebbc91f5312e19f9d97bd4747d007c6b24",
+            "url": "https://snapshot.debian.org/file/f8c0e7ebbc91f5312e19f9d97bd4747d007c6b24",
+            "verified_dsc_sha256": "1cfe65682218077e6f76011f0c5caacc9f2ab214d55893307d4a54c93312ac92"
+          },
+          {
+            "name": "sysvinit_3.14.orig.tar.gz",
+            "bytes": 516357,
+            "snapshot_sha1": "23f55970b5e4fbd904934845950713a43d76ba07",
+            "url": "https://snapshot.debian.org/file/23f55970b5e4fbd904934845950713a43d76ba07",
+            "dsc_declared_sha256": "4e90a148707cf64113fc97343c053f9c0c9589551936b053999dcc69731f295f",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "tar",
+        "version": "1.35+dfsg-3.1",
+        "installed_binaries": [
+          "tar"
+        ],
+        "files": [
+          {
+            "name": "tar_1.35+dfsg-3.1.debian.tar.xz",
+            "bytes": 21540,
+            "snapshot_sha1": "3741fabff56ede7bf8448ef7f5069b25ca36b761",
+            "url": "https://snapshot.debian.org/file/3741fabff56ede7bf8448ef7f5069b25ca36b761",
+            "dsc_declared_sha256": "0d0278034b82ed84dce04a461879b6e1871e4cb416a0ff04d3d35ff05fc30a53",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "tar_1.35+dfsg-3.1.dsc",
+            "bytes": 2017,
+            "snapshot_sha1": "f0a9bdc3c47cf3b0e7864db3e7a8876a9d61ebf1",
+            "url": "https://snapshot.debian.org/file/f0a9bdc3c47cf3b0e7864db3e7a8876a9d61ebf1",
+            "verified_dsc_sha256": "5bb58d4966d94c99a9f1b182676089ecc05058d62fdb927f5c07539d9cda4077"
+          },
+          {
+            "name": "tar_1.35+dfsg.orig.tar.xz",
+            "bytes": 2111608,
+            "snapshot_sha1": "d910d9a9dc1252a793ca1837ac4f1080a64fca1f",
+            "url": "https://snapshot.debian.org/file/d910d9a9dc1252a793ca1837ac4f1080a64fca1f",
+            "dsc_declared_sha256": "9ae57e981c1e73c0eebc2b26c9b0c4497fe310ef1d516ea430efb5470b71f7a8",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "tzdata",
+        "version": "2026c-0+deb13u1",
+        "installed_binaries": [
+          "tzdata"
+        ],
+        "files": [
+          {
+            "name": "tzdata_2026c-0+deb13u1.debian.tar.xz",
+            "bytes": 127148,
+            "snapshot_sha1": "400617cf66c795b78477770832fb47a9bbcb8073",
+            "url": "https://snapshot.debian.org/file/400617cf66c795b78477770832fb47a9bbcb8073",
+            "dsc_declared_sha256": "48cd3f42cee2b8ec62ca9c2f4c43cf6c0ec05e1a5ae97f4ed771635811b82f29",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "tzdata_2026c-0+deb13u1.dsc",
+            "bytes": 2466,
+            "snapshot_sha1": "3c4d3f3e2f82678a39f566611da6143c7d8a3b7a",
+            "url": "https://snapshot.debian.org/file/3c4d3f3e2f82678a39f566611da6143c7d8a3b7a",
+            "verified_dsc_sha256": "b18d6eddfb23971bacbf569a2641cda837002a813d8e8940d8792ea7ba8e2d4e"
+          },
+          {
+            "name": "tzdata_2026c.orig.tar.gz",
+            "bytes": 475694,
+            "snapshot_sha1": "25e5390e8b06c4dd9a7dea4d4a079631c1dd312e",
+            "url": "https://snapshot.debian.org/file/25e5390e8b06c4dd9a7dea4d4a079631c1dd312e",
+            "dsc_declared_sha256": "e4a178a4477f3d0ea77cc31828ff72aa38feff8d61aa13e7e99e142e9d902be4",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "tzdata_2026c.orig.tar.gz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "ff388761981f8a9754f06876c3ba96b560149882",
+            "url": "https://snapshot.debian.org/file/ff388761981f8a9754f06876c3ba96b560149882",
+            "dsc_declared_sha256": "26cd02e034eed682aa911d224bca3247ff15914df317e3bb0b1a01dc557b46fe",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "util-linux",
+        "version": "2.41.5-0+deb13u1",
+        "installed_binaries": [
+          "bsdutils",
+          "libblkid1:arm64",
+          "liblastlog2-2:arm64",
+          "libmount1:arm64",
+          "libsmartcols1:arm64",
+          "libuuid1:arm64",
+          "login",
+          "mount",
+          "util-linux"
+        ],
+        "files": [
+          {
+            "name": "util-linux_2.41.5-0+deb13u1.debian.tar.xz",
+            "bytes": 107604,
+            "snapshot_sha1": "44d5f01ef357eca57a89f86125392fed89a8b14b",
+            "url": "https://snapshot.debian.org/file/44d5f01ef357eca57a89f86125392fed89a8b14b",
+            "dsc_declared_sha256": "5b327ccd22f0f4ed28a389870aa51d04ecedb8693e52a1d122850f2b3188cbf6",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "util-linux_2.41.5-0+deb13u1.dsc",
+            "bytes": 4988,
+            "snapshot_sha1": "af0f23320ed30c50ca540273f6f659b152be2c6f",
+            "url": "https://snapshot.debian.org/file/af0f23320ed30c50ca540273f6f659b152be2c6f",
+            "verified_dsc_sha256": "43e9b2cbebd10fdc598c4ad10217c8202c28de53af6eafc892c8e9b5cbf3a3a5"
+          },
+          {
+            "name": "util-linux_2.41.5.orig.tar.xz",
+            "bytes": 9474992,
+            "snapshot_sha1": "aad638b4dea74be6227238f5e6398a8f54daefb4",
+            "url": "https://snapshot.debian.org/file/aad638b4dea74be6227238f5e6398a8f54daefb4",
+            "dsc_declared_sha256": "f586e35d320ff537aab3ffeca37e9ecd482ccbe013590db4429a414d8aa6a728",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "xxhash",
+        "version": "0.8.3-2",
+        "installed_binaries": [
+          "libxxhash0:arm64"
+        ],
+        "files": [
+          {
+            "name": "xxhash_0.8.3-2.debian.tar.xz",
+            "bytes": 5144,
+            "snapshot_sha1": "61e2b4577bb87fc219135cf9bd5b95b5e93e935d",
+            "url": "https://snapshot.debian.org/file/61e2b4577bb87fc219135cf9bd5b95b5e93e935d",
+            "dsc_declared_sha256": "13824bfb2b2367225dfe3090d0ae050614f1c470a47db7232a2e9d4b2b14ad31",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "xxhash_0.8.3-2.dsc",
+            "bytes": 1969,
+            "snapshot_sha1": "226be1e33182d1835530149ecbd67c4a6dc4cca8",
+            "url": "https://snapshot.debian.org/file/226be1e33182d1835530149ecbd67c4a6dc4cca8",
+            "verified_dsc_sha256": "9d1f7aaace7871fbdb8775d756c6eaca84e6ad5d8e9c6ac465b7e0adc06ff90c"
+          },
+          {
+            "name": "xxhash_0.8.3.orig.tar.gz",
+            "bytes": 1147630,
+            "snapshot_sha1": "6caf7421bbcb2be76006f31ab514d484a8d8b628",
+            "url": "https://snapshot.debian.org/file/6caf7421bbcb2be76006f31ab514d484a8d8b628",
+            "dsc_declared_sha256": "aae608dfe8213dfd05d909a57718ef82f30722c392344583d3f39050c7f29a80",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "xz-utils",
+        "version": "5.8.1-1+deb13u1",
+        "installed_binaries": [
+          "liblzma5:arm64"
+        ],
+        "files": [
+          {
+            "name": "xz-utils_5.8.1-1+deb13u1.debian.tar.xz",
+            "bytes": 25696,
+            "snapshot_sha1": "a4388b86149165bb1ae1010d54cf89f2fddfbfcc",
+            "url": "https://snapshot.debian.org/file/a4388b86149165bb1ae1010d54cf89f2fddfbfcc",
+            "dsc_declared_sha256": "0e48427971a9ce674ddbba26e34ac1dd009c683f3816ce17852d99dc7b0a8e46",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "xz-utils_5.8.1-1+deb13u1.dsc",
+            "bytes": 2736,
+            "snapshot_sha1": "81bd81b15c3e5c9965ecebece5a3a2cc99354516",
+            "url": "https://snapshot.debian.org/file/81bd81b15c3e5c9965ecebece5a3a2cc99354516",
+            "verified_dsc_sha256": "ddadd9d9f7c4bb80b08f9f17409e2701a29a4cf8fe25e15d19605e5281c1fc1b"
+          },
+          {
+            "name": "xz-utils_5.8.1.orig.tar.xz",
+            "bytes": 1461872,
+            "snapshot_sha1": "c29df8058b6279bfab2744f3e79b2940229207a3",
+            "url": "https://snapshot.debian.org/file/c29df8058b6279bfab2744f3e79b2940229207a3",
+            "dsc_declared_sha256": "0b54f79df85912504de0b14aec7971e3f964491af1812d83447005807513cd9e",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "xz-utils_5.8.1.orig.tar.xz.asc",
+            "bytes": 833,
+            "snapshot_sha1": "3658f92b0eec052a58ca69fa3c12c5b095a05fc6",
+            "url": "https://snapshot.debian.org/file/3658f92b0eec052a58ca69fa3c12c5b095a05fc6",
+            "dsc_declared_sha256": "4138f4ceca1aa7fd2085fb15a23f6d495d27bca6d3c49c429a8520ea622c27ae",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "zlib",
+        "version": "1:1.3.dfsg+really1.3.1-1",
+        "installed_binaries": [
+          "zlib1g:arm64"
+        ],
+        "files": [
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1-1.debian.tar.xz",
+            "bytes": 16576,
+            "snapshot_sha1": "8b454f72def33b4a329489b8dcb2568ba0ccac69",
+            "url": "https://snapshot.debian.org/file/8b454f72def33b4a329489b8dcb2568ba0ccac69",
+            "dsc_declared_sha256": "9ed525955ce9fb0c1b39be8ff98f73450dbfc6305a9a27e6149c8972d38a0a9e",
+            "source_archive_bytes_downloaded": false
+          },
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1-1.dsc",
+            "bytes": 2637,
+            "snapshot_sha1": "f1d41173a0d8586644be4a5b9ee6185a794a767c",
+            "url": "https://snapshot.debian.org/file/f1d41173a0d8586644be4a5b9ee6185a794a767c",
+            "verified_dsc_sha256": "ede2791e29c1d3b422f9208bdd7edf040c20445ea1e7453a72037576e64fa197"
+          },
+          {
+            "name": "zlib_1.3.dfsg+really1.3.1.orig.tar.gz",
+            "bytes": 1325737,
+            "snapshot_sha1": "3b19b81105d3436095134a648c521b678905eaac",
+            "url": "https://snapshot.debian.org/file/3b19b81105d3436095134a648c521b678905eaac",
+            "dsc_declared_sha256": "60dd315c07f616887caa029408308a018ace66e3d142726a97db164b3b8f69fb",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      },
+      {
+        "source": "debianutils",
+        "version": "5.23.2",
+        "installed_binaries": [
+          "debianutils"
+        ],
+        "files": [
+          {
+            "name": "debianutils_5.23.2.dsc",
+            "bytes": 1908,
+            "snapshot_sha1": "617a03e001015cdb7651df4ddbf5b22d0f716271",
+            "url": "https://snapshot.debian.org/file/617a03e001015cdb7651df4ddbf5b22d0f716271",
+            "verified_dsc_sha256": "471b65deec232bb033f3e3e06d5bf64dac0ced474c6fd61d41538f3f3de876f8"
+          },
+          {
+            "name": "debianutils_5.23.2.git.tar.xz",
+            "bytes": 175400,
+            "snapshot_sha1": "cea61a30b5a1e9d9af8d3d189ad3e66b23c25cbb",
+            "url": "https://snapshot.debian.org/file/cea61a30b5a1e9d9af8d3d189ad3e66b23c25cbb",
+            "outside_dsc_source_members": true,
+            "sha256_verified": false
+          },
+          {
+            "name": "debianutils_5.23.2.tar.xz",
+            "bytes": 82376,
+            "snapshot_sha1": "7432fd03bb106c03e2c6e34ffc042a5f83ae7652",
+            "url": "https://snapshot.debian.org/file/7432fd03bb106c03e2c6e34ffc042a5f83ae7652",
+            "dsc_declared_sha256": "79e524b7526dba2ec5c409d0ee52ebec135815cf5b2907375d444122e0594b69",
+            "source_archive_bytes_downloaded": false
+          }
+        ],
+        "descriptor_signature_verified": false
+      }
+    ],
+    "descriptor_signatures_verified": false,
+    "source_archive_bytes_verified": false
+  },
+  "python_packages": [
+    {
+      "name": "absl-py",
+      "version": "2.5.0",
+      "release_api": "https://pypi.org/pypi/absl-py/2.5.0/json",
+      "source_distributions": [
+        {
+          "filename": "absl_py-2.5.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d0/4f/d79676ab82f2e42fc3611618139f13a9c4c31d0cff4b486982047679a802/absl_py-2.5.0.tar.gz",
+          "bytes": 118119,
+          "pypi_declared_sha256": "0c996f25c0490700fadabe6351630f6111534fa0ae252cc6d2014ea3b141135f",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "release_api": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+      "source_distributions": [
+        {
+          "filename": "annotated_types-0.8.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/5f/56/a8120250d128bed162cd73c76d45f6ef9991f3e068f62a8ee060afa3104a/annotated_types-0.8.0.tar.gz",
+          "bytes": 15893,
+          "pypi_declared_sha256": "13b2beaad985e05e2d6407ee4c4f35590b11f8d693a258a561055cac8f64cab7",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "release_api": "https://pypi.org/pypi/anyio/4.14.2/json",
+      "source_distributions": [
+        {
+          "filename": "anyio-4.14.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/61/cc/a381afa6efea9f496eff839d4a6a1aed3bfafc7b3ab4b0d1b243a12573dd/anyio-4.14.2.tar.gz",
+          "bytes": 260176,
+          "pypi_declared_sha256": "cfa139f3ed1a23ee8f88a145ddb5ac7605b8bbfd8592baacd7ce3d8bb4313c7f",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "release_api": "https://pypi.org/pypi/attrs/26.1.0/json",
+      "source_distributions": [
+        {
+          "filename": "attrs-26.1.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9a/8e/82a0fe20a541c03148528be8cac2408564a6c9a0cc7e9171802bc1d26985/attrs-26.1.0.tar.gz",
+          "bytes": 952055,
+          "pypi_declared_sha256": "d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "bazel-runfiles",
+      "version": "2.3.2",
+      "release_api": "https://pypi.org/pypi/bazel-runfiles/2.3.2/json",
+      "source_distributions": [],
+      "source_form": "Source-bearing Python wheel; no PyPI sdist",
+      "source_wheel": {
+        "url": "https://files.pythonhosted.org/packages/30/8a/ee68d39bb8729fd4ed0668dbf6d0909e2364ea573442356667bba7687acd/bazel_runfiles-2.3.2-py3-none-any.whl",
+        "bytes": 10356,
+        "sha256": "1e69e329f824e05384cad02979e3a186da6c59b4424b805e15d41a386f157617",
+        "previous_exact_wheel_inspection": "Python files retain Apache headers"
+      }
+    },
+    {
+      "name": "boto3",
+      "version": "1.43.82",
+      "release_api": "https://pypi.org/pypi/boto3/1.43.82/json",
+      "source_distributions": [
+        {
+          "filename": "boto3-1.43.82.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/3f/b1/5d8bc6b7335d86f15d43a34a4bbbeced202aef2b4e942c67a5846120c1ff/boto3-1.43.82.tar.gz",
+          "bytes": 112671,
+          "pypi_declared_sha256": "bc5a7824568c117110bac8fe7ccfac63f0a946f253953d42e73a8c1fb65162e0",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "botocore",
+      "version": "1.43.82",
+      "release_api": "https://pypi.org/pypi/botocore/1.43.82/json",
+      "source_distributions": [
+        {
+          "filename": "botocore-1.43.82.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ed/96/54e8d9a09689bf870bc723bf95ee8f5a4bba3b9c203baaaca3fb557d4924/botocore-1.43.82.tar.gz",
+          "bytes": 16007302,
+          "pypi_declared_sha256": "347573c0bab52e29c923e28128764fcc50f469ed98dc5460220026cd3672ac0c",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "release_api": "https://pypi.org/pypi/cffi/2.1.1/json",
+      "source_distributions": [
+        {
+          "filename": "cffi-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9e/ef/008a1939e372c06329a3fce4279c02f328488f3526744906eeec3da7ad5f/cffi-2.1.1.tar.gz",
+          "bytes": 530807,
+          "pypi_declared_sha256": "dd31f52ea1086513bb9df30f8fcee9b8918323ae067a3d5b78bc826a000712be",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "release_api": "https://pypi.org/pypi/click/8.4.2/json",
+      "source_distributions": [
+        {
+          "filename": "click-8.4.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/76/d4/81420972a676e8ffea40450d8c8c92943e7218a78fe9b64359836cc9876b/click-8.4.2.tar.gz",
+          "bytes": 338000,
+          "pypi_declared_sha256": "9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "release_api": "https://pypi.org/pypi/cryptography/50.0.0/json",
+      "source_distributions": [
+        {
+          "filename": "cryptography-50.0.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/de/41/6cbdcf9142d00fe82836fbb51e503e58088575cf7a0fe1dbff6695bf0840/cryptography-50.0.0.tar.gz",
+          "bytes": 880201,
+          "pypi_declared_sha256": "eeac2acb5a20ed25e0ad6d1df9891a520b78b404266b6d11778f25d5d691a6c9",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "release_api": "https://pypi.org/pypi/h11/0.16.0/json",
+      "source_distributions": [
+        {
+          "filename": "h11-0.16.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6fb3c75474d40b3052059d95df7e73351460c8588d963/h11-0.16.0.tar.gz",
+          "bytes": 101250,
+          "pypi_declared_sha256": "4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.12.0",
+      "release_api": "https://pypi.org/pypi/httpcore2/2.12.0/json",
+      "source_distributions": [
+        {
+          "filename": "httpcore2-2.12.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/be/ad/f4f0e57345f1870f3e8cb624e058d7eca6e5a27d33bcc3311d9b618734cd/httpcore2-2.12.0.tar.gz",
+          "bytes": 67548,
+          "pypi_declared_sha256": "9293522bba0aa7c4c8e9e3f040c16575bd8868e155a77fa30c7a9085a5eae648",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "httpx2",
+      "version": "2.12.0",
+      "release_api": "https://pypi.org/pypi/httpx2/2.12.0/json",
+      "source_distributions": [
+        {
+          "filename": "httpx2-2.12.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/7f/f8/579a8b51e42e38ee32647df9f08aa25643ae788e275cc625b199829c4671/httpx2-2.12.0.tar.gz",
+          "bytes": 100040,
+          "pypi_declared_sha256": "7631fe9887a8a2275f4a2540e053aa670fcc50742864a9ae7c66e609fdcf12cf",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "release_api": "https://pypi.org/pypi/idna/3.18/json",
+      "source_distributions": [
+        {
+          "filename": "idna-3.18.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/cd/63/9496c57188a2ee585e0f1db071d75089a11e98aa86eb99d9d7618fc1edce/idna-3.18.tar.gz",
+          "bytes": 196711,
+          "pypi_declared_sha256": "ffb385a7e039654cef1ab9ef32c6fafe283c0c0467bba1d9029738ce4a14a848",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "jmespath",
+      "version": "1.1.0",
+      "release_api": "https://pypi.org/pypi/jmespath/1.1.0/json",
+      "source_distributions": [
+        {
+          "filename": "jmespath-1.1.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d3/59/322338183ecda247fb5d1763a6cbe46eff7222eaeebafd9fa65d4bf5cb11/jmespath-1.1.0.tar.gz",
+          "bytes": 27377,
+          "pypi_declared_sha256": "472c87d80f36026ae83c6ddd0f1d05d4e510134ed462851fd5f754c8c3cbb88d",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "release_api": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+      "source_distributions": [
+        {
+          "filename": "jsonschema-4.26.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/b3/fc/e067678238fa451312d4c62bf6e6cf5ec56375422aee02f9cb5f909b3047/jsonschema-4.26.0.tar.gz",
+          "bytes": 366583,
+          "pypi_declared_sha256": "0c26707e2efad8aa1bfc5b7ce170f3fccc2e4918ff85989ba9ffa9facb2be326",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "release_api": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+      "source_distributions": [
+        {
+          "filename": "jsonschema_specifications-2025.9.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/19/74/a633ee74eb36c44aa6d1095e7cc5569bebf04342ee146178e2d36600708b/jsonschema_specifications-2025.9.1.tar.gz",
+          "bytes": 32855,
+          "pypi_declared_sha256": "b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "mcp",
+      "version": "2.1.1",
+      "release_api": "https://pypi.org/pypi/mcp/2.1.1/json",
+      "source_distributions": [
+        {
+          "filename": "mcp-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d4/6e/21fb8e5d579dbe21d96ea4d5034200d46d8bdf2261053b5bd041f3c2f612/mcp-2.1.1.tar.gz",
+          "bytes": 3984589,
+          "pypi_declared_sha256": "50b7ba1ebbe117008ea7bdd288234043e69c20b403d6851d19661e6d431a75ef",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.1.1",
+      "release_api": "https://pypi.org/pypi/mcp-types/2.1.1/json",
+      "source_distributions": [
+        {
+          "filename": "mcp_types-2.1.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6a/dd/1c4417dc0b722c23a1669032d5f044e41170fe5d4773b488a50fcce98c32/mcp_types-2.1.1.tar.gz",
+          "bytes": 66674,
+          "pypi_declared_sha256": "77dcbe48fba73cca71a673f2646a5f037a017b7a0a07ac89cec1113028890eda",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.44.0",
+      "release_api": "https://pypi.org/pypi/opentelemetry-api/1.44.0/json",
+      "source_distributions": [
+        {
+          "filename": "opentelemetry_api-1.44.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ee/8b/aa9e2d8b8dfa7c946f7dec5d1f8f6ba8eca062f43509a06bdb5ce93d26c0/opentelemetry_api-1.44.0.tar.gz",
+          "bytes": 72406,
+          "pypi_declared_sha256": "67647e5e9566edcf421166fdf022b3537f818635daa852b289e34604dc6fb33a",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "pip",
+      "version": "26.2.1",
+      "release_api": "https://pypi.org/pypi/pip/26.2.1/json",
+      "source_distributions": [
+        {
+          "filename": "pip-26.2.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ae/15/4500e320e6b101ec3b719ae85b697d9940b6cda672bc555bd6016fc60c6f/pip-26.2.1.tar.gz",
+          "bytes": 1848877,
+          "pypi_declared_sha256": "f6ad667e89a1fe78046c8f13232b247200f5258d7828f3f7883d660878e0813f",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.0",
+      "release_api": "https://pypi.org/pypi/protobuf/7.36.0/json",
+      "source_distributions": [
+        {
+          "filename": "protobuf-7.36.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/a7/e7/0553e21d25ca4d9f573135775348a372c3ec34a93a71d5f297c3bac38341/protobuf-7.36.0.tar.gz",
+          "bytes": 510034,
+          "pypi_declared_sha256": "e8e09cb0d794c6687926fa558a8a6e72aa10edb997d5ca61da0765f12a3e00ea",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0",
+      "release_api": "https://pypi.org/pypi/pycparser/3.0/json",
+      "source_distributions": [
+        {
+          "filename": "pycparser-3.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/1b/7d/92392ff7815c21062bea51aa7b87d45576f649f16458d78b7cf94b9ab2e6/pycparser-3.0.tar.gz",
+          "bytes": 103492,
+          "pypi_declared_sha256": "600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4",
+      "release_api": "https://pypi.org/pypi/pydantic/2.13.4/json",
+      "source_distributions": [
+        {
+          "filename": "pydantic-2.13.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/18/a5/b60d21ac674192f8ab0ba4e9fd860690f9b4a6e51ca5df118733b487d8d6/pydantic-2.13.4.tar.gz",
+          "bytes": 844775,
+          "pypi_declared_sha256": "c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "release_api": "https://pypi.org/pypi/pydantic-core/2.46.4/json",
+      "source_distributions": [
+        {
+          "filename": "pydantic_core-2.46.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/9d/56/921726b776ace8d8f5db44c4ef961006580d91dc52b803c489fafd1aa249/pydantic_core-2.46.4.tar.gz",
+          "bytes": 471464,
+          "pypi_declared_sha256": "62f875393d7f270851f20523dd2e29f082bcc82292d66db2b64ea71f64b6e1c1",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "pyjwt",
+      "version": "2.15.0",
+      "release_api": "https://pypi.org/pypi/pyjwt/2.15.0/json",
+      "source_distributions": [
+        {
+          "filename": "pyjwt-2.15.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/02/a5/5197bfd06417837ac079921c66fa6393f1dea3557272a263cebfef69e432/pyjwt-2.15.0.tar.gz",
+          "bytes": 120513,
+          "pypi_declared_sha256": "b11c5f9791d7bf51c2b39a81ed669f6b2dbbd669df2942f6c60167e9e3d1abe4",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "release_api": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+      "source_distributions": [
+        {
+          "filename": "python-dateutil-2.9.0.post0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz",
+          "bytes": 342432,
+          "pypi_declared_sha256": "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "release_api": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+      "source_distributions": [
+        {
+          "filename": "python_multipart-0.0.32.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/5b/42/55c32bb9b12693c092ad250a0e82edb5b31ddeda6eb772de5f308b3804ad/python_multipart-0.0.32.tar.gz",
+          "bytes": 46881,
+          "pypi_declared_sha256": "be54b7f3fa167bb83e4fcd936b887b708f4e57fe75911c02aebf53efaf8d938e",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "release_api": "https://pypi.org/pypi/referencing/0.37.0/json",
+      "source_distributions": [
+        {
+          "filename": "referencing-0.37.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/22/f5/df4e9027acead3ecc63e50fe1e36aca1523e1719559c499951bb4b53188f/referencing-0.37.0.tar.gz",
+          "bytes": 78036,
+          "pypi_declared_sha256": "44aefc3142c5b842538163acb373e24cce6632bd54bdb01b21ad5863489f50d8",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "release_api": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+      "source_distributions": [
+        {
+          "filename": "rpds_py-2026.6.3.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/aa/2a/9618a122aeb2a169a28b03889a2995fe297588964333d4a7d67bdf46e147/rpds_py-2026.6.3.tar.gz",
+          "bytes": 64051,
+          "pypi_declared_sha256": "1cebd1337c242e4ec2293e541f712b2da849b29f48f0c293684b71c0632625d4",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "s3transfer",
+      "version": "0.19.2",
+      "release_api": "https://pypi.org/pypi/s3transfer/0.19.2/json",
+      "source_distributions": [
+        {
+          "filename": "s3transfer-0.19.2.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/76/43/35e4d8aa320bffe8287fe8f65f578fa2d2db0a64212f0e710dce58267854/s3transfer-0.19.2.tar.gz",
+          "bytes": 165592,
+          "pypi_declared_sha256": "ba0309fd86be3c27dbf78cdd813c13c5e1df16e5874b99d2535ebbdfb9892993",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "84.0.0",
+      "release_api": "https://pypi.org/pypi/setuptools/84.0.0/json",
+      "source_distributions": [
+        {
+          "filename": "setuptools-84.0.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6d/44/f5da03a8ef95d369145c5bb53050e7877c9f3d312e128605fd9504829143/setuptools-84.0.0.tar.gz",
+          "bytes": 1168449,
+          "pypi_declared_sha256": "f4695c21257f0d9b537ec2692c941d02ee143b7cc1276941349a546573b2ef73",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "release_api": "https://pypi.org/pypi/six/1.17.0/json",
+      "source_distributions": [
+        {
+          "filename": "six-1.17.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz",
+          "bytes": 34031,
+          "pypi_declared_sha256": "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.4.8",
+      "release_api": "https://pypi.org/pypi/sse-starlette/3.4.8/json",
+      "source_distributions": [
+        {
+          "filename": "sse_starlette-3.4.8.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/f8/00/b42a44342a054d58cb1115d7c8aa9cb4290dd9442f9c1b91a4b8173dba22/sse_starlette-3.4.8.tar.gz",
+          "bytes": 32548,
+          "pypi_declared_sha256": "ed89ffbb75cbf78a5fe2f2109cd584792ee7f9dfac96f791db546df8f15f3f9c",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "starlette",
+      "version": "1.6.0",
+      "release_api": "https://pypi.org/pypi/starlette/1.6.0/json",
+      "source_distributions": [
+        {
+          "filename": "starlette-1.6.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/b5/b4/205b0d5241d934e8add0c38aa924c4f9fb7330834ff11e5444db964ec3f9/starlette-1.6.0.tar.gz",
+          "bytes": 2716969,
+          "pypi_declared_sha256": "d4e3ac5e546444960c710297a3c9fc3f7ebae1b7e963f3d36173b49da535be9b",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "tink",
+      "version": "1.16.1",
+      "release_api": "https://pypi.org/pypi/tink/1.16.1/json",
+      "source_distributions": [
+        {
+          "filename": "tink-1.16.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/d3/e2/06a2836b499abddff5127ac4a849667b721f1e1b38742572e0cf9a53f327/tink-1.16.1.tar.gz",
+          "bytes": 280107,
+          "pypi_declared_sha256": "8d82f934f31d1ba8fa6014c37edddc0b3f61cfdbbd9317eb6269cfe7eeb1fa86",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.4",
+      "release_api": "https://pypi.org/pypi/truststore/0.10.4/json",
+      "source_distributions": [
+        {
+          "filename": "truststore-0.10.4.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/53/a3/1585216310e344e8102c22482f6060c7a6ea0322b63e026372e6dcefcfd6/truststore-0.10.4.tar.gz",
+          "bytes": 26169,
+          "pypi_declared_sha256": "9d91bd436463ad5e4ee4aba766628dd6cd7010cf3e2461756b3303710eebc301",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "release_api": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+      "source_distributions": [
+        {
+          "filename": "typing_extensions-4.16.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz",
+          "bytes": 113555,
+          "pypi_declared_sha256": "dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.3",
+      "release_api": "https://pypi.org/pypi/typing-inspection/0.4.3/json",
+      "source_distributions": [
+        {
+          "filename": "typing_inspection-0.4.3.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/6d/bc/4eae18cd40c65798a16267572ba346c11f599d44b01603dbd843342042bc/typing_inspection-0.4.3.tar.gz",
+          "bytes": 76711,
+          "pypi_declared_sha256": "c5f9ec1530b5c1e2c9bc34a84d9a3466ed1b2f3f2fa9f901368d9c5596210e4d",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "release_api": "https://pypi.org/pypi/urllib3/2.8.0/json",
+      "source_distributions": [
+        {
+          "filename": "urllib3-2.8.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/e3/05/b17359e1cefb4f909b5e40b1b90a496d987258916dbbf88e842c729f510e/urllib3-2.8.0.tar.gz",
+          "bytes": 458972,
+          "pypi_declared_sha256": "63bf2ead4c879426ebf22ef2a781eeb4aa3b4ae798a0435506f8687fd5bb9b63",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.52.1",
+      "release_api": "https://pypi.org/pypi/uvicorn/0.52.1/json",
+      "source_distributions": [
+        {
+          "filename": "uvicorn-0.52.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/03/18/ccce41535dee1be77735592bd19965f3972c82e07ee703d324709496b716/uvicorn-0.52.1.tar.gz",
+          "bytes": 100571,
+          "pypi_declared_sha256": "112ec661814189acbccd3f7b86460147cc065fc92c0821afa78918780e4354dd",
+          "yanked": false,
+          "archive_bytes_verified": false
+        }
+      ]
+    }
+  ],
+  "bundled_ui_packages": [
+    {
+      "name": "@modelcontextprotocol/client",
+      "version": "2.2.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.2.0.tgz",
+      "lock_integrity": "sha512-LxCou/CSYQ6dwEnjhLZY0KnEuc8V4UJ3IEQCl/uR2yHobSQIEdJKUlKLRYRF5i5FqRGHy1eK7une3aAWDHLtig==",
+      "archive_bytes_verified_in_this_index": false
+    },
+    {
+      "name": "@modelcontextprotocol/core",
+      "version": "2.2.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.2.0.tgz",
+      "lock_integrity": "sha512-iLhmprRmWI8EcosOA3wVvww22z02NkgqhV4fBH6f/odQBsi7xnJc0HGmi21yWO+/iKw2yzqVE127Zhna5/+JXw==",
+      "archive_bytes_verified_in_this_index": false
+    },
+    {
+      "name": "@modelcontextprotocol/ext-apps",
+      "version": "2.0.3",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/ext-apps/-/ext-apps-2.0.3.tgz",
+      "lock_integrity": "sha512-Tn+4+cyhO4f4cQSDxNyLiIfEE+qlTTuIbWBJB8JTinEXOhDYgCT4wDTQplxD9MBYZH5pCYGC59GaxiwIT4bu8w==",
+      "archive_bytes_verified_in_this_index": false
+    },
+    {
+      "name": "lucide",
+      "version": "1.49.0",
+      "package_archive": "https://registry.npmjs.org/lucide/-/lucide-1.49.0.tgz",
+      "lock_integrity": "sha512-Dyl20SJao+7GUAYqa1Wz/x5wiIYzVRlDXwtFDvf44HULQObsb8YjXE81YGv24WMFQQYLqlxHu86ikEAqG4Mbww==",
+      "archive_bytes_verified_in_this_index": false
+    },
+    {
+      "name": "pkce-challenge",
+      "version": "5.0.1",
+      "package_archive": "https://registry.npmjs.org/pkce-challenge/-/pkce-challenge-5.0.1.tgz",
+      "lock_integrity": "sha512-wQ0b/W4Fr01qtpHlqSqspcj3EhBvimsdh0KlHhH8HRZnMsEa0ea2fTULOXOS9ccQr3om+GcGRk4e+isrZWV8qQ==",
+      "archive_bytes_verified_in_this_index": false
+    },
+    {
+      "name": "zod",
+      "version": "4.2.0",
+      "package_archive": "https://registry.npmjs.org/zod/-/zod-4.2.0.tgz",
+      "lock_integrity": "sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==",
+      "archive_bytes_verified_in_this_index": false
+    }
+  ],
+  "remaining_before_binary_publication": [
+    "Verify the required complete source/build inputs and applicable redistribution obligations.",
+    "Provide source-obtaining instructions next to the approved binary artifacts; confirm access.",
+    "Bind source information to the actual published image digests, not only local image IDs.",
+    "Verify authenticated public package/image provenance under the approved release workflow."
+  ]
+}

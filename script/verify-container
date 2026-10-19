@@ -1,0 +1,355 @@
+#!/bin/sh
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+PYTHON=${PYTHON:-python3}
+WORK=$(mktemp -d "${TMPDIR:-/tmp}/cam-container.XXXXXX")
+PROJECT="cam-verify-$$-$(basename "$WORK" | tr '[:upper:].' '[:lower:]-')"
+REMOVE_IMAGE=0
+COMPOSE_OWNED=0
+
+cleanup() {
+  if [ "$COMPOSE_OWNED" -eq 1 ]; then
+    docker compose -p "$PROJECT" down --volumes --remove-orphans >/dev/null 2>&1 || true
+  fi
+  if [ "$REMOVE_IMAGE" -eq 1 ] && [ -n "${CAM_IMAGE:-}" ]; then
+    docker image rm "$CAM_IMAGE" >/dev/null 2>&1 || true
+  fi
+  rm -rf "$WORK"
+}
+trap cleanup EXIT HUP INT TERM
+
+cd "$ROOT"
+
+for command in docker git "$PYTHON"; do
+  if ! command -v "$command" >/dev/null 2>&1; then
+    echo "required command is unavailable: $command" >&2
+    exit 1
+  fi
+done
+
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+  echo "container verification requires a clean tracked worktree" >&2
+  exit 1
+fi
+
+if [ "$(docker info --format '{{.OSType}}')" != "linux" ]; then
+  echo "container verification requires a Linux Docker engine" >&2
+  exit 1
+fi
+
+ENGINE_ARCH=$(docker info --format '{{.Architecture}}')
+case "$ENGINE_ARCH" in
+  arm64 | aarch64)
+    PLATFORM_ARCH=arm64
+    MACHINE_ARCH=aarch64
+    ;;
+  amd64 | x86_64)
+    PLATFORM_ARCH=amd64
+    MACHINE_ARCH=x86_64
+    ;;
+  *)
+    echo "unsupported Docker engine architecture: $ENGINE_ARCH" >&2
+    exit 1
+    ;;
+esac
+
+if [ -n "${CAM_EXPECT_ARCH:-}" ] && [ "$CAM_EXPECT_ARCH" != "$PLATFORM_ARCH" ]; then
+  echo "Docker engine architecture $PLATFORM_ARCH does not match CAM_EXPECT_ARCH=$CAM_EXPECT_ARCH" >&2
+  exit 1
+fi
+
+EXISTING_CONTAINERS=$(docker ps --all --quiet --filter "label=com.docker.compose.project=$PROJECT")
+EXISTING_VOLUMES=$(docker volume ls --quiet --filter "label=com.docker.compose.project=$PROJECT")
+EXISTING_NETWORKS=$(docker network ls --quiet --filter "label=com.docker.compose.project=$PROJECT")
+if [ -n "$EXISTING_CONTAINERS$EXISTING_VOLUMES$EXISTING_NETWORKS" ]; then
+  echo "verification project resources already exist; refusing to change them" >&2
+  exit 1
+fi
+
+REVISION=$(git rev-parse HEAD)
+SHORT_REVISION=$(printf '%s' "$REVISION" | cut -c1-12)
+if [ -z "${CAM_IMAGE:-}" ]; then
+  CAM_IMAGE="cross-assistant-memory:verify-$PLATFORM_ARCH-$SHORT_REVISION-$PROJECT"
+  EXISTING_IMAGE=$(docker image ls --quiet --filter "reference=$CAM_IMAGE")
+  if [ -n "$EXISTING_IMAGE" ]; then
+    echo "verification image already exists; refusing to replace it" >&2
+    exit 1
+  fi
+  REMOVE_IMAGE=1
+fi
+CAM_PORT=${CAM_PORT:-$($PYTHON -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')}
+export CAM_BUILD_REVISION="$REVISION" CAM_IMAGE CAM_PORT
+CAM_BUILD_CONTEXT="$WORK/context"
+export CAM_BUILD_CONTEXT
+PYTHONPATH="$ROOT/src" "$PYTHON" -m cross_assistant_memory.runtime_provenance \
+  --prepare-container "$CAM_BUILD_CONTEXT" >"$WORK/build-revision.txt"
+if [ "$(cat "$WORK/build-revision.txt")" != "$REVISION" ]; then
+  echo "container context revision changed during preparation" >&2
+  exit 1
+fi
+
+docker compose -p "$PROJECT" config --format json >"$WORK/compose.json"
+$PYTHON - "$WORK/compose.json" <<'PY'
+import json
+import sys
+
+config = json.load(open(sys.argv[1], encoding="utf-8"))
+node = config["services"]["node"]
+assert node["network_mode"] == "host"
+assert node["read_only"] is True
+assert node["user"] == "65532:65532"
+assert node.get("ports") in (None, [])
+assert node["cap_drop"] == ["ALL"]
+assert "no-new-privileges:true" in node["security_opt"]
+assert node["volumes"] == [
+    {
+        "type": "volume",
+        "source": "cam-data",
+        "target": "/var/lib/cross-assistant-memory",
+        "volume": {},
+    }
+]
+assert any(item.startswith("/tmp:") for item in node["tmpfs"])
+PY
+
+docker compose -p "$PROJECT" build --pull node
+
+docker image inspect "$CAM_IMAGE" >"$WORK/image.json"
+$PYTHON - "$WORK/image.json" "$REVISION" "$PLATFORM_ARCH" <<'PY'
+import json
+import sys
+
+image = json.load(open(sys.argv[1], encoding="utf-8"))[0]
+expected_revision = sys.argv[2]
+expected_architecture = sys.argv[3]
+config = image["Config"]
+labels = config["Labels"]
+assert image["Os"] == "linux"
+assert image["Architecture"] == expected_architecture
+assert config["User"] == "65532:65532"
+assert config["Entrypoint"] == ["cross-memory"]
+assert labels["org.opencontainers.image.revision"] == expected_revision
+assert labels["org.opencontainers.image.base.digest"] == (
+    "sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f"
+)
+PY
+
+COMPOSE_OWNED=1
+docker compose -p "$PROJECT" up --detach --wait --wait-timeout 180 node
+CONTAINER_ID=$(docker compose -p "$PROJECT" ps -q node)
+docker exec "$CONTAINER_ID" python -c '
+import shutil, sys
+from cross_assistant_memory.runtime_provenance import require_runtime_code_revision
+assert shutil.which("git") is None
+require_runtime_code_revision(sys.argv[1])
+' "$REVISION"
+if [ -z "$CONTAINER_ID" ]; then
+  echo "Compose did not create the node container" >&2
+  exit 1
+fi
+
+RUNTIME_CHECK=$(docker exec -i "$CONTAINER_ID" python - <<'PY'
+import json
+import sqlite3
+import ssl
+import sys
+
+assert sqlite3.sqlite_version_info >= (3, 51, 3), "SQLite WAL-reset fix is required"
+with sqlite3.connect(":memory:") as connection:
+    connection.execute("CREATE VIRTUAL TABLE probe USING fts5(text)")
+context = ssl.create_default_context()
+assert context.cert_store_stats()["x509_ca"] > 0, "TLS trust store is required"
+print(json.dumps({"python": sys.version.split()[0], "sqlite": sqlite3.sqlite_version,
+                  "fts5": True, "openssl": ssl.OPENSSL_VERSION,
+                  "trusted_ca_count": context.cert_store_stats()["x509_ca"]}))
+PY
+)
+
+docker exec "$CONTAINER_ID" python -c '
+import hashlib
+from pathlib import Path
+path = Path("/usr/share/doc/cross-agent-memory/python-runtime-licenses.rst")
+assert hashlib.sha256(path.read_bytes()).hexdigest() == "e43fb936c6655d7996dba480d7ebdea492d6040ec388eb8ed9d1000f72de8cab"
+'
+
+SOURCE_COMPANION_HASHES=$(PYTHONPATH="$ROOT/src" "$PYTHON" - "$ROOT" <<'PY'
+import json
+import sys
+from pathlib import Path
+from cross_assistant_memory.runtime_provenance import source_provenance
+
+provenance = source_provenance(Path(sys.argv[1]))
+prefix = "docs/third-party/"
+print(json.dumps({name.removeprefix(prefix): digest
+                  for name, digest in provenance["build_inputs"].items() if name.startswith(prefix)}))
+PY
+)
+SOURCE_COMPANION_CHECK=$(docker exec -i "$CONTAINER_ID" python - \
+  /usr/share/doc/cross-agent-memory/third-party "$SOURCE_COMPANION_HASHES" <<'PY'
+import hashlib
+import json
+import stat
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+expected = json.loads(sys.argv[2])
+assert set(expected) == {"README.md", "notices.txt", "source-index.json"}
+assert root.is_dir() and not root.is_symlink()
+assert {path.name for path in root.iterdir()} == set(expected)
+for name, digest in expected.items():
+    path = root / name
+    assert path.is_file() and not path.is_symlink()
+    assert stat.S_IMODE(path.stat().st_mode) == 0o444
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+print(json.dumps({"status": "passed", "files": len(expected)}))
+PY
+)
+
+docker inspect "$CONTAINER_ID" >"$WORK/container.json"
+$PYTHON - "$WORK/container.json" <<'PY'
+import json
+import sys
+
+container = json.load(open(sys.argv[1], encoding="utf-8"))[0]
+host = container["HostConfig"]
+assert container["State"]["Health"]["Status"] == "healthy"
+assert host["ReadonlyRootfs"] is True
+assert host["NetworkMode"] == "host"
+assert host.get("PortBindings") in (None, {})
+assert host["CapDrop"] == ["ALL"]
+assert "no-new-privileges:true" in host["SecurityOpt"]
+assert "/tmp" in host["Tmpfs"]
+mounts = [item for item in container["Mounts"] if item["Destination"] == "/var/lib/cross-assistant-memory"]
+assert len(mounts) == 1
+assert mounts[0]["Type"] == "volume"
+assert mounts[0]["RW"] is True
+PY
+
+docker compose -p "$PROJECT" exec -T node python - "$CAM_PORT" <<'PY'
+import json
+import sys
+import urllib.error
+import urllib.request
+
+port = sys.argv[1]
+with urllib.request.urlopen(f"http://127.0.0.1:{port}/health", timeout=2) as response:
+    assert response.status == 200
+    assert json.load(response) == {"status": "ok"}
+
+request = urllib.request.Request(
+    f"http://127.0.0.1:{port}/mcp",
+    data=b"{}",
+    headers={"content-type": "application/json"},
+    method="POST",
+)
+try:
+    urllib.request.urlopen(request, timeout=2)
+except urllib.error.HTTPError as error:
+    assert error.code == 401
+else:
+    raise AssertionError("unauthenticated MCP request did not fail")
+PY
+
+if [ "$(uname -s)" = "Linux" ]; then
+  HOST_LOOPBACK_RESULT=$($PYTHON - "$CAM_PORT" <<'PY'
+import json
+import sys
+import urllib.request
+
+with urllib.request.urlopen(f"http://127.0.0.1:{sys.argv[1]}/health", timeout=2) as response:
+    assert response.status == 200
+    assert json.load(response) == {"status": "ok"}
+print("cam-loopback-ok")
+PY
+  )
+  HOST_LOOPBACK_CONTEXT=native-linux-host
+else
+  HOST_LOOPBACK_RESULT=$(docker run -i --rm --network host \
+    --entrypoint python "$CAM_IMAGE" - "$CAM_PORT" <<'PY'
+import json
+import sys
+import urllib.request
+
+with urllib.request.urlopen(f"http://127.0.0.1:{sys.argv[1]}/health", timeout=2) as response:
+    assert response.status == 200
+    assert json.load(response) == {"status": "ok"}
+print("cam-loopback-ok")
+PY
+  )
+  HOST_LOOPBACK_CONTEXT=docker-linux-vm-peer
+fi
+if [ "$HOST_LOOPBACK_RESULT" != "cam-loopback-ok" ]; then
+  echo "host-loopback probe did not execute successfully" >&2
+  exit 1
+fi
+
+EXPECTED_SCHEMA=$(docker compose -p "$PROJECT" exec -T node python -c \
+  'from cross_assistant_memory.storage import SCHEMA_VERSION; print(SCHEMA_VERSION)')
+DOCTOR_BEFORE=$(docker compose -p "$PROJECT" exec -T node cross-memory doctor)
+printf '%s' "$DOCTOR_BEFORE" | $PYTHON -c \
+  'import json,sys; value=json.load(sys.stdin); assert value["status"] == "ready"; assert value["ledger"]["schema_version"] == int(sys.argv[1]); assert value["ledger"]["clients"] == 0' "$EXPECTED_SCHEMA"
+
+if docker compose -p "$PROJECT" exec -T node sh -c 'touch /home/cam/rootfs-write-canary' >/dev/null 2>&1; then
+  echo "read-only root filesystem accepted an unexpected write" >&2
+  exit 1
+fi
+docker compose -p "$PROJECT" exec -T node sh -c \
+  'touch "$CAM_HOME/container-write-canary" && rm "$CAM_HOME/container-write-canary"'
+
+docker compose -p "$PROJECT" exec -T node cross-memory client-register \
+  --label container-persistence \
+  --kind assistant \
+  --capability memory:status >/dev/null
+
+docker compose -p "$PROJECT" down
+docker compose -p "$PROJECT" up --detach --wait --wait-timeout 180 node
+
+DOCTOR_AFTER=$(docker compose -p "$PROJECT" exec -T node cross-memory doctor)
+printf '%s' "$DOCTOR_AFTER" | $PYTHON -c \
+  'import json,sys; value=json.load(sys.stdin); assert value["status"] == "ready"; assert value["ledger"]["schema_version"] == int(sys.argv[1]); assert value["ledger"]["clients"] == 1' "$EXPECTED_SCHEMA"
+
+RUNTIME_MACHINE=$(docker compose -p "$PROJECT" exec -T node python -c 'import platform; print(platform.machine())')
+if [ "$RUNTIME_MACHINE" != "$MACHINE_ARCH" ]; then
+  echo "runtime machine $RUNTIME_MACHINE does not match native engine architecture $MACHINE_ARCH" >&2
+  exit 1
+fi
+
+IMAGE_ID=$(docker image inspect --format '{{.Id}}' "$CAM_IMAGE")
+$PYTHON - \
+  "$REVISION" "$IMAGE_ID" "$PLATFORM_ARCH" "$RUNTIME_MACHINE" "$HOST_LOOPBACK_CONTEXT" "$RUNTIME_CHECK" "$SOURCE_COMPANION_CHECK" <<'PY'
+import json
+import sys
+
+print(
+    json.dumps(
+        {
+            "checks": {
+                "authentication": "passed",
+                "compose_startup": "passed",
+                "health": "passed",
+                "host_loopback": "passed",
+                "fresh_schema": "passed",
+                "non_root": "passed",
+                "persistence": "passed",
+                "read_only_root": "passed",
+                "sqlite_wal_fix": "passed",
+                "tls_trust_store": "passed",
+                "runtime_notices": "passed",
+                "source_companion": "passed",
+            },
+            "host_loopback_context": sys.argv[5],
+            "image_id": sys.argv[2],
+            "platform": f"linux/{sys.argv[3]}",
+            "revision": sys.argv[1],
+            "runtime_machine": sys.argv[4],
+            "runtime": json.loads(sys.argv[6]),
+            "source_companion": json.loads(sys.argv[7]),
+            "status": "passed",
+        },
+        indent=2,
+        sort_keys=True,
+    )
+)
+PY

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cross-Agent Memory</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        color-scheme: light dark;
+        font:
+          14px system-ui,
+          sans-serif;
+        letter-spacing: 0;
+        color: light-dark(#202525, #e7eded);
+        background: light-dark(#fff, #181d1d);
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+        min-width: 260px;
+      }
+      header,
+      .toolbar,
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      header {
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      h2 {
+        font-size: 15px;
+        margin: 0 0 12px;
+      }
+      p {
+        line-height: 1.5;
+      }
+      button,
+      input {
+        font: inherit;
+        color: inherit;
+      }
+      input {
+        min-width: 0;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #8b9797;
+        border-radius: 4px;
+        background: transparent;
+      }
+      form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+      button {
+        padding: 9px 12px;
+        border: 1px solid #8b9797;
+        background: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: light-dark(#eaf4f2, #283b39);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      button.primary {
+        background: #0b7167;
+        color: #fff;
+        border-color: #0b7167;
+      }
+      button svg {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        flex-shrink: 0;
+      }
+      :focus-visible {
+        outline: 3px solid #cf8d25;
+        outline-offset: 2px;
+      }
+      .muted {
+        color: light-dark(#516363, #b3c3c3);
+        font-size: 12px;
+      }
+      #notice {
+        min-height: 22px;
+        margin: 10px 0;
+        color: light-dark(#815515, #eeb96d);
+      }
+      .work {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 20px;
+      }
+      section {
+        min-width: 0;
+      }
+      #results {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      #results li {
+        border-top: 1px solid #84939355;
+        padding: 12px 0;
+      }
+      #results button {
+        width: 100%;
+        text-align: left;
+        border: 0;
+        padding: 8px 0;
+      }
+      .snippet {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin: 6px 0;
+      }
+      #evidence {
+        border-left: 1px solid #84939355;
+        padding-left: 20px;
+      }
+      pre {
+        font:
+          13px/1.55 system-ui,
+          sans-serif;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin: 12px 0;
+        max-height: 420px;
+        overflow-y: auto;
+      }
+      details {
+        margin-top: 18px;
+        border-top: 1px solid #84939355;
+        padding-top: 12px;
+      }
+      summary {
+        cursor: pointer;
+      }
+      dl {
+        display: grid;
+        grid-template-columns: minmax(90px, 1fr) minmax(0, 2fr);
+        gap: 8px;
+      }
+      dt,
+      dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      #provenance,
+      #selection {
+        overflow-wrap: anywhere;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 600px) {
+        .work {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #evidence {
+          border-left: 0;
+          border-top: 1px solid #84939355;
+          padding: 16px 0 0;
+        }
+        body {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Cross-Agent Memory</h1>
+      <span class="muted">Read-only</span>
+    </header>
+    <form id="search">
+      <input
+        id="query"
+        aria-label="Search memory"
+        placeholder="Search memory"
+        maxlength="2000"
+        required
+      /><button
+        class="primary"
+        type="submit"
+        id="search-button"
+        aria-label="Search"
+        title="Search"
+        disabled
+      >
+        <i data-lucide="search"></i>
+      </button>
+    </form>
+    <p id="notice" role="status" aria-live="polite">Connecting...</p>
+    <div class="work">
+      <section aria-label="Search results">
+        <h2>Results</h2>
+        <p id="results-state" class="muted"></p>
+        <ul id="results"></ul>
+        <button id="more-results" hidden>
+          <i data-lucide="chevron-right"></i> Next results
+        </button>
+        <button id="reset" hidden>Clear search</button>
+      </section>
+      <section id="evidence" aria-label="Exact evidence">
+        <h2>Evidence</h2>
+        <p id="provenance" class="muted">No evidence selected.</p>
+        <pre id="text"></pre>
+        <p id="page-state" class="muted"></p>
+        <div class="actions">
+          <button id="next" hidden>
+            <i data-lucide="chevron-right"></i> Next text page</button
+          ><button id="select" class="primary" disabled>
+            Use this evidence</button
+          ><button id="clear" title="Clear app-supplied context" disabled>
+            <i data-lucide="x"></i> Clear context
+          </button>
+        </div>
+        <p class="muted">
+          Using evidence shares the displayed text and attribution with the
+          current assistant. It replaces this app's previous selection.
+        </p>
+        <p id="selection" class="muted" role="status"></p>
+      </section>
+    </div>
+    <details>
+      <summary>Coverage and freshness</summary>
+      <p id="coverage-state" class="muted">
+        Node receipts, not live provider coverage.
+      </p>
+      <dl id="coverage"></dl>
+      <button
+        id="refresh"
+        title="Refresh status"
+        aria-label="Refresh status"
+        disabled
+      >
+        <i data-lucide="refresh-cw"></i>
+      </button>
+    </details>
+    <script type="module">
+      /* APP_BUNDLE */
+    </script>
+  </body>
+</html>

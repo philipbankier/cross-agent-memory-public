@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+PYTHON="$ROOT/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then
+  echo 'Run script/setup-dev before script/test.' >&2
+  exit 1
+fi
+WORK=$(mktemp -d "${TMPDIR:-/tmp}/cam-pilot-tests.XXXXXXXX")
+trap 'rm -rf -- "$WORK"' 0
+trap 'exit 130' 2
+trap 'exit 143' 15
+cd "$ROOT"
+PYTHONDONTWRITEBYTECODE=1 "$PYTHON" -m pytest --basetemp "$WORK" "$@"

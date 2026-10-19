@@ -1,0 +1,176 @@
+name: Checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      verify_release_sources:
+        description: Verify the indexed public source archives only, without fleet access or publishing
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    if: github.event_name != 'workflow_dispatch' || !inputs.verify_release_sources
+    name: Python 3.11 on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install hash-locked development environment
+        run: script/setup-dev
+      - name: Lint and typecheck
+        run: script/lint
+      - name: Test installed package
+        run: script/test
+      - name: Verify agent-guided setup
+        run: script/verify-agent-guided-setup
+
+  container:
+    if: github.event_name != 'workflow_dispatch' || !inputs.verify_release_sources
+    name: Native Linux amd64 image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CAM_EXPECT_ARCH: amd64
+      PYTHONDONTWRITEBYTECODE: "1"
+      CAM_IMAGE: cross-assistant-memory:ci-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Reserve isolated image name
+        run: |
+          test -z "$(docker image ls --quiet --filter "reference=$CAM_IMAGE")"
+          echo 'CAM_IMAGE_OWNED=1' >> "$GITHUB_ENV"
+      - name: Verify isolated container
+        run: script/verify-container
+      - name: Test installed package on the image runtime
+        run: |
+          context=$(mktemp -d "$RUNNER_TEMP/cam-installed-tests.XXXXXX")
+          trap 'rm -rf -- "$context"' EXIT
+          PYTHONPATH=src python3 -m cross_assistant_memory.runtime_provenance \
+            --prepare-container "$context/source"
+          cp -R tests "$context/source/tests"
+          cp requirements-dev.lock "$context/source/requirements-dev.lock"
+          chmod 0755 "$context/source"
+          docker run --rm --read-only --tmpfs /tmp:rw,exec,nosuid,size=1g \
+            --mount "type=bind,src=$context/source,dst=/source,readonly" \
+            --entrypoint sh "$CAM_IMAGE" -ec '
+              cp -R /source /tmp/checkout
+              cp -a /opt/cam /tmp/checkout/.venv
+              python -m pip install --no-cache-dir --only-binary=:all: --require-hashes \
+                --target /tmp/test-tools -r /source/requirements-dev.lock
+              cd /tmp/checkout
+              PYTHONPATH=/tmp/test-tools sh script/test -p no:cacheprovider
+            '
+      - name: Install hash-pinned SBOM scanner
+        run: |
+          work=$(mktemp -d "$RUNNER_TEMP/cam-sbom.XXXXXX")
+          echo "CAM_SBOM_TOOL=$work" >> "$GITHUB_ENV"
+          curl --proto '=https' --tlsv1.2 --fail --location --max-time 120 \
+            --max-filesize 40000000 \
+            'https://github.com/anchore/syft/releases/download/v1.54.1/syft_1.54.1_linux_amd64.tar.gz' \
+            --output "$work/syft.tar.gz"
+          printf '%s  %s\n' \
+            c069905b391cc4c20a5ba65ad5c10be2a7ba074f8ea6ad203e24d14e303dad47 \
+            "$work/syft.tar.gz" | sha256sum --check --strict -
+          tar --extract --gzip --file "$work/syft.tar.gz" --directory "$work" syft
+          test -f "$work/syft" && test ! -L "$work/syft"
+      - name: Generate private SBOMs
+        env:
+          SYFT_CHECK_FOR_APP_UPDATE: "false"
+        run: |
+          "$CAM_SBOM_TOOL/syft" version
+          "$CAM_SBOM_TOOL/syft" scan "docker:$CAM_IMAGE" \
+            -o cyclonedx-json=image.sbom.cdx.json
+          "$CAM_SBOM_TOOL/syft" scan dir:ui/memory-app \
+            -o cyclonedx-json=ui-source.sbom.cdx.json
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          image = json.loads(subprocess.check_output(["docker", "image", "inspect", os.environ["CAM_IMAGE"]]))[0]
+          revision = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          assert image["Config"]["Labels"]["org.opencontainers.image.revision"] == revision
+          files = ("image.sbom.cdx.json", "ui-source.sbom.cdx.json")
+          for filename in files:
+              bom = json.loads(Path(filename).read_bytes())
+              assert bom["bomFormat"] == "CycloneDX" and bom["components"]
+          identity = {
+              "revision": revision,
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "image_id": image["Id"],
+              "platform": image["Os"] + "/" + image["Architecture"],
+              "generator": "syft 1.54.1",
+              "sbom_sha256": {name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in files},
+              "ui_inventory_scope": "source and build dependencies, not runtime image contents",
+              "signed": False,
+          }
+          Path("build-identity.json").write_text(json.dumps(identity, indent=2) + "\n")
+          PY
+      - name: Retain private SBOMs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-linux-amd64-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            image.sbom.cdx.json
+            ui-source.sbom.cdx.json
+            build-identity.json
+          if-no-files-found: error
+          retention-days: 1
+      - name: Remove owned verification artifacts
+        if: always()
+        run: |
+          if [ "${CAM_IMAGE_OWNED:-0}" = 1 ] && docker image inspect "$CAM_IMAGE" >/dev/null 2>&1; then
+            docker image rm "$CAM_IMAGE"
+          fi
+          if [ -n "${CAM_SBOM_TOOL:-}" ]; then
+            rm -r -- "$CAM_SBOM_TOOL"
+          fi
+
+  release-sources:
+    name: Indexed public source archives
+    if: github.event_name == 'workflow_dispatch' && inputs.verify_release_sources
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Verify complete archive hashes without retention
+        shell: bash
+        run: |
+          script/verify-release-sources docs/release-source-index.json \
+            | tee "$RUNNER_TEMP/source-verification.json"
+      - name: Retain private source-verification receipt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: source-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/source-verification.json
+            docs/release-source-index.json
+          if-no-files-found: error
+          retention-days: 1

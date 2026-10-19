@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+PYTHON="$ROOT/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then
+  echo 'Run script/setup-dev before script/lint.' >&2
+  exit 1
+fi
+cd "$ROOT"
+"$PYTHON" -m ruff check src tests cam_build.py script/release_sources.py
+"$PYTHON" -m ruff format --check src tests cam_build.py script/release_sources.py
+"$PYTHON" -m pyright

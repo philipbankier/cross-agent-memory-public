@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cross-assistant-memory"
+version = "0.1.0"
+description = "Private, evidence-linked memory shared across assistant clients"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = [
+  "boto3==1.43.82",
+  "httpx2==2.12.0",
+  "mcp==2.1.1",
+  "pydantic-core==2.46.4",
+  "starlette==1.6.0",
+  "tink==1.16.1",
+  "uvicorn==0.52.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pyright==1.1.411",
+  "pytest==9.1.1",
+  "ruff==0.16.2",
+]
+
+[project.scripts]
+cross-memory = "cross_assistant_memory.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["cross_assistant_memory", "cross_assistant_memory.*"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+cam_build = "cam_build"
+
+[tool.setuptools.cmdclass]
+bdist_wheel = "cam_build.VerifiedBdistWheel"
+build_py = "cam_build.VerifiedBuildPy"
+egg_info = "cam_build.VerifiedEggInfo"
+sdist = "cam_build.VerifiedSdist"
+
+[tool.setuptools.package-data]
+cross_assistant_memory = ["_build_provenance.json", "static/memory-app.html"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.pyright]
+include = ["src", "tests", "script/release_sources.py"]
+exclude = [".venv"]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+reportUnusedFunction = false
