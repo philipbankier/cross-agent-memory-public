@@ -208,19 +208,19 @@
       },
       {
         "name": "ca-certificates",
-        "version": "20250419",
+        "version": "20250419+deb13u1",
         "files": [
           {
-            "name": "ca-certificates_20250419.dsc",
-            "url": "https://snapshot.debian.org/file/a101569da0577fb5df37889d4206eab6f2e2948d",
-            "bytes": 1766,
-            "sha256": "3fc919369a3b84e34a959faa8bdffb9bd2c5a7d4a948a4b07a09a5d43e257030"
+            "name": "ca-certificates_20250419+deb13u1.dsc",
+            "url": "https://snapshot.debian.org/file/44effdeab045b9b4749c3e21df2308a2ef7587ee",
+            "bytes": 1924,
+            "sha256": "347487e99c0b9f09150c8d78ad03e3552545c3904d5e0d7f731ef2ef79d484d4"
           },
           {
-            "name": "ca-certificates_20250419.tar.xz",
-            "url": "https://snapshot.debian.org/file/6e0ea4bd2ac108fec5edec1187dc69c0b1f94f2d",
-            "bytes": 277504,
-            "sha256": "33b44ef78653ecd3f0f2f13e5bba6be466be2e7da72182f737912b81798ba5d2"
+            "name": "ca-certificates_20250419+deb13u1.tar.xz",
+            "url": "https://snapshot.debian.org/file/9cb42f4ec253537eabfaafcd81dfdb7264810b0f",
+            "bytes": 277284,
+            "sha256": "1b2e3d0b90cfc62ac8033d64e18ea4649fbb2a01c937c9ac9d36e762da6b9446"
           }
         ]
       },
