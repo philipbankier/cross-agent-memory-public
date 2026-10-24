@@ -2,7 +2,7 @@ ARG TARGETARCH
 FROM debian:trixie-slim@sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f AS base
 
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends ca-certificates \
+    && apt-get install --yes --no-install-recommends ca-certificates=20250419+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
 FROM base AS python-amd64
