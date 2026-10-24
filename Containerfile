@@ -37,6 +37,7 @@ ARG VCS_REF
 RUN python -m venv /opt/cam
 COPY pyproject.toml LICENSE README.md requirements.lock requirements-bootstrap.lock cam_build.py MANIFEST.in Containerfile .dockerignore compose.yaml ./
 COPY script ./script
+COPY browser/capture ./browser/capture
 COPY docs/third-party ./docs/third-party
 COPY ui/memory-app ./ui/memory-app
 COPY src/cross_assistant_memory ./src/cross_assistant_memory

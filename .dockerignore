@@ -9,6 +9,9 @@
 !Containerfile
 !.dockerignore
 !compose.yaml
+!browser/
+!browser/capture/
+!browser/capture/*
 !docs/
 !docs/third-party/
 !docs/third-party/README.md

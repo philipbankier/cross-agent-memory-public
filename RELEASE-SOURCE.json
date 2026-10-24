@@ -6,14 +6,27 @@
   "inherited_checks": {
     "installed_tests_per_platform": 703,
     "platforms": ["macOS", "Linux", "Linux amd64 image", "Linux arm64 image"],
-    "runtime_dependencies_build_recipe_and_tests": "unchanged from the qualified base"
+    "scope": "Historical base qualification; dependency locks and base runtime remain unchanged, while browser capture and its packaging are qualified separately."
   },
   "release_overlay": [
     "public setup and contribution guidance",
     "security reporting policy, requiring live private-reporting verification at publication",
     "manual package/image attestation workflows with distinct asset names",
-    "consumer checksum and authenticated provenance instructions"
+    "consumer checksum and authenticated provenance instructions",
+    "opt-in browser capture, encrypted retry queue and account-bound admission",
+    "browser source packaging and container build-context inclusion",
+    "independent published package/image consumption on macOS and both Linux architectures"
   ],
+  "capture_qualification": {
+    "backend_revision": "a6df20f3fa825f48bc10fb5be8778f2291897475",
+    "extension_revision": "ce84a8bc13ab655d1331b016628fe57066ca278f",
+    "real_account_scope": "Two ChatGPT accounts, one Claude account and one Grok account: capture, exact evidence and duplicate-free replay/reconnect.",
+    "sanitized_code_qualification_revision": "dd296b5c5e9a0f8b8b85fd9d55e2fa4c7b4f931d",
+    "python_checks": 1029,
+    "extension_checks": 88,
+    "isolated_browser_native_host_recovery": "passed",
+    "limits": "Opened foreground rendered text only. Capture time is not original message time; exports remain the completeness fallback."
+  },
   "identity": "The current clean Git commit identifies this source; workflows bind artifacts to that revision.",
   "historical_provenance": "PILOT-SOURCE.json retains the inherited archive/overlay history, not the current installed revision.",
   "limits": [

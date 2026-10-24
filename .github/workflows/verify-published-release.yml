@@ -1,0 +1,149 @@
+name: Verify published release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: Exact published source revision
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  consumer:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: macos-14
+            arch: python
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_REVISION: ${{ inputs.expected_revision }}
+      RELEASE_TAG: v0.1.0
+      RELEASE_ARCH: ${{ matrix.arch }}
+      PIP_NO_CACHE_DIR: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Verify repository and published source identity
+        run: |
+          test "$GITHUB_REPOSITORY" = philipbankier/cross-agent-memory-public
+          [[ "$EXPECTED_REVISION" =~ ^[0-9a-f]{40}$ ]]
+          test "$GITHUB_SHA" = "$EXPECTED_REVISION"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_REVISION"
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,targetCommitish,isDraft > "$RUNNER_TEMP/release.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          release = json.loads((Path(os.environ["RUNNER_TEMP"]) / "release.json").read_bytes())
+          assert release["tagName"] == os.environ["RELEASE_TAG"]
+          assert release["targetCommitish"] == os.environ["EXPECTED_REVISION"]
+          assert release["isDraft"] is False
+          PY
+      - name: Download and authenticate the published Python set
+        run: |
+          mkdir "$RUNNER_TEMP/release-downloads"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --dir "$RUNNER_TEMP/release-downloads" \
+            --pattern 'cross_assistant_memory-0.1.0-py3-none-any.whl' \
+            --pattern 'cross_assistant_memory-0.1.0.tar.gz' --pattern 'python-*'
+          cd "$RUNNER_TEMP/release-downloads"
+          for artifact in python-SHA256SUMS *.whl *.tar.gz; do
+            gh attestation verify "$artifact" --bundle python-attestation.json \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/attested-packages.yml" \
+              --signer-digest "$EXPECTED_REVISION" --source-digest "$EXPECTED_REVISION" \
+              --deny-self-hosted-runners
+          done
+          shasum -a 256 --check python-SHA256SUMS
+      - name: Install the downloaded wheel and exercise owner-guided setup
+        run: |
+          python -m venv "$RUNNER_TEMP/release-consumer"
+          "$RUNNER_TEMP/release-consumer/bin/python" -m pip install \
+            --only-binary=:all: --require-hashes -r requirements.lock
+          "$RUNNER_TEMP/release-consumer/bin/python" -m pip install --no-deps \
+            "$RUNNER_TEMP/release-downloads/cross_assistant_memory-0.1.0-py3-none-any.whl"
+          "$RUNNER_TEMP/release-consumer/bin/python" -I -B -c \
+            'import sys; from cross_assistant_memory.runtime_provenance import require_runtime_code_revision; require_runtime_code_revision(sys.argv[1])' \
+            "$EXPECTED_REVISION"
+          CAM_CLI="$RUNNER_TEMP/release-consumer/bin/cross-memory" \
+            "$RUNNER_TEMP/release-consumer/bin/python" -I -B \
+            -m cross_assistant_memory.setup_acceptance
+      - name: Download and authenticate the published native image
+        if: matrix.arch != 'python'
+        run: |
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --dir "$RUNNER_TEMP/release-downloads" \
+            --pattern "memory-image-$RELEASE_ARCH.docker.tar.gz" \
+            --pattern "linux-$RELEASE_ARCH-*"
+          cd "$RUNNER_TEMP/release-downloads"
+          for artifact in "linux-$RELEASE_ARCH-SHA256SUMS" \
+            "memory-image-$RELEASE_ARCH.docker.tar.gz" \
+            "linux-$RELEASE_ARCH-image.sbom.cdx.json" \
+            "linux-$RELEASE_ARCH-ui-source.sbom.cdx.json" \
+            "linux-$RELEASE_ARCH-build-identity.json"; do
+            gh attestation verify "$artifact" --bundle "linux-$RELEASE_ARCH-attestation.json" \
+              --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/attested-images.yml" \
+              --signer-digest "$EXPECTED_REVISION" --source-digest "$EXPECTED_REVISION" \
+              --deny-self-hosted-runners
+          done
+          sha256sum --check --strict "linux-$RELEASE_ARCH-SHA256SUMS"
+          docker image load --input "memory-image-$RELEASE_ARCH.docker.tar.gz"
+      - name: Execute the downloaded image and verify its revision and authentication
+        if: matrix.arch != 'python'
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          arch = os.environ["RELEASE_ARCH"]
+          path = Path(os.environ["RUNNER_TEMP"]) / "release-downloads"
+          identity = json.loads((path / ("linux-" + arch + "-build-identity.json")).read_bytes())
+          assert identity["revision"] == os.environ["EXPECTED_REVISION"]
+          assert identity["repository"] == os.environ["GITHUB_REPOSITORY"]
+          assert re.fullmatch(r"sha256:[0-9a-f]{64}", identity["image_id"])
+          image = json.loads(subprocess.check_output(["docker", "image", "inspect", identity["image_id"]]))[0]
+          assert image["Os"] == "linux" and image["Architecture"] == arch
+          assert image["Config"]["User"] == "65532:65532"
+          assert image["Config"]["Labels"]["org.opencontainers.image.revision"] == identity["revision"]
+          probe = '''import sys, tempfile
+          from pathlib import Path
+          from starlette.testclient import TestClient
+          from cross_assistant_memory.config import Settings
+          from cross_assistant_memory.storage import Ledger
+          from cross_assistant_memory.mcp_server import create_mcp_server
+          from cross_assistant_memory.runtime_provenance import require_runtime_code_revision
+          require_runtime_code_revision(sys.argv[1])
+          with tempfile.TemporaryDirectory() as root:
+              settings = Settings(Path(root).resolve() / "node")
+              Ledger(settings)
+              server = create_mcp_server(settings, transport="streamable-http", http_auth_url="http://127.0.0.1:28765")
+              with TestClient(server.streamable_http_app()) as client:
+                  assert client.get("/health").status_code == 200
+                  assert client.post("/mcp", json={}).status_code == 401
+                  assert client.post("/upload/browser-observations", json={}).status_code == 401
+          print("published image revision and authentication verified")
+          '''
+          subprocess.run(["docker", "run", "--rm", "--read-only", "--network", "none",
+                          "--tmpfs", "/tmp:rw,exec,nosuid,size=512m", "--entrypoint", "python",
+                          identity["image_id"], "-I", "-B", "-c", probe, identity["revision"]], check=True)
+          PY
