@@ -3126,6 +3126,7 @@ class Ledger:
         required_source_schema_provenance: SourceSchemaProvenance | None = None,
         web_export_observation: WebExportConversationObservation | None = None,
         retained_file_retry: bool = False,
+        browser_capture: bool = False,
     ) -> IngestionReport:
         self._require_writable()
         if retained_file_retry and (
@@ -3140,10 +3141,27 @@ class Ledger:
             SourceSystem.CLAUDE_WEB,
             SourceSystem.GROK_WEB,
         }
-        if is_web_source and (
-            not require_registered_source_account
-            or required_source_schema_provenance is None
-            or web_export_observation is None
+        if browser_capture and (
+            not is_web_source
+            or parsed.parser_name != "browser-rendered-observation"
+            or parsed.parser_version != "0.1.0"
+            or registered_client_id is None
+            or registered_device_id is None
+            or require_registered_source_account
+            or required_source_schema_provenance is not None
+            or web_export_observation is not None
+        ):
+            raise PermissionError(
+                "browser observations require their registered collector workflow"
+            )
+        if (
+            is_web_source
+            and not browser_capture
+            and (
+                not require_registered_source_account
+                or required_source_schema_provenance is None
+                or web_export_observation is None
+            )
         ):
             raise PermissionError(
                 "web sources require the guarded export workflow, exact schema authorization, "
@@ -4790,6 +4808,18 @@ class Ledger:
         )
         return {
             **({"conversation_context": context} if include_context else {}),
+            **(
+                {
+                    "browser_observation": {
+                        "observed_at": cast(str | None, row[-1]),
+                        "timestamp_semantics": "capture_time_not_provider_message_time",
+                        "completeness": "visible_messages_only",
+                        "evidence_semantics": "captured_rendered_text_not_official_export",
+                    }
+                }
+                if row[10] == "browser-rendered-observation"
+                else {}
+            ),
             "event_id": cast(str, row[0]),
             "content_text": cast(str, row[1]),
             "actor_kind": cast(str, row[2]),
@@ -5106,7 +5136,7 @@ class Ledger:
               sr.message_id, sr.parent_message_id, account.installation_id,
               account.device_id, account.source_system, account.legacy_account_key,
               account.status, device.status, installation.owner_id,
-              account_policy.scope, account_policy.project_id
+              account_policy.scope, account_policy.project_id, sf.captured_at
             FROM events_current e
             JOIN events original ON original.event_id = e.event_id
             JOIN source_records sr ON sr.source_record_id = e.source_record_id
@@ -7104,8 +7134,31 @@ class Ledger:
                 ).fetchone()[0],
             )
             source_file_count = cast(int, file_row[0])
+            browser_row = connection.execute(
+                """
+                SELECT COUNT(*), MAX(file.captured_at)
+                FROM source_capture_metadata capture
+                JOIN source_files file USING(source_file_id)
+                WHERE file.source_system = ?
+                  AND capture.parser_name = 'browser-rendered-observation'
+                  AND capture.capture_capability = 'rendered_visible_messages_only'
+                """,
+                (source_system.value,),
+            ).fetchone()
             sources.append(
                 {
+                    **(
+                        {
+                            "browser_capture": {
+                                "admitted_observations": cast(int, browser_row[0]),
+                                "latest_observed_at": cast(str | None, browser_row[1]),
+                                "coverage": "opened_rendered_text_only",
+                                "provider_message_times": "unknown",
+                            }
+                        }
+                        if browser_row[0]
+                        else {}
+                    ),
                     "source_system": source_system.value,
                     "state": (
                         "ready"
@@ -8320,7 +8373,23 @@ class Ledger:
         exclusion_receipts: Sequence[ExclusionReceipt],
         max_record_bytes: int = DEFAULT_MAX_RECORD_BYTES,
         max_publication_objects: int | None = None,
+        browser_capture: bool = False,
     ) -> dict[str, Any]:
+        if browser_capture:
+            from cross_assistant_memory.browser_capture_upload import validate_browser_upload_batch
+            from cross_assistant_memory.uploads import UploadBatch
+
+            validate_browser_upload_batch(
+                UploadBatch(
+                    batch_id,
+                    request_digest,
+                    source_account_id,
+                    source_path_hash,
+                    provenance,
+                    parsed,
+                    tuple(exclusion_receipts),
+                )
+            )
         if max_publication_objects is not None and (
             type(max_publication_objects) is not int or max_publication_objects < 1
         ):
@@ -8349,6 +8418,7 @@ class Ledger:
                         provenance=provenance,
                         exclusion_receipts=exclusion_receipts,
                         max_record_bytes=max_record_bytes,
+                        browser_capture=browser_capture,
                     )
                 ledger._finish_native_upload_write_attempt(batch_id)
                 admitted_result = result
@@ -8446,6 +8516,7 @@ class Ledger:
         provenance: CollectorProvenance,
         exclusion_receipts: Sequence[ExclusionReceipt],
         max_record_bytes: int = DEFAULT_MAX_RECORD_BYTES,
+        browser_capture: bool = False,
     ) -> dict[str, Any]:
         self._require_writable()
         if UPLOAD_BATCH_ID.fullmatch(batch_id) is None:
@@ -8543,6 +8614,7 @@ class Ledger:
             exclusion_receipts=exclusion_receipts,
             registered_client_id=normalized_client_id,
             registered_device_id=normalized_device_id,
+            browser_capture=browser_capture,
         )
         event_count = report.inserted_events + report.existing_events
         quarantine_reasons_json = json.dumps(

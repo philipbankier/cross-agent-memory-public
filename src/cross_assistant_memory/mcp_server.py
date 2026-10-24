@@ -661,6 +661,58 @@ def create_mcp_server(
                 headers=NO_STORE_HEADERS,
             )
 
+        @server.custom_route("/upload/browser-observations", methods=["POST"])
+        async def upload_browser_observation(request: Request) -> JSONResponse:
+            from cross_assistant_memory.browser_observation import MAX_ENVELOPE_BYTES
+
+            principal_record = _http_bearer_principal(request, auth_ledger)
+            if principal_record is None:
+                return JSONResponse(
+                    {"status": "error", "error": "authentication required"},
+                    status_code=401,
+                    headers=NO_STORE_HEADERS,
+                )
+            try:
+                body = await _read_bounded_body(request, MAX_ENVELOPE_BYTES)
+                result = await run_in_threadpool(
+                    application.upload_browser_observation, principal_record, body
+                )
+            except LedgerWriterBusy:
+                return JSONResponse(
+                    {"status": "writer_busy", "error": "node writer is busy; retry later"},
+                    status_code=503,
+                    headers={**NO_STORE_HEADERS, "retry-after": "30"},
+                )
+            except ValueError:
+                return JSONResponse(
+                    {"status": "error", "error": "invalid browser observation"},
+                    status_code=400,
+                    headers=NO_STORE_HEADERS,
+                )
+            except PermissionError:
+                return JSONResponse(
+                    {"status": "error", "error": "browser upload is not authorized"},
+                    status_code=403,
+                    headers=NO_STORE_HEADERS,
+                )
+            except (EvidencePublicationYielded, EvidencePublicationPending):
+                return JSONResponse(
+                    {"status": "pending", "error": "evidence publication is pending"},
+                    status_code=503,
+                    headers={**NO_STORE_HEADERS, "retry-after": "30"},
+                )
+            except RuntimeError:
+                return JSONResponse(
+                    {"status": "error", "error": "browser observation was rejected"},
+                    status_code=409,
+                    headers=NO_STORE_HEADERS,
+                )
+            return JSONResponse(
+                result,
+                status_code=200 if result["status"] == "already_applied" else 201,
+                headers=NO_STORE_HEADERS,
+            )
+
     server.add_tool(memory_status, annotations=READ_ONLY_TOOL_ANNOTATIONS)
 
     @server.custom_route("/health", methods=["GET"])

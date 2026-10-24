@@ -37,6 +37,8 @@ jobs:
         run: script/lint
       - name: Test installed package
         run: script/test
+      - name: Test browser capture protocol and identity checks
+        run: node --test browser/capture/*.test.mjs
       - name: Verify agent-guided setup
         run: script/verify-agent-guided-setup
 

@@ -28,6 +28,18 @@ def test_verified_build_context_includes_the_distribution_companion(tmp_path: Pa
     _prepare_context(context)
     for name in ("README.md", "notices.txt", "source-index.json"):
         assert (context / "docs/third-party" / name).is_file()
+    for name in ("manifest.json", "observe.js", "background.js", "popup.html"):
+        assert (context / "browser/capture" / name).is_file()
+
+
+@pytest.mark.parametrize("name", ["manifest.json", "observe.js"])
+def test_changed_browser_capture_refuses_source_provenance(tmp_path: Path, name: str) -> None:
+    context = tmp_path / "context"
+    _prepare_context(context)
+    target = context / "browser/capture" / name
+    target.write_bytes(target.read_bytes() + b"\nchanged\n")
+    with pytest.raises(RuntimeError, match="source distribution differs"):
+        source_provenance(context)
 
 
 @pytest.mark.parametrize("name", ["README.md", "notices.txt", "source-index.json"])
@@ -128,3 +140,10 @@ def test_source_archive_contains_the_exact_protected_companion(tmp_path: Path) -
             content = archive.extractfile(members[relative])
             assert content is not None
             assert content.read() == (root / relative).read_bytes()
+        for path in (root / "browser/capture").iterdir():
+            if not path.is_file():
+                continue
+            relative = path.relative_to(root).as_posix()
+            assert relative in members
+            content = archive.extractfile(members[relative])
+            assert content is not None and content.read() == path.read_bytes()

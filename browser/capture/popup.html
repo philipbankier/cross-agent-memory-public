@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>Cross-Agent Memory Capture</title>
+  <style>
+    body {
+      width: 300px;
+      margin: 16px;
+      font: 14px system-ui;
+      color: #192625;
+    }
+    h1 {
+      font-size: 16px;
+    }
+    label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    p {
+      line-height: 1.45;
+    }
+    output {
+      display: block;
+      margin-top: 12px;
+    }
+  </style>
+  <h1>Cross-Agent Memory Capture</h1>
+  <label
+    ><input id="enabled" type="checkbox" /> Capture opened conversations</label
+  >
+  <output id="status" aria-live="polite"></output>
+  <output id="page"></output>
+  <output id="queue"></output>
+  <output id="upload"></output>
+  <output id="version"></output>
+  <p>
+    Text only. Incognito is excluded. Account verification may briefly open the
+    site's profile menu while idle.
+  </p>
+  <p>
+    A queued observation is not yet searchable. Unopened and mobile history
+    still need exports.
+  </p>
+  <script type="module" src="popup.js"></script>
+</html>

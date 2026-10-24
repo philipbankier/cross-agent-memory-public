@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+node --test "$ROOT/browser/capture/"*.test.mjs
+CAM_BROWSER_E2E=1 exec "$ROOT/script/test" tests/test_browser_capture_e2e.py "$@"

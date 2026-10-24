@@ -106,6 +106,15 @@ Start with Codex, Claude Code, or both as querying clients. Website query connec
 from website history import and are not automatically installed or advertised as verified by
 the initial setup. Export snapshots are not live website sync. There is no recurring export schedule.
 
+Optional [browser capture](browser/capture/README.md) automatically observes rendered text in
+opened, foreground saved chats on ChatGPT, Claude and Grok. It verifies the visible account,
+encrypts accepted observations locally and sends them to your node using a scoped collector
+credential. Each provider account keeps its own source identity. Recovery can drain the encrypted
+queue without an active browser tab through the native host's bounded `--flush` command; configure
+that hook in your existing collector schedule if you need unattended delivery. The Chrome
+extension is opt-in and installed separately. Keep exports for backfill, unopened/mobile history
+and attachments. Capture times do not establish the original message dates.
+
 Keep different accounts on the same provider distinct when importing exports. Each retains its
 own source registration and provenance; moving a subscription does not move earlier conversations.
 Browser-capable agents may supplement indexed results with an authorized site's own chat search.

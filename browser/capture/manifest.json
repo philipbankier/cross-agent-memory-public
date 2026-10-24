@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Cross-Agent Memory Capture",
+  "version": "0.2.2",
+  "description": "Opt-in capture of rendered conversations to your own memory node.",
+  "permissions": ["nativeMessaging", "storage"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://grok.com/*"
+  ],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_popup": "popup.html" },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://grok.com/*"
+      ],
+      "js": ["observe.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "incognito": "not_allowed"
+}

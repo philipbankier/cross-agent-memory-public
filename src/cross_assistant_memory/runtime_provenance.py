@@ -45,7 +45,7 @@ BUILD_INPUTS = (
     "ui/memory-app/tsconfig.json",
     "ui/memory-app/build.mjs",
 )
-BUILD_DIRECTORIES = ("script", "ui/memory-app/src", "ui/memory-app/test")
+BUILD_DIRECTORIES = ("script", "ui/memory-app/src", "ui/memory-app/test", "browser/capture")
 
 
 class BuildProvenance(TypedDict):

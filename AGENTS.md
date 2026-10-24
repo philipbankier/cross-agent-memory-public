@@ -67,6 +67,13 @@ queues and local edits. A tag clone has detached HEAD: fetch/review/select the n
 then rerun script/setup and verify installed revision and queries.
 Update these instructions when commands or operating boundaries materially change.
 
+Optional browser capture is documented in browser/capture/README.md. Obtain the owner's exact
+account and extension-permission approval, then verify account-bound admission and replay.
+Use native-host --inspect/--flush for diagnosis and recovery. Development checks include Node's
+extension tests; script/test-browser-capture additionally needs the locked ui/memory-app npm
+dependencies and Playwright Chromium. Keep website login with the owner in regular Chrome;
+isolated provider fixtures use no real sessions or accounts.
+
 ## Finish
 
 Report configured versus tested versus unverified, versions, timing, and per-step pass/fail.

@@ -1067,6 +1067,33 @@ class MemoryApplication:
             max_publication_objects=1,
         )
 
+    def upload_browser_observation(
+        self, principal: ApplicationPrincipal, body: bytes
+    ) -> dict[str, Any]:
+        from cross_assistant_memory.browser_capture_upload import browser_observation_uploads
+        from cross_assistant_memory.browser_observation import parse_browser_observation
+
+        self._require(principal, Capability.SOURCE_UPLOAD)
+        if principal.device_id is None:
+            raise PermissionError("source upload requires an enrolled device")
+        observation = parse_browser_observation(body)
+        if len(observation.messages) != 1:
+            raise ValueError("browser admission requires one rendered message per request")
+        batch = browser_observation_uploads(observation)[0]
+        return self._ledger.ingest_upload_batch(
+            batch.parsed,
+            batch_id=batch.batch_id,
+            request_digest=batch.request_digest,
+            source_account_id=batch.source_account_id,
+            client_id=principal.principal_id,
+            device_id=principal.device_id,
+            source_path_hash=batch.source_path_hash,
+            provenance=batch.provenance,
+            exclusion_receipts=batch.exclusion_receipts,
+            max_publication_objects=1,
+            browser_capture=True,
+        )
+
     @staticmethod
     def _require(principal: ApplicationPrincipal, capability: Capability) -> None:
         if capability not in principal.capabilities:

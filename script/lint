@@ -10,3 +10,6 @@ cd "$ROOT"
 "$PYTHON" -m ruff check src tests cam_build.py script/release_sources.py
 "$PYTHON" -m ruff format --check src tests cam_build.py script/release_sources.py
 "$PYTHON" -m pyright
+for source in browser/capture/*.js browser/capture/*.mjs; do
+  node --check "$source"
+done
