@@ -1,0 +1,18 @@
+name: Idea or question
+description: Explore a use case, ask how something works, or suggest a focused improvement.
+body:
+  - type: markdown
+    attributes:
+      value: Keep examples synthetic. Never include conversations, credentials, account identifiers or export links.
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Describe the workflow or question and where the current tool falls short.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Anything you have tried or would suggest?
+      description: Optional. A small example, workaround, or pointer to the relevant code helps.

@@ -1,201 +1,221 @@
+<p align="center">
+  <img src="docs/assets/overview.svg" alt="Cross-Agent Memory: your conversations, one private memory node, and evidence for your existing assistant." width="100%">
+</p>
+
 # Cross-Agent Memory
 
-Search your assistant histories from Codex or Claude Code, with concise citations and exact
-evidence available on demand. Your existing assistant writes the answers from retrieved evidence.
+Your conversations are scattered across assistants. Your context doesn't have to be.
 
-You run your own isolated instance with your own data, keys and storage. This repository includes no
-original operator history, credentials, personal installers or Git history. Do not connect friends
-to a shared personal memory database.
+Search your own Codex, Claude Code, Grok Build, ChatGPT, Claude and Grok histories from
+Codex or Claude Code. Keep the source, speaker and date attached. Open the exact evidence
+when a detail matters.
 
-## Start Here
+[![Release](https://img.shields.io/github/v/release/philipbankier/cross-agent-memory-public?color=087f75)](https://github.com/philipbankier/cross-agent-memory-public/releases/latest)
+[![Checks](https://github.com/philipbankier/cross-agent-memory-public/actions/workflows/checks.yml/badge.svg)](https://github.com/philipbankier/cross-agent-memory-public/actions/workflows/checks.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-41556c)](LICENSE)
 
-Clone the tagged source release, then open the folder in Codex or Claude Code:
+[Try it](#try-it-with-your-agent) / [How it works](#how-it-works) /
+[Sources](#what-you-can-connect) / [Build on it](#for-developers-and-tinkerers) /
+[Limits](#know-the-boundaries)
+
+## Why This Exists
+
+You explored an idea in ChatGPT, made a decision in Claude, and worked through the implementation
+in a coding agent. The next session shouldn't start with you assembling that history by hand.
+
+Cross-Agent Memory gives your assistant a searchable evidence layer, not another chatbot.
+You run the node. You choose the accounts, sources, storage and client access.
+
+| What you want | What the tool provides |
+| ------------- | ---------------------- |
+| Pick up work in another assistant | Search across the histories you've admitted to your node. |
+| Check what you actually decided | Speaker, authority, source and date, with exact evidence on demand. |
+| Use multiple accounts or computers | Separate source identities and per-client access. No title-based account merging. |
+| Keep the laptop light | Run the node on your own remote Mac or Linux host. Encrypted B2 evidence is optional. |
+
+## Try It With Your Agent
+
+Start with one small source, not your entire history.
 
 ```sh
-gh repo clone philipbankier/cross-agent-memory-public -- --branch v0.1.0
+git clone --branch v0.1.0 https://github.com/philipbankier/cross-agent-memory-public.git
 cd cross-agent-memory-public
 ```
 
-> Read AGENTS.md and set up Cross-Agent Memory for me. First confirm which host should hold my
-> memory, which assistants will query it (Codex, Claude Code, or both), whether I want local or
-> encrypted B2 evidence storage, and one small source I approve for the trial. Use my own accounts
-> and configuration. Handle the technical steps and safe retries; involve me for login,
-> new access/cost, keys or destructive
-> changes. Test three real questions, exact evidence, replay and reconnect. Do not expose anything
-> publicly, schedule full collection, or import my entire history yet.
+Open that folder in Codex or Claude Code and give it this prompt:
 
-Python 3.11 or newer is required on each runtime host. Python 3.12 is used for the package check.
-macOS and POSIX/Linux are intended targets; a clean install on your actual host must pass before
-claiming that host works. No model download is required. Your existing assistant synthesizes answers.
+```text
+Read AGENTS.md and set up Cross-Agent Memory for me.
 
-Fresh setup is tested on Python 3.11.12 / Apple-linked SQLite 3.51.0 and Python 3.12.8 /
-SQLite 3.45.3. Setup can verify retained, checkpointed WAL/SHM files while holding the existing
-writer-file lease; active, uncheckpointed or unsafe state still refuses. Do not delete SQLite
-files or weaken setup guards. The inherited runtime passed macOS/Linux installed-package checks
-and the setup self-check. The [checks workflow](.github/workflows/checks.yml) records that recipe.
-These do not qualify every runtime,
-friend-owned setup or real-answer quality; verify the actual installation before using personal data.
+Confirm the node host, querying assistants, local or encrypted B2 storage,
+and one small source I approve. Use only my accounts and configuration.
 
-Behavioral tests are not SQLite advisory clearance. Choose a build with the upstream
-[WAL-reset fix](https://www.sqlite.org/wal.html#walreset): SQLite 3.51.3 or later, or the documented
-3.50.7 / 3.44.6 backports. An older vendor version label needs separate confirmation of its fix.
-Check the SQLite library that the selected Python actually loads, not the standalone SQLite CLI.
+Handle setup and safe retries. Involve me for login, permissions, new cost,
+key custody, or destructive changes. Do not expose a public endpoint,
+schedule collection, or import my entire history.
 
-The agent can install the runtime with:
-
-```sh
-# Run from the cloned folder. Choose an installed Python 3.11+ if python3 is older.
-PYTHON_BIN=python3.12 script/setup
-script/cross-memory --help
+Test three real questions, exact evidence, duplicate-free replay, and
+restart/reconnect. Then tell me what works and what remains unverified.
 ```
 
-The installer is POSIX shell and runtime-only: no Node, browser, test suite or global npm
-installation. It installs hash-locked wheels in this folder's `.venv` and verifies dependencies.
-Keep the folder in a durable location after setup. Do not move a configured virtual environment.
-Setup and its self-check avoid creating source bytecode. If an older checkout reports that runtime
-bytecode differs from verified source, preserve it for inspection and use a clean clone. Do not
-disable provenance checks or remove data, keys or uninspected files to force an update.
+Requirements: Python 3.11+, macOS or POSIX/Linux, and your existing querying assistant.
+No local model download or separate answer engine is required. Use a Python-linked SQLite
+build with the [WAL-reset fix](docs/deployment/runtime-notes.md#python-and-sqlite), not just
+a passing smoke test.
 
-## Pick Where It Lives
+Prefer the commands? Follow [agent-guided setup](docs/deployment/agent-guided-setup.md).
+The runtime-only entry point is `PYTHON_BIN=python3.12 script/setup`; it installs locked
+dependencies into this checkout's `.venv`. Node and a browser are not required for core setup.
 
-- On your computer: simplest first session, with a new explicitly chosen private data directory.
-- On your own remote Mac/Linux host: the node holds the index and does the processing; the laptop
-  runs a small request-scoped SSH relay. See [remote setup](REMOTE.md).
-- Encrypted B2 evidence: supported independently of host choice. The index, keys and bounded
-  temporary storage still live on the node. B2 evidence and recovery backups are separate.
-  Configure and verify your own bucket/key path before importing data when choosing this mode.
+## See What You Have Connected
 
-Remote and cloud setup is assisted, not one-click provisioning. No bare public MCP port, shared
-operator endpoint, or new cloud bill is created automatically.
+![The actual Cross-Agent Memory control panel showing an Atlas search across synthetic Codex, Claude Code and Grok Build conversations.](docs/assets/control-panel.jpg)
 
-## First Session
+The real local control panel, populated only with synthetic example conversations.
+Search evidence, inspect sources, manage client access and review operations.
+Only the three native sources are populated in this example. It is a management and
+retrieval UI; your assistant still writes the answers.
 
-1. Inspect and initialize a new private node using the existing setup plan/apply workflow.
-2. Register each querying client and the approved source scope. Connect the read-only MCP tools.
-3. Preview and import one small real source that you chose. Keep its original file.
-4. Ask three questions whose answers you can check. Require concise source/date citations and
-   exact evidence for consequential claims. Record missing evidence and wrong answers honestly.
-5. Replay that exact import; verify no duplicate events. Restart/reconnect once and repeat a query.
-6. Decide whether it is useful enough to add a second source, then try one cross-source question.
+After configuring your own node and local admin credential:
 
-Setup convergence with synthetic fixtures is not proof that your real questions work. Perfect
-recall, all six personal histories, scheduled backfill and optional ranking experiments are not
-requirements for this first session. They remain work beyond it.
+```sh
+script/cross-memory --home "$CAM_HOME" panel
+```
 
-## Sources And Query Clients
+Open the loopback URL printed by the command and unlock it with your own local admin
+credential. Keep credentials out of chat, screenshots and issue reports.
 
-All six importer implementations are included: Codex, Claude Code, Grok Build native histories;
-ChatGPT, Claude and Grok web exports. Native import uses `ingest`; web exports use the separate
-`web-export-*` commands and exact schema checks. Ask the installed CLI for each command's help.
-Provider format changes may require a fix; do not bypass an unsupported schema.
+## How It Works
 
-Claude copied histories include verified 2.1.271 and 2.1.289 producer/stop-hook layouts and the
-exact 2.1.281 SessionStart child-link and earlier-parent assistant repairs. Supported forks retain
-the final child and its immediate parent, not inherited messages as new evidence. Unknown
-producers, malformed links and histories beyond three verified generations refuse import.
-Codex reference-only history includes exact 0.162.0-alpha.17.2, not adjacent versions; physical
-child cursors and copied-history guards remain unchanged, and parent files are not opened.
+```mermaid
+flowchart TB
+    native["Native histories<br/>Codex / Claude Code / Grok Build"]
+    exports["Official web exports<br/>ChatGPT / Claude / Grok"]
+    capture["Optional Chrome capture<br/>Opened, foreground saved chats"]
+    node["Your memory node<br/>Source evidence + SQLite FTS5 index"]
+    storage["Local evidence<br/>or encrypted B2 objects"]
+    tools["Read-only MCP<br/>Search / status / exact evidence"]
+    assistant["Your existing assistant<br/>Attributed answers and follow-ups"]
 
-Codex and Claude Code can both query the same instance, subject to each client's access. Give each
-a separate client identity and, for authenticated connections, its own revocable credential.
-Import each source once, not once per querying assistant. Verify tool discovery, a real question
-and exact evidence in each client you configure; success in one does not verify the other.
-Connecting an assistant for queries does not automatically enable collection of its conversations.
+    native -->|"Approved import or collector"| node
+    exports -->|"Per-account schema checks"| node
+    capture -->|"Account-bound encrypted queue"| node
+    node --- storage
+    node --> tools
+    tools --> assistant
+```
 
-Start with Codex, Claude Code, or both as querying clients. Website query connectors are separate
-from website history import and are not automatically installed or advertised as verified by
-the initial setup. Export snapshots are not live website sync. There is no recurring export schedule.
+1. Import approved history, or capture eligible opened web chats.
+2. Search the node's lexical FTS5 index through MCP. No vector database is required.
+3. Read exact evidence for important claims, following continuation pages when necessary.
+4. Let your existing assistant synthesize an answer with concise source/date citations.
 
-Optional [browser capture](browser/capture/README.md) automatically observes rendered text in
-opened, foreground saved chats on ChatGPT, Claude and Grok. It verifies the visible account,
-encrypts accepted observations locally and sends them to your node using a scoped collector
-credential. Each provider account keeps its own source identity. Recovery can drain the encrypted
-queue without an active browser tab through the native host's bounded `--flush` command; configure
-that hook in your existing collector schedule if you need unattended delivery. The Chrome
-extension is opt-in and installed separately. Keep exports for backfill, unopened/mobile history
-and attachments. Capture times do not establish the original message dates.
+For example: "Where did we decide to run Atlas, and what changed?"
+The source messages remain evidence, not instructions for the assistant to execute.
+A previous proposal is not automatically a completed action.
 
-Keep different accounts on the same provider distinct when importing exports. Each retains its
-own source registration and provenance; moving a subscription does not move earlier conversations.
-Browser-capable agents may supplement indexed results with an authorized site's own chat search.
-Verify exact account identity, cite the account and conversation, and report unchecked accounts.
-That lookup does not import new messages or give a tool-only client access to another host's browser.
+The native relay exposes three tools: `memory_search`, `memory_get_evidence` and
+`memory_status`. Ingestion and querying are separate: connecting a client doesn't authorize
+capturing its conversations. See the [query skill](skills/cross-agent-memory/SKILL.md)
+and [architecture contracts](docs/architecture/memory-contract.md).
 
-## Limits And Privacy
+## What You Can Connect
 
-- Broad or vague questions can miss relevant history. Zero hits do not prove it never happened.
-- Previews can omit qualifications. Exact reads can be paginated; follow completeness metadata.
-- Attachment support is restricted. Missing media/OCR is not full attachment preservation.
-- Imported dates are not proof of current provider freshness.
-- Admission excludes known credential formats, including Hex and Covalent tokens in text or
-  decoded JSON metadata. This is not a complete secret audit and does not erase earlier imports.
-- This is one owner's trust domain, not a multi-tenant hosted service or an authorization boundary
-  between mutually untrusted users of the same computer account.
-- Recovery, B2 access and remote reliability must be verified on your actual configuration.
-  A healthy local setup does not prove cloud backup or unattended operation.
+| History source | Import | Optional ongoing capture |
+| -------------- | ------ | ------------------------ |
+| Codex | Native history files | Opt-in native collector |
+| Claude Code | Native history files | Opt-in native collector |
+| Grok Build | Native history files | Opt-in native collector |
+| ChatGPT | Official data export | Opened-chat Chrome capture |
+| Claude | Official data export | Opened-chat Chrome capture |
+| Grok | Official data export | Opened-chat Chrome capture |
 
-During an exclusive node backup or other writer maintenance, native HTTP uploads and enrollment
-can return retryable `503 writer_busy`. Read-only queries remain available. Keep queued batches,
-cursors and enrollment codes; let normal backoff retry after maintenance, rather than resetting
-state or treating this response as a login failure. Ordinary CLI writers still wait for the lease.
+Each provider account stays separate, including multiple accounts on the same provider.
+Import each source once, not once per querying assistant.
 
-An approved primary-evidence key-rotation drill can explicitly select `--capacity extended` on
-plan and apply: at most 100,000 mappings, 112 MiB per inventory and a 192 MiB authenticated
-journal. These are independent bounds, not a promise that every manifest set fits. Default
-capacity stays unchanged; issued older journals retain their original limits during recovery.
-Keep both independently recoverable keys and use the existing resume/rollback commands, never
-edit a journal or raise limits to force a run. This maintenance is not needed for a first session.
+Start with Codex, Claude Code, or both for queries. Give each client its own identity and
+revocable credential. Other MCP clients and website query connections require separate setup
+and verification; they are not automatically installed.
 
-If ordinary admissions advance the ledger during an interrupted B2 upload, an operator can add
-`--resume-source-generation SHA256` with the original authenticated capture generation. This
-resumes only a complete retained preparation or its published kit, never a new capture. Source,
-destination, bucket, key and query bindings still have to match. A local restore must verify;
-captured content, provenance and access must still exist unchanged. Corrections, removals, access
-changes and schema changes refuse the retry. Only the noncanonical stream observation timestamp
-may advance. Results disclose `source_ledger_generation`, `current_ledger_generation` and
-`capture_is_current`: newer admissions are not included in this historical recovery point.
-Default retries remain strict. Do not edit staging or encrypted bindings to force a retry.
+Browser capture is [optional and installed separately](browser/capture/README.md).
+It observes rendered text in opened, foreground saved conversations, not unopened or mobile
+history. It verifies the visible account and uses a bounded encrypted retry queue. The native
+host can drain that queue without an active tab. Keep official exports for backfill and
+completeness; no recurring export schedule is created.
 
-Keep secrets and receipts private. Do not post transcripts, database files, evidence, export URLs
-or full logs as bug reports. Do not delete originals or keys after an upload or a successful query.
-First-party code is licensed under [Apache-2.0](LICENSE). Verify your actual runtime and client
-before importing personal history; inherited platform checks do not establish answer quality.
-Original third-party notices and source-obtaining directions are in the
-[distribution companion](docs/third-party/README.md), separate from the first-party license.
+Provider formats change. Unknown identities, export schemas and unsupported fork layouts
+refuse rather than guessing. [Parser compatibility notes](docs/deployment/runtime-notes.md#native-history-compatibility)
+record the supported boundaries.
 
-See [release verification](docs/deployment/verify-release.md) before installing downloaded binary
-artifacts. These documents are in the tagged Git repository. [RELEASE-SOURCE.json](RELEASE-SOURCE.json)
-records the inherited qualification scope; the current clean Git revision identifies a source
-installation. Package archives retain the existing protected runtime/build inputs and notices.
+## Choose Where It Lives
 
-## Feedback
+| Setup | Best fit | What stays on the node |
+| ----- | -------- | ---------------------- |
+| Local Mac or Linux | Start small on one computer | Index, evidence, keys and processing |
+| Your remote Mac or Linux host | Query from multiple machines; keep laptops light | Index, evidence, keys and processing; clients use the relay |
+| Either host + encrypted B2 | Store primary evidence remotely | Searchable index, keys and bounded staging still need node-local disk |
 
-Send the installed revision from `.venv/bin/python -m cross_assistant_memory.runtime_provenance`,
-OS/Python/assistant version, which source
-type you tried, and pass/fail for: install, import, three questions, replay, reconnect. Include
-elapsed time and sanitized error class/command/exit code. Describe answer failures without copying
-private conversation text. We want useful/not useful feedback, not just a green tool connection.
+The remote relay opens SSH per request and closes it afterward: no idle SSH connection pool.
+The bare MCP origin stays on loopback. This project does not provision a server, bucket or cloud bill
+for you. [Remote setup and B2](REMOTE.md) / [Linux container profile](docs/deployment/container-profile.md).
 
-`PILOT-SOURCE.json` records the tested archive this Git edition came from and later verified
-source overlays. It is historical provenance, not the installed runtime's revision. A clean Git checkout supplies its own commit
-identity during installation; the built package verifies its runtime files against that identity.
-Do not copy the ZIP's build stamp into this checkout or override the runtime revision.
+## For Developers And Tinkerers
 
-## Updates
+Clone your fork's development branch for contributions rather than editing the detached release
+tag used above. Runtime and development setup are deliberately separate.
 
-Have your agent review the next release tag and its diff before applying an update. A tag clone
-has a detached HEAD: fetch and select the reviewed tag without discarding local edits rather than
-pulling an unrelated branch. Coordinate any node/client restart, then rerun `script/setup`. Verify the installed
-revision and repeat a query after reconnecting. Do not reset local edits, delete data or keys,
-perform a migration, or change collection scope merely because a code update is available.
-Keep data and credentials outside this source checkout. GitHub's source ZIP is not a prepared
-runtime package; use the tagged Git clone for source installation.
+```sh
+script/setup-dev
+script/lint
+script/test
+node --test browser/capture/*.test.mjs
+script/verify-agent-guided-setup
+```
 
-## Operator References
+The setup self-check needs a clean, committed checkout whose installed runtime matches its
+revision. It uses synthetic data, not your histories. The opt-in browser integration test has
+additional dependencies: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-- [Agent instructions](AGENTS.md)
-- [Setup commands](docs/deployment/agent-guided-setup.md)
-- [Memory query skill](skills/cross-agent-memory/SKILL.md)
-- [Remote host and B2](REMOTE.md)
-- [Optional native pairing](docs/deployment/native-collector-pairing.md)
-- [Optional collection service](docs/deployment/native-collector-service.md)
+| Want to understand or change... | Start here |
+| ------------------------------ | ---------- |
+| History formats and source attribution | [Parsers](src/cross_assistant_memory/parsers/) |
+| Canonical evidence and access boundaries | [Ledger](src/cross_assistant_memory/storage.py), [contracts](docs/architecture/) |
+| Search, worksets and exact evidence | [Retrieval](src/cross_assistant_memory/retrieval.py), [query skill](skills/cross-agent-memory/SKILL.md) |
+| Assistant connections | [MCP server](src/cross_assistant_memory/mcp_server.py), [SSH relay](src/cross_assistant_memory/mcp_ssh_client.py) |
+| Optional web capture | [Chrome extension](browser/capture/), [native host](src/cross_assistant_memory/browser_capture_host.py) |
+| Visual interfaces | [Control panel](src/cross_assistant_memory/control_panel.py), [MCP App](ui/memory-app/) |
+
+Useful contributions include reproducible setup problems, synthetic fixtures for changed source
+formats, clearer documentation and focused fixes. You don't need a new retrieval engine to help.
+[Contribution guide](CONTRIBUTING.md) / [Report a problem](https://github.com/philipbankier/cross-agent-memory-public/issues/new/choose).
+
+## Know The Boundaries
+
+- Search is lexical and bounded. Broad questions can miss history; zero hits do not prove absence.
+- Search previews are not complete evidence. Inspect exact messages and continuation metadata.
+- Assistant synthesis can still misread evidence. Claude/Grok synthesis remains experimental;
+  verify consequential claims and quotations against exact evidence.
+- Capture is not complete website sync. Export snapshots and capture timestamps do not prove
+  current provider state or original message dates.
+- Attachments and OCR are limited. Missing media is not complete attachment preservation.
+- Encryption of remote evidence does not encrypt the live SQLite index. Use host access controls
+  and disk encryption. Secret filtering is not a complete secret audit.
+- This is one owner's trust domain, not a managed multi-user service or an isolation boundary
+  between mutually untrusted people sharing an OS account.
+
+Keep originals and separately saved recovery material. Verify your own configuration before
+depending on remote storage or backup. [Operational notes](docs/deployment/runtime-notes.md)
+cover interrupted uploads, writer maintenance, recovery and updates.
+
+## More To Explore
+
+[Setup](docs/deployment/agent-guided-setup.md) /
+[Agent instructions](AGENTS.md) /
+[Remote hosts](REMOTE.md) /
+[Browser capture](browser/capture/README.md) /
+[Verify release artifacts](docs/deployment/verify-release.md) /
+[Third-party notices](docs/third-party/README.md)
+
+First-party code is [Apache-2.0](LICENSE). Keep original third-party notices when redistributing.
+Report vulnerabilities through [private security reporting](SECURITY.md), not public issues.
+Never attach transcripts, credentials, databases, export URLs or full logs to a report.

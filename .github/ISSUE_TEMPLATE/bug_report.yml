@@ -1,0 +1,38 @@
+name: Bug or setup problem
+description: Report a reproducible failure without sharing private history.
+title: "bug: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Keep this public report sanitized. Do not attach transcripts, credentials, export URLs,
+        database files, recovery material or full logs. For vulnerabilities, use the repository's
+        private security reporting form instead.
+  - type: input
+    id: revision
+    attributes:
+      label: Release or commit
+      description: The installed release tag or full commit, not a personal filesystem path.
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, querying assistant and source family. No account identifiers.
+      placeholder: macOS, Python 3.12, Codex, Claude Code native history
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: What happened?
+      description: Minimal steps, expected result, actual result and which checks passed or failed.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Sanitized diagnostic
+      description: Command name, error class, exit code and elapsed time. No full logs or private text.
