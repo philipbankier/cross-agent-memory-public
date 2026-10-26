@@ -1,8 +1,9 @@
 # Agent-Guided Setup
 
-Status: synthetic clean macOS and Linux convergence passed for fresh local state, client identities,
-client credentials, device enrollment, source registration, collector pairing, and
-collector-service planning. Live setup remains a separate Gate I boundary.
+The setup self-check verifies isolated synthetic state on macOS and Linux: a fresh node,
+client identities and credentials, enrollment, source registration, collector pairing and
+service planning. Verify your own real import, questions, exact evidence, replay and reconnect
+before relying on an installation. The self-check is not live-account or answer-quality proof.
 
 The canonical bootstrap skill is `skills/cross-agent-memory/SKILL.md`. Thin adapters under
 `.agents/skills/`, `.claude/skills/` and `.grok/skills/` expose that one workflow in this checkout.
@@ -100,7 +101,8 @@ directory beside it.
 ## Recovery Key Placement
 
 Before affected real-data work, verify independent recovery custody and a synthetic fresh restore;
-`setup-verify` does not establish either. The [README recovery commands](../../README.md) include
+`setup-verify` does not establish either. The [remote storage guide](../../REMOTE.md#encrypted-b2)
+covers recovery command discovery, including
 `recovery-install-key` and `backup --operational-key` for an owned mounted key file outside
 `CAM_HOME`. Its parent must already be owned by the runtime user with mode `0700`.
 

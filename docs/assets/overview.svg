@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title description">
+  <title id="title">Cross-Agent Memory</title>
+  <desc id="description">Approved conversations flow into your own memory node. Read-only tools provide search and exact evidence to your existing assistant. Local and remote hosts are supported.</desc>
+  <rect width="1280" height="320" rx="8" fill="#f3f7f7"/>
+  <path d="M0 0H1280V6H0Z" fill="#0c8278"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#182b31">
+    <text x="48" y="77" font-size="42" font-weight="700">Cross-Agent Memory</text>
+    <text x="49" y="114" font-size="20" fill="#4b6268">Shared context. Your conversations. Your infrastructure.</text>
+    <text x="48" y="179" font-size="13" font-weight="700" fill="#647980">01 / CONNECT</text>
+    <text x="48" y="213" font-size="21" font-weight="700">Your conversations</text>
+    <text x="48" y="243" font-size="16" fill="#4b6268">Native histories + web exports</text>
+    <text x="48" y="269" font-size="16" fill="#4b6268">Optional opened-chat capture</text>
+    <path d="M360 225H433m-12-9 12 9-12 9" fill="none" stroke="#6e9595" stroke-width="2"/>
+    <rect x="458" y="156" width="352" height="132" rx="6" fill="#e0f0ec" stroke="#a5cfc5"/>
+    <text x="480" y="181" font-size="13" font-weight="700" fill="#0c6d64">02 / KEEP</text>
+    <text x="480" y="215" font-size="21" font-weight="700">Your memory node</text>
+    <text x="480" y="245" font-size="16" fill="#315b54">Evidence + a searchable index</text>
+    <text x="480" y="271" font-size="16" fill="#315b54">Local or on your own remote host</text>
+    <path d="M837 225H910m-12-9 12 9-12 9" fill="none" stroke="#6e9595" stroke-width="2"/>
+    <text x="940" y="179" font-size="13" font-weight="700" fill="#a85636">03 / RECALL</text>
+    <text x="940" y="213" font-size="21" font-weight="700">Your existing assistant</text>
+    <text x="940" y="243" font-size="16" fill="#4b6268">Read-only MCP tools</text>
+    <text x="940" y="269" font-size="16" fill="#4b6268">Citations + exact evidence</text>
+  </g>
+</svg>
