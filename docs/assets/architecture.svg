@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="900" viewBox="0 0 720 900" role="img" aria-labelledby="title description">
+  <title id="title">From conversations to attributed answers</title>
+  <desc id="description">Approved native histories, official web exports and optional capture of opened foreground saved chats flow into your memory node. The node uses a SQLite FTS5 index and local or encrypted B2 evidence. Read-only MCP tools let your existing assistant search and open exact evidence. Ingestion and querying have separate access approvals.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#648b8b"/>
+    </marker>
+  </defs>
+  <rect width="720" height="900" rx="8" fill="#f3f7f7"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#182b31">
+    <text x="32" y="42" font-size="26" font-weight="700">From conversations to attributed answers</text>
+
+    <rect x="32" y="70" width="656" height="76" rx="6" fill="#ffffff" stroke="#c5d5d6"/>
+    <text x="52" y="100" font-size="22" font-weight="700">Native histories</text>
+    <text x="52" y="128" font-size="19" fill="#4b6268">Codex / Claude Code / Grok Build</text>
+
+    <rect x="32" y="166" width="656" height="76" rx="6" fill="#ffffff" stroke="#c5d5d6"/>
+    <text x="52" y="196" font-size="22" font-weight="700">Official web exports</text>
+    <text x="52" y="224" font-size="19" fill="#4b6268">ChatGPT / Claude / Grok, separate per account</text>
+
+    <rect x="32" y="262" width="656" height="76" rx="6" fill="#ffffff" stroke="#c5d5d6"/>
+    <text x="52" y="292" font-size="22" font-weight="700">Optional Chrome capture</text>
+    <text x="52" y="320" font-size="19" fill="#4b6268">Rendered text in opened, foreground saved chats</text>
+
+    <path d="M688 108H704V362H360V382M688 204H704M688 300H704" fill="none" stroke="#648b8b" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="52" y="367" font-size="17" fill="#4b6268">Approved sources and account-bound admission</text>
+
+    <rect x="148" y="386" width="424" height="126" rx="6" fill="#e0f0ec" stroke="#a5cfc5"/>
+    <text x="172" y="424" font-size="25" font-weight="700">Your memory node</text>
+    <text x="172" y="458" font-size="20" fill="#315b54">Source evidence + SQLite FTS5 index</text>
+    <text x="172" y="488" font-size="17" fill="#315b54">Local Mac/Linux or your own remote host</text>
+
+    <path d="M260 512V532H169V552" fill="none" stroke="#648b8b" stroke-width="2"/>
+    <path d="M460 512V532H519V548" fill="none" stroke="#648b8b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="32" y="552" width="274" height="108" rx="6" fill="#ffffff" stroke="#c5d5d6"/>
+    <text x="52" y="585" font-size="21" font-weight="700">Evidence storage</text>
+    <text x="52" y="616" font-size="18" fill="#4b6268">Local files, or encrypted</text>
+    <text x="52" y="642" font-size="18" fill="#4b6268">B2 objects</text>
+
+    <rect x="350" y="552" width="338" height="108" rx="6" fill="#ffffff" stroke="#c5d5d6"/>
+    <text x="370" y="585" font-size="22" font-weight="700">Read-only MCP tools</text>
+    <text x="370" y="616" font-size="18" fill="#4b6268">Search / status / exact evidence</text>
+    <text x="370" y="642" font-size="17" fill="#4b6268">No ingestion through this relay</text>
+
+    <path d="M519 660V718" fill="none" stroke="#648b8b" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="32" y="714" font-size="17" fill="#4b6268">No vector database or</text>
+    <text x="32" y="740" font-size="17" fill="#4b6268">second answer engine required.</text>
+
+    <rect x="350" y="726" width="338" height="108" rx="6" fill="#f8eee9" stroke="#dfbfaf"/>
+    <text x="370" y="762" font-size="22" font-weight="700">Your existing assistant</text>
+    <text x="370" y="794" font-size="18" fill="#7b4b35">Attributed answers + follow-ups</text>
+    <text x="370" y="820" font-size="17" fill="#7b4b35">Open exact evidence when needed</text>
+
+    <text x="32" y="877" font-size="17" fill="#4b6268">Ingestion and querying have separate access approvals.</text>
+  </g>
+</svg>

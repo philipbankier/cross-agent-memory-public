@@ -87,6 +87,11 @@ credential. Keep credentials out of chat, screenshots and issue reports.
 
 ## How It Works
 
+![Approved native histories, web exports and optional opened-chat capture feed your own memory node. Read-only MCP tools let your existing assistant search and open exact evidence. Evidence storage can be local or encrypted B2.](docs/assets/architecture.svg)
+
+<details>
+<summary>Editable Mermaid source</summary>
+
 ```mermaid
 flowchart TB
     native["Native histories<br/>Codex / Claude Code / Grok Build"]
@@ -104,6 +109,8 @@ flowchart TB
     node --> tools
     tools --> assistant
 ```
+
+</details>
 
 1. Import approved history, or capture eligible opened web chats.
 2. Search the node's lexical FTS5 index through MCP. No vector database is required.

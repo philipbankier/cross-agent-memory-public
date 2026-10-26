@@ -3,6 +3,10 @@
 `overview.svg` is an editable, self-contained diagram of the source/node/client boundary.
 It uses system fonts, no external assets and no provider logos.
 
+`architecture.svg` is the detailed, self-contained source-to-answer diagram. The README
+keeps its Mermaid source in a disclosure, but displays the SVG without relying on GitHub's
+embedded diagram service. Keep both versions consistent when changing the flow.
+
 `control-panel.jpg` shows the actual local control panel with invented Atlas conversations
 from three native source families. It is a product illustration, not a live deployment,
 all-source coverage, answer-quality or authentication proof. No operator history is used.
