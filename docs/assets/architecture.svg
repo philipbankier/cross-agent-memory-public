@@ -22,7 +22,7 @@
     <text x="52" y="292" font-size="22" font-weight="700">Optional Chrome capture</text>
     <text x="52" y="320" font-size="19" fill="#4b6268">Rendered text in opened, foreground saved chats</text>
 
-    <path d="M688 108H704V362H360V382M688 204H704M688 300H704" fill="none" stroke="#648b8b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M688 108H704V374H360V382M688 204H704M688 300H704" fill="none" stroke="#648b8b" stroke-width="2" marker-end="url(#arrow)"/>
     <text x="52" y="367" font-size="17" fill="#4b6268">Approved sources and account-bound admission</text>
 
     <rect x="148" y="386" width="424" height="126" rx="6" fill="#e0f0ec" stroke="#a5cfc5"/>
