@@ -48,8 +48,9 @@ The check inspects the Python you selected, including its linked SQLite and FTS5
 If it reports `action_required`, follow [runtime prerequisites](docs/deployment/runtime-notes.md#python-and-sqlite)
 before importing real data. Set `PYTHON_BIN=/path/to/python3` for both commands when needed.
 
-These commands follow current source. [Signed release artifacts](docs/deployment/verify-release.md)
-are separate: v0.1.0 predates the dependency fixes in current source. See [release status](docs/release-readiness.md).
+These commands follow current source. For a fixed version, use
+[signed release artifacts](docs/deployment/verify-release.md) and their verification instructions.
+v0.1.1 includes the dependency fixes; v0.1.0 does not. See [release status](docs/release-readiness.md).
 Do not install from GitHub's automatic source ZIP; the build needs Git provenance.
 
 ## See It Before Connecting Accounts

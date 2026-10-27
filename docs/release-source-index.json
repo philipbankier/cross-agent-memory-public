@@ -1,14 +1,14 @@
 {
   "format_version": 1,
-  "status": "Current source candidate inventory, not patch-release artifact attestation",
+  "status": "v0.1.1 source inventory; exact build revision is bound by the release attestations",
   "application": {
-    "revision": "2c9ed73852d357324c45fc0ada4ebe9c255ea7a9",
-    "source": "https://github.com/philipbankier/cross-agent-memory-public/tree/2c9ed73852d357324c45fc0ada4ebe9c255ea7a9",
+    "runtime_base_revision": "c542837b5bf2fded9b98945bdfc64fe74eac0fce",
+    "source": "https://github.com/philipbankier/cross-agent-memory-public/tree/v0.1.1",
     "repository_private_at_preparation": false,
     "build_input_sha256": {
       "Containerfile": "19b53a291b52889dd2a80740d04e0051c61b5fb73386710d508a6937e9ae8915",
       ".dockerignore": "5d2c60555c0dcf5b6b554299b04bcbe6c9b2c96a8ad374b4504638baad0c59c1",
-      "pyproject.toml": "8448d16913b2094e13baa1d305ea4bd35bd7af278433d6c6c1bcbd5fa02150a3",
+      "pyproject.toml": "10220876a14118ca1c316ce180ec4f8511f924c8c85fa5703e6c542d781c74d3",
       "cam_build.py": "95bdb40935d2b02249631570177683d614d2c391f4573b72b4e49e9ff53b69b6",
       "requirements.lock": "04094130de518b81f80418af3d355a06c9986975a1176ce42b16da24b9b1a17a",
       "requirements-bootstrap.lock": "52367b794614f69d205a57c5a8074a46cd28f253532d649b4863ffcabf1d4d3c",

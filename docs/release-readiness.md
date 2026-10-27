@@ -3,6 +3,18 @@
 Current source and published artifacts are different things. This page records the boundary,
 not a blanket claim that every deployment or assistant answer is safe.
 
+## v0.1.1
+
+This patch includes the dependency fixes, prerequisite checks, disposable demo, first-run repair
+and documentation improvements below. The [release notes](https://github.com/philipbankier/cross-agent-memory-public/releases/tag/v0.1.1)
+record its exact source revision, signed artifacts and download-verification runs. Until that
+release is published, source qualification is not published-artifact verification.
+
+The release procedure uploads verified artifacts only to an existing, revision-bound draft, with
+no asset replacement. Independent macOS and Linux amd64/arm64 jobs download and verify that draft
+before publication, then repeat against the public release. v0.1.0 remains unchanged.
+Publishing a patch does not upgrade any running node or client.
+
 ## Published v0.1.0
 
 The release was verified from actual public downloads on macOS and Linux amd64/arm64, with
@@ -28,9 +40,9 @@ leak was observed or claimed. Its dependency and the checked-in bundle are updat
 The setuptools issue concerns legacy wheel installation on Windows, not a supported node platform;
 the build-tool pin is updated without claiming a macOS/Linux runtime exploit.
 
-These pins are corrected in current source. The previously published binaries and images are
-unchanged. Do not call them patched until a new release is built, signed and verified from its
-actual published downloads. Existing deployments are not upgraded by a repository merge.
+These pins are corrected in v0.1.1 source. The v0.1.0 binaries and images remain unchanged.
+Only new, signed artifacts verified from their actual downloads establish a patched release.
+Existing deployments are not upgraded by a repository merge.
 
 ## First-Run Findings
 
