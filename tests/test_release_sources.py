@@ -8,6 +8,7 @@ import re
 import runpy
 import subprocess
 import sys
+import tomllib
 import urllib.request
 from collections.abc import Callable
 from contextlib import closing
@@ -53,6 +54,13 @@ def source_fetch(data: bytes) -> Callable[[str, float], closing[io.BytesIO]]:
 
 def forbidden_fetch(_url: str, _timeout: float) -> closing[io.BytesIO]:
     pytest.fail("Source metadata must refuse before download")
+
+
+def test_package_and_runtime_versions_match() -> None:
+    root = Path(__file__).resolve().parents[1]
+    project = tomllib.loads((root / "pyproject.toml").read_text())
+    runtime = runpy.run_path(str(root / "src/cross_assistant_memory/__init__.py"))
+    assert project["project"]["version"] == runtime["__version__"]
 
 
 def test_checked_in_source_inventories_match_locked_inputs() -> None:

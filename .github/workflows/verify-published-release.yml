@@ -4,9 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       expected_revision:
-        description: Exact published source revision
+        description: Exact source revision of the release
         required: true
         type: string
+      release_tag:
+        description: Existing release tag matching the package version
+        required: true
+        type: string
+      expect_draft:
+        description: Verify a private draft before publication
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -29,7 +38,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       EXPECTED_REVISION: ${{ inputs.expected_revision }}
-      RELEASE_TAG: v0.1.0
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      EXPECT_DRAFT: ${{ inputs.expect_draft }}
       RELEASE_ARCH: ${{ matrix.arch }}
       PIP_NO_CACHE_DIR: "1"
       PYTHONDONTWRITEBYTECODE: "1"
@@ -43,12 +53,16 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-      - name: Verify repository and published source identity
+      - name: Verify repository, release state and source identity
         run: |
           test "$GITHUB_REPOSITORY" = philipbankier/cross-agent-memory-public
           [[ "$EXPECTED_REVISION" =~ ^[0-9a-f]{40}$ ]]
           test "$GITHUB_SHA" = "$EXPECTED_REVISION"
           test "$(git rev-parse HEAD)" = "$EXPECTED_REVISION"
+          version=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          test "$RELEASE_TAG" = "v$version"
+          echo "RELEASE_VERSION=$version" >> "$GITHUB_ENV"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')" = "$EXPECTED_REVISION"
           gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
             --json tagName,targetCommitish,isDraft > "$RUNNER_TEMP/release.json"
           python - <<'PY'
@@ -57,15 +71,16 @@ jobs:
           release = json.loads((Path(os.environ["RUNNER_TEMP"]) / "release.json").read_bytes())
           assert release["tagName"] == os.environ["RELEASE_TAG"]
           assert release["targetCommitish"] == os.environ["EXPECTED_REVISION"]
-          assert release["isDraft"] is False
+          assert os.environ["EXPECT_DRAFT"] in {"true", "false"}
+          assert release["isDraft"] is (os.environ["EXPECT_DRAFT"] == "true")
           PY
       - name: Download and authenticate the published Python set
         run: |
           mkdir "$RUNNER_TEMP/release-downloads"
           gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
             --dir "$RUNNER_TEMP/release-downloads" \
-            --pattern 'cross_assistant_memory-0.1.0-py3-none-any.whl' \
-            --pattern 'cross_assistant_memory-0.1.0.tar.gz' --pattern 'python-*'
+            --pattern "cross_assistant_memory-$RELEASE_VERSION-py3-none-any.whl" \
+            --pattern "cross_assistant_memory-$RELEASE_VERSION.tar.gz" --pattern 'python-*'
           cd "$RUNNER_TEMP/release-downloads"
           for artifact in python-SHA256SUMS *.whl *.tar.gz; do
             gh attestation verify "$artifact" --bundle python-attestation.json \
@@ -81,7 +96,7 @@ jobs:
           "$RUNNER_TEMP/release-consumer/bin/python" -m pip install \
             --only-binary=:all: --require-hashes -r requirements.lock
           "$RUNNER_TEMP/release-consumer/bin/python" -m pip install --no-deps \
-            "$RUNNER_TEMP/release-downloads/cross_assistant_memory-0.1.0-py3-none-any.whl"
+            "$RUNNER_TEMP/release-downloads/cross_assistant_memory-$RELEASE_VERSION-py3-none-any.whl"
           "$RUNNER_TEMP/release-consumer/bin/python" -I -B -c \
             'import sys; from cross_assistant_memory.runtime_provenance import require_runtime_code_revision; require_runtime_code_revision(sys.argv[1])' \
             "$EXPECTED_REVISION"

@@ -12,6 +12,11 @@ on:
         required: true
         default: false
         type: boolean
+      release_tag:
+        description: Optional existing draft release to receive the verified artifacts
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -21,11 +26,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: write
       id-token: write
       attestations: write
     env:
       EXPECTED_REVISION: ${{ inputs.expected_revision }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
       PUBLICATION_APPROVED: ${{ inputs.publication_approved }}
       REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
@@ -100,3 +106,22 @@ jobs:
           path: dist/*
           if-no-files-found: error
           retention-days: 7
+      - name: Upload to the exact existing draft without replacing assets
+        if: inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          test "$RELEASE_TAG" = "v$version"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')" = "$EXPECTED_REVISION"
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,targetCommitish,isDraft > "$RUNNER_TEMP/release.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          release = json.loads((Path(os.environ["RUNNER_TEMP"]) / "release.json").read_bytes())
+          assert release["tagName"] == os.environ["RELEASE_TAG"]
+          assert release["targetCommitish"] == os.environ["EXPECTED_REVISION"]
+          assert release["isDraft"] is True
+          PY
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" dist/*
