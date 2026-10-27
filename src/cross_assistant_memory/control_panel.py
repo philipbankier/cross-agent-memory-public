@@ -428,6 +428,7 @@ button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: no
 .product { margin: 0; font-size: 18px; font-weight: 720; }
 .generation { margin: 3px 0 0; max-width: 56ch; color: #5c6c7b; font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
+.topbar > div:first-child { min-width: 0; }
 .state { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; }
 .state-ready { color: #d6fff7; background: #17645d; }
 .state-attention { color: #fff4d8; background: #8a5b0a; }
@@ -589,9 +590,10 @@ dialog::backdrop { background: rgb(16 23 22 / 48%); }
 }
 
 @media (max-width: 390px) {
+  .topbar { gap: 8px; }
   .product { font-size: 14px; }
   .tabs { overflow-x: auto; }
-  .tab-button { flex: 0 0 auto; }
+  .tab-button { flex: 0 0 auto; padding: 0 8px; font-size: 12px; }
   .candidate-fields { grid-template-columns: 1fr; }
   .action-grid, .compact-fields, .metrics { grid-template-columns: 1fr; }
   .metrics div { border-right: 0; border-bottom: 1px solid #d5dcda; }

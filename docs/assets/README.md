@@ -11,7 +11,7 @@ decisions and reported work. It is not a screenshot, generated answer or benchma
 displays the SVG without relying on GitHub's embedded diagram service. Edit its labeled
 source-to-node-to-assistant flow when changing the architecture.
 
-`control-panel.jpg` shows the actual local control panel with invented Atlas conversations
+`control-panel.png` shows the actual local control panel with invented Atlas conversations
 from three native source families. It is a product illustration, not a live deployment,
 all-source coverage, answer-quality or authentication proof. No operator history is used.
 

@@ -9,7 +9,7 @@ The release was verified from actual public downloads on macOS and Linux amd64/a
 16 assets, 13 signed subjects, checksum checks and source/image provenance. Those checks establish
 identity and tested behavior at that revision. They do not clear newly published advisories.
 
-The October 27, 2026 audit found four advisories in its Python and UI dependency locks:
+The October 27, 2026 audit found five advisories across runtime, UI and build dependency locks:
 
 | Dependency | Advisory | Source fix |
 | ---------- | -------- | ---------- |
@@ -17,6 +17,7 @@ The October 27, 2026 audit found four advisories in its Python and UI dependency
 | OpenTelemetry API 1.44.0 | [CVE-2026-114603](https://github.com/open-telemetry/opentelemetry-python/security/advisories/GHSA-xcq7-p3pf-p88h): pathological inbound tracestate parsing | opentelemetry-api 1.45.1 |
 | MCP TypeScript client 2.2.0 | [GHSA-6prh-2h8m-c8cw](https://github.com/modelcontextprotocol/typescript-sdk/security/advisories/GHSA-6prh-2h8m-c8cw): HTTP/OAuth cross-origin redirects can forward custom headers and bodies | Client and matching core 2.3.0 |
 | Zod 4.2.0 | [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5): oversized collection validation can exhaust memory | Zod 4.6.6 |
+| Setuptools 84.0.0 | [GHSA-xmj3-9gf7-h52w](https://github.com/advisories/GHSA-xmj3-9gf7-h52w): Windows path escape in legacy wheel installation | Setuptools 84.1.0 |
 
 The HTTP server uses stateful MCP, so the session-retention advisory is relevant. Authentication
 restricts who can trigger it; it does not bound a token holder's sessions. Stdio is not affected by
@@ -24,6 +25,8 @@ that advisory. The OpenTelemetry dependency is present; exploitability depends o
 HTTP header limits. No exploit against a real node was run or claimed.
 The visual App uses its host bridge rather than the affected HTTP/OAuth client path; no credential
 leak was observed or claimed. Its dependency and the checked-in bundle are updated nonetheless.
+The setuptools issue concerns legacy wheel installation on Windows, not a supported node platform;
+the build-tool pin is updated without claiming a macOS/Linux runtime exploit.
 
 These pins are corrected in current source. The previously published binaries and images are
 unchanged. Do not call them patched until a new release is built, signed and verified from its
@@ -39,6 +42,9 @@ actual published downloads. Existing deployments are not upgraded by a repositor
   macOS-style on all hosts; the documentation no longer claims otherwise.
 - `script/demo` gives a disposable real-panel trial without asking for personal accounts or history.
   Its invented data is not evidence of provider coverage or real-answer quality.
+- Opening the panel from another app incorrectly rejected the login shell as cross-site.
+  Top-level GET navigation to that shell now works; cross-site data/API requests and frames remain
+  refused, and host/origin checks and authentication remain in force.
 
 ## What A Public Patch Release Must Verify
 

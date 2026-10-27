@@ -63,7 +63,7 @@ and search for `Atlas`. This runs the real control panel with six invented messa
 three native sources. No account login, personal history or existing node is accessed.
 Ctrl-C stops it and removes its temporary state. Do not import personal data into the demo.
 
-![The actual control panel searching invented Atlas messages across three native source families.](docs/assets/control-panel.jpg)
+![The actual control panel searching invented Atlas messages across three native source families.](docs/assets/control-panel.png)
 
 Synthetic example data in the actual UI. The web sources are not populated in this screenshot.
 The panel manages evidence and access; your assistant is where you ask for synthesized answers.
