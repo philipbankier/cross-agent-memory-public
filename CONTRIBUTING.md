@@ -76,6 +76,8 @@ the exact PyPI version, its dependency metadata and all wheel SHA-256 values. Up
 pin in `pyproject.toml` and the affected blocks in both runtime and development locks. Preserve
 unaffected pins; confirm the complete environment with `pip check` after reinstalling the committed
 candidate. Run lint/types, the full suite, capture tests and the installed setup self-check.
+Update both source inventories described in [the source-index guide](docs/release-source-index.md).
+Use upstream archive metadata and verify changed source bytes; the drift tests check pins and hashes.
 
 The lock headers previously named `script/lock-python`, which was not part of this public tree.
 Do not invoke a missing private helper. Locks contain exact versions and wheel hashes from PyPI;

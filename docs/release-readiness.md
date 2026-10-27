@@ -46,6 +46,9 @@ actual published downloads. Existing deployments are not upgraded by a repositor
 - Opening the panel from another app incorrectly rejected the login shell as cross-site.
   Top-level GET navigation to that shell now works; cross-site data/API requests and frames remain
   refused, and host/origin checks and authentication remain in force.
+- Source inventories still named the old dependency pins and a private candidate. Both now match
+  the locks, changed Python source archives have verified hashes, and regressions check the real
+  inventories for drift. This does not replace a new release's artifact provenance.
 
 ## Verified Candidate
 
@@ -61,7 +64,7 @@ results, not new release attestations or another live-account acceptance claim.
 | The skipped browser test, run explicitly | Passed: four account fixtures, restart, offline queue, replay and recovery |
 | Extension unit tests | 88 passed |
 | Visual App type/format/bundle checks and tests | Passed; 28 tests |
-| Installed agent-guided setup | Passed on the preceding runtime candidate; final CI checks the exact PR head |
+| Installed agent-guided setup | Passed at `2c9ed73`; final CI checks the exact PR head |
 | Dependency advisories | pip-audit 2.10.1 and npm audit: no known findings after fixes |
 | Secret and private-identifier checks | Gitleaks history/staged scan and targeted operator-identifier scan passed |
 | Real Chrome panel checks | Search, exact evidence, empty-state recovery, four views, lock/purge; no console errors |
