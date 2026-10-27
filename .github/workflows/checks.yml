@@ -42,6 +42,36 @@ jobs:
       - name: Verify agent-guided setup
         run: script/verify-agent-guided-setup
 
+  interfaces:
+    if: github.event_name != 'workflow_dispatch' || !inputs.verify_release_sources
+    name: Interfaces and capture recovery
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+      - name: Install locked test dependencies
+        run: |
+          script/setup-dev
+          npm ci --prefix ui/memory-app --ignore-scripts
+          cd ui/memory-app
+          npx --no-install playwright install --with-deps chromium
+      - name: Check visual App source and bundle
+        run: |
+          npm run typecheck --prefix ui/memory-app
+          npm run format:check --prefix ui/memory-app
+          npm run check:bundle --prefix ui/memory-app
+          npm test --prefix ui/memory-app
+      - name: Check provider fixtures and capture recovery
+        run: script/test-browser-capture
+
   container:
     if: github.event_name != 'workflow_dispatch' || !inputs.verify_release_sources
     name: Native Linux amd64 image

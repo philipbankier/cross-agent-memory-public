@@ -94,9 +94,10 @@ export CAM_SETUP_STATE="$HOME/Library/Application Support/cross-assistant-memory
 install -d -m 700 "$CAM_SETUP_STATE"
 ```
 
-On Linux, the default data root is
+On Linux, explicitly set the data root to
 `${XDG_DATA_HOME:-$HOME/.local/share}/cross-assistant-memory`; use a separate mode-`0700` setup-state
-directory beside it.
+directory beside it. The runtime's implicit default currently uses the macOS-style path on every
+platform, so this explicit choice is required to use XDG. Existing roots are never moved automatically.
 
 ## Recovery Key Placement
 

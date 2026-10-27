@@ -1,25 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-labelledby="title desc">
   <title id="title">Cross-Agent Memory</title>
-  <desc id="description">Approved conversations flow into your own memory node. Read-only tools provide search and exact evidence to your existing assistant. Local and remote hosts are supported.</desc>
-  <rect width="1280" height="320" rx="8" fill="#f3f7f7"/>
-  <path d="M0 0H1280V6H0Z" fill="#0c8278"/>
-  <g font-family="Arial, Helvetica, sans-serif" fill="#182b31">
-    <text x="48" y="77" font-size="42" font-weight="700">Cross-Agent Memory</text>
-    <text x="49" y="114" font-size="20" fill="#4b6268">Shared context. Your conversations. Your infrastructure.</text>
-    <text x="48" y="179" font-size="13" font-weight="700" fill="#647980">01 / CONNECT</text>
-    <text x="48" y="213" font-size="21" font-weight="700">Your conversations</text>
-    <text x="48" y="243" font-size="16" fill="#4b6268">Native histories + web exports</text>
-    <text x="48" y="269" font-size="16" fill="#4b6268">Optional opened-chat capture</text>
-    <path d="M360 225H433m-12-9 12 9-12 9" fill="none" stroke="#6e9595" stroke-width="2"/>
-    <rect x="458" y="156" width="352" height="132" rx="6" fill="#e0f0ec" stroke="#a5cfc5"/>
-    <text x="480" y="181" font-size="13" font-weight="700" fill="#0c6d64">02 / KEEP</text>
-    <text x="480" y="215" font-size="21" font-weight="700">Your memory node</text>
-    <text x="480" y="245" font-size="16" fill="#315b54">Evidence + a searchable index</text>
-    <text x="480" y="271" font-size="16" fill="#315b54">Local or on your own remote host</text>
-    <path d="M837 225H910m-12-9 12 9-12 9" fill="none" stroke="#6e9595" stroke-width="2"/>
-    <text x="940" y="179" font-size="13" font-weight="700" fill="#a85636">03 / RECALL</text>
-    <text x="940" y="213" font-size="21" font-weight="700">Your existing assistant</text>
-    <text x="940" y="243" font-size="16" fill="#4b6268">Read-only MCP tools</text>
-    <text x="940" y="269" font-size="16" fill="#4b6268">Citations + exact evidence</text>
+  <desc id="desc">Six history sources connect to a memory node you own. Your existing assistant searches it and opens exact evidence. Local or remote, with no separate answer model.</desc>
+  <rect width="1280" height="560" fill="#111820"/>
+  <path d="M0 480H1280M704 0V480" stroke="#33404c"/>
+  <g font-family="Arial, Helvetica, sans-serif" letter-spacing="0">
+    <rect x="48" y="42" width="36" height="36" rx="4" fill="#d7f275"/>
+    <path d="M58 52v16h16M58 60h16M66 52v16" fill="none" stroke="#111820" stroke-width="2"/>
+    <text x="100" y="67" fill="#d7f275" font-size="20">Open source. Owner controlled.</text>
+    <text x="48" y="174" fill="#ffffff" font-size="70" font-weight="700">Cross-Agent</text>
+    <text x="48" y="252" fill="#ffffff" font-size="70" font-weight="700">Memory</text>
+    <text x="48" y="316" fill="#d3dce4" font-size="27">Your history. Your infrastructure.</text>
+    <text x="48" y="354" fill="#d3dce4" font-size="27">Your next assistant, already in context.</text>
+    <text x="48" y="425" fill="#aab8c6" font-size="20">Search across assistants. Check the original evidence.</text>
+    <g fill="#1b2631" stroke="#536272">
+      <rect x="752" y="48" width="224" height="48" rx="4"/><rect x="992" y="48" width="240" height="48" rx="4"/>
+      <rect x="752" y="108" width="224" height="48" rx="4"/><rect x="992" y="108" width="240" height="48" rx="4"/>
+      <rect x="752" y="168" width="224" height="48" rx="4"/><rect x="992" y="168" width="240" height="48" rx="4"/>
+    </g>
+    <g fill="#f0f4f7" font-size="21">
+      <text x="772" y="79">Codex</text><text x="1012" y="79">ChatGPT</text>
+      <text x="772" y="139">Claude Code</text><text x="1012" y="139">Claude</text>
+      <text x="772" y="199">Grok Build</text><text x="1012" y="199">Grok</text>
+    </g>
+    <path d="M864 216v20h128m120-20v20H992v30" fill="none" stroke="#9daebe" stroke-width="2"/>
+    <rect x="832" y="266" width="320" height="65" rx="4" fill="#d7f275"/>
+    <text x="992" y="305" fill="#111820" text-anchor="middle" font-size="24" font-weight="700">Your memory node</text>
+    <path d="M992 331v37" stroke="#9daebe" stroke-width="2"/>
+    <rect x="792" y="368" width="400" height="70" rx="4" fill="#213c46" stroke="#78bdb8"/>
+    <text x="992" y="397" fill="#dcf4ef" text-anchor="middle" font-size="21">Your assistant, via read-only MCP</text>
+    <text x="992" y="423" fill="#aad4d0" text-anchor="middle" font-size="17">Search + exact evidence + source status</text>
+    <text x="48" y="529" fill="#f0f4f7" font-size="20">Local or remote</text>
+    <text x="398" y="529" fill="#f0f4f7" font-size="20">No separate answer model</text>
+    <text x="848" y="529" fill="#f0f4f7" font-size="20">Apache 2.0</text>
   </g>
 </svg>

@@ -24,6 +24,7 @@ privacy boundary are clear. A small bug fix does not need a separate design proc
 
 Read [AGENTS.md](AGENTS.md) and use a feature branch in your fork. Do not push directly to
 the default branch. Use Python 3.11+ and Node for the existing extension syntax/tests.
+Install while the checkout is clean, before making edits. A dirty build is deliberately rejected.
 
 ```sh
 git switch -c fix/describe-the-problem
@@ -61,6 +62,24 @@ script/test-browser-capture
 The fixture uses synthetic provider pages and a disposable node, not your browser accounts.
 It adds browser/dependency downloads; it is not a prerequisite for ordinary runtime setup.
 Clean up only artifacts you created and no longer need.
+
+## Dependency Changes
+
+Keep upgrades separate from unrelated refactors. Verify the upstream advisory or release notes,
+the exact PyPI version, its dependency metadata and all wheel SHA-256 values. Update the direct
+pin in `pyproject.toml` and the affected blocks in both runtime and development locks. Preserve
+unaffected pins; confirm the complete environment with `pip check` after reinstalling the committed
+candidate. Run lint/types, the full suite, capture tests and the installed setup self-check.
+
+The lock headers previously named `script/lock-python`, which was not part of this public tree.
+Do not invoke a missing private helper. Locks contain exact versions and wheel hashes from PyPI;
+source archives are not installed by the runtime setup. If changing transitive dependencies, check
+their constraints explicitly rather than changing only the package named in an advisory.
+
+Run a current vulnerability scan of the locks and the UI lockfile before a release. Record its tool
+version, date, findings and limitations. A zero-result scan is not a full security assessment.
+Changed dependencies require newly built and signed release artifacts. Never overwrite old release
+assets or treat an earlier attestation as proof for a new candidate.
 
 ## Keep Changes Reviewable
 

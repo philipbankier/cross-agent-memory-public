@@ -23,7 +23,8 @@ deployments, evaluation records and Git history. Do not seek or recreate that pr
 1. Use the tagged source release or a verified Git clone. Check the remote, branch, current
    commit and local changes before running code. PILOT-SOURCE.json describes the source archive,
    not the current runtime. Do not override CAM_BUILD_REVISION or copy an old package build stamp.
-2. Run `script/setup` with an installed Python 3.11+ selected via PYTHON_BIN when needed.
+2. Run `script/doctor` with the intended Python, then `script/setup` using the same PYTHON_BIN.
+   Resolve runtime prerequisites before real-data work. The check reads no accounts or node state.
    Setup is runtime-only and installs the package rather than an editable development checkout.
 3. Choose CAM_HOME explicitly. Keep plans, tokens and keys in durable owner-only directories outside
    that root and collection paths. Never print credentials or read unrelated provider accounts.
@@ -55,6 +56,10 @@ Keep originals. Do not describe pending publication as durable backup or provide
 For development, use `script/setup-dev`, then `script/lint` and `script/test`. Runtime setup stays
 runtime-only. Development dependencies are hash-locked in requirements-dev.lock. CI checks the
 installed package on macOS and Linux; a workflow definition is not a passed platform check.
+
+`script/demo` runs the real panel with six invented messages in a disposable private directory.
+It accepts no source paths, ignores CAM_HOME, and does not connect accounts or services. Keep real
+data out of that demo. The printed demo token is temporary and cannot unlock a real installation.
 
 `script/verify-agent-guided-setup` exercises isolated synthetic setup and removes its temporary
 state. Run it from a clean Git clone after installation; the installed runtime and checkout must

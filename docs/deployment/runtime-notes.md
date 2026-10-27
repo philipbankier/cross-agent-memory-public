@@ -19,6 +19,12 @@ Behavioral tests are not SQLite advisory clearance. Choose a build with the upst
 3.50.7 / 3.44.6 backports. An older vendor version label needs separate confirmation of its fix.
 Check the SQLite library that the selected Python actually loads, not the standalone SQLite CLI.
 
+Current source includes `PYTHON_BIN=/path/to/python3 script/doctor`: a read-only preflight that
+reports the selected Python, its linked SQLite, FTS5 support and known fixed upstream versions.
+It touches no existing database, credential or service. `action_required` is not permission to
+import personal data. Vendor backports with older labels need independent verification; the check
+does not guess patch status. v0.1.0 does not include this helper.
+
 The agent can install the runtime with:
 
 ```sh
@@ -33,6 +39,10 @@ Keep the folder in a durable location after setup. Do not move a configured virt
 Setup and its self-check avoid creating source bytecode. If an older checkout reports that runtime
 bytecode differs from verified source, preserve it for inspection and use a clean clone. Do not
 disable provenance checks or remove data, keys or uninspected files to force an update.
+
+Install the development environment before editing source. After edits, commit the intended
+candidate and reinstall from that clean checkout before revision-bound acceptance. This is why
+an arbitrary dirty tree or GitHub's automatic source ZIP is not the supported installation path.
 
 ## Native History Compatibility
 
