@@ -452,6 +452,7 @@ h1, h2 { margin: 0; font-size: 17px; line-height: 1.3; letter-spacing: 0; }
 .source-row { min-height: 56px; padding: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; border: 1px solid #d5dce2; border-radius: 4px; background: #fff; }
 .source-name { min-width: 0; font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .source-detail { margin-top: 2px; color: #6c7774; font-size: 11px; }
+.source-import { display: block; }
 .source-status { width: 10px; height: 10px; border-radius: 50%; background: #9ca5a3; }
 .source-status.available { background: #168270; }
 .source-status.attention { background: #c47613; }
@@ -564,13 +565,19 @@ dialog::backdrop { background: rgb(16 23 22 / 48%); }
 @media (max-width: 760px) {
   .topbar { padding: 9px 12px; }
   .workspace { display: block; }
-  .source-panel { padding: 13px 12px; }
+  .source-panel { padding: 10px 12px; }
   .work-panel { padding: 0 12px 13px; }
   .source-panel { border-right: 0; border-bottom: 1px solid #cbd3d1; }
-  .source-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
-  .source-row { min-height: 48px; padding: 6px 7px; }
+  .source-grid { margin-top: 6px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  .source-row { min-height: 46px; padding: 6px 7px; gap: 4px; }
   .source-name { font-size: 11px; }
-  .source-detail { font-size: 10px; }
+  .source-detail { font-size: 10px; overflow-wrap: anywhere; }
+  .source-import { display: none; }
+  .source-panel .section-heading { min-height: 28px; }
+  .export-band { margin-top: 8px; padding-top: 8px; }
+  .tabs { min-height: 46px; gap: 4px; }
+  .tab-view { padding-top: 12px; }
+  .search-form { margin-top: 10px; padding: 10px 0; }
   .filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .candidate-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1218,9 +1225,12 @@ _PANEL_JS = """(() => {
       const sync = source.sync || {};
       const row = element('div', 'source-row');
       const body = element('div');
+      const detail = element('div', 'source-detail', formatState(sync.state));
+      detail.append(element('span', 'source-import', source.latest_ingested_at
+        ? `Imported ${formatEvidenceDay(source.latest_ingested_at)}` : 'Not imported'));
       body.append(
         element('div', 'source-name', sourceLabel(source.source_system)),
-        element('div', 'source-detail', `${formatState(sync.state)} / ${source.latest_ingested_at ? `imported ${formatEvidenceDay(source.latest_ingested_at)}` : 'not imported'}`)
+        detail
       );
       const visualState = sync.attention_required ? 'attention' : (source.state || 'disconnected');
       const status = element('span', `source-status ${visualState}`);

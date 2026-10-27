@@ -31,17 +31,17 @@ def seed_demo(root: Path) -> tuple[Settings, str]:
         (
             SourceSystem.CODEX,
             "Run Atlas on the office Mac.",
-            "I will keep the cloud VM idea parked.",
+            "Atlas will use the office Mac. The earlier cloud VM idea is parked.",
         ),
         (
             SourceSystem.CLAUDE_CODE,
             "What did we decide for Atlas?",
-            "The office Mac is the chosen host.",
+            "The office Mac is the chosen host for Atlas, according to the user decision.",
         ),
         (
             SourceSystem.GROK_BUILD,
             "What remains for Atlas?",
-            "Deployment is reported complete. A live health check is still needed.",
+            "Atlas deployment is reported complete. A live health check is still needed.",
         ),
     )
     for source, question, answer in samples:
