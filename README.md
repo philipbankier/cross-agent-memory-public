@@ -151,8 +151,11 @@ script/test
 node --test browser/capture/*.test.mjs
 ```
 
-After committing changes, reinstall and run `script/verify-agent-guided-setup`. It requires the
-installed runtime and clean checkout to match. Node is for developer checks, not runtime setup.
+These first checks establish a clean baseline. During edits, use `PYTHONPATH=src script/test`
+with the relevant test paths so regressions exercise your changed code, not the installed copy.
+For final acceptance, commit, reinstall, then run `script/test` and
+`script/verify-agent-guided-setup` with no PYTHONPATH override. Installed runtime and clean
+checkout must match. Node is for developer checks, not runtime setup.
 
 | Area | Entry point |
 | ---- | ----------- |

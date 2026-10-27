@@ -38,10 +38,16 @@ Development dependencies are hash-locked. Normal users keep the runtime-only `sc
 path; it does not install development or browser tools. Do not guess dependency versions,
 bypass provenance checks or replace the lockfiles as part of an unrelated change.
 
-Some operations verify the exact committed runtime. Commit the intended changes, reinstall
-with `script/setup`, and run the setup self-check from that clean checkout:
+`script/test` exercises the installed package, not uninstalled edits. During development run
+focused source regressions with `PYTHONPATH=src script/test <test paths>`. Do not mistake a pass
+against the old installation for proof of the new code. Provenance/installed-package checks
+still need a clean, matching revision; do not weaken them to support a dirty development loop.
+
+For acceptance, commit the intended changes, reinstall with `script/setup`, then run the full
+installed suite and setup self-check from that clean checkout, without a PYTHONPATH override:
 
 ```sh
+script/test
 script/verify-agent-guided-setup
 ```
 

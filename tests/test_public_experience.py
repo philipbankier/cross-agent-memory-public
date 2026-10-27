@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import ModuleType
 
@@ -8,6 +9,8 @@ import pytest
 from starlette.testclient import TestClient
 
 from cross_assistant_memory.control_panel import create_control_panel_app
+from cross_assistant_memory.models import Capability, ClientKind
+from cross_assistant_memory.storage import Ledger
 
 
 def load_script(name: str) -> ModuleType:
@@ -45,10 +48,22 @@ def test_demo_uses_real_panel_without_owner_data(
     with load_script("demo").demo_node() as (settings, token):
         root = settings.data_root.parent
         assert root.stat().st_mode & 0o777 == 0o700
+        ledger = Ledger(settings)
+        reader = ledger.register_client(
+            label="Demo query-only client",
+            kind=ClientKind.ASSISTANT,
+            capabilities=(Capability.MEMORY_SEARCH,),
+        )
+        reader_token = ledger.issue_client_credential(
+            reader["client_id"], expires_at=datetime.now(UTC) + timedelta(minutes=5)
+        )["token"]
         app = create_control_panel_app(settings, host="127.0.0.1", port=58000)
         with TestClient(app, base_url="http://127.0.0.1:58000") as client:
             assert client.get("/").status_code == 200
             assert client.get("/api/overview").status_code == 401
+            reader_headers = {"Authorization": f"Bearer {reader_token}"}
+            assert client.get("/api/overview", headers=reader_headers).status_code == 403
+            assert client.post("/api/clients", headers=reader_headers, json={}).status_code == 403
             headers = {"Authorization": f"Bearer {token}"}
             assert client.get("/api/overview", headers=headers).status_code == 200
             navigation = {
@@ -88,6 +103,12 @@ def test_demo_uses_real_panel_without_owner_data(
             )
             assert response.status_code == 200
             assert "Atlas" in response.text
+            match = response.json()["results"][0]
+            exact = client.post(
+                "/api/evidence", headers=headers, json={"event_id": match["event_id"]}
+            )
+            assert exact.status_code == 200
+            assert exact.json()["content_text"] == match["content_text"]
             assert response.headers["cache-control"] == "no-store"
             assert "frame-ancestors 'none'" in response.headers["content-security-policy"]
     assert not root.exists()
