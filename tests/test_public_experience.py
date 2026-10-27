@@ -51,6 +51,22 @@ def test_demo_uses_real_panel_without_owner_data(
             assert client.get("/api/overview").status_code == 401
             headers = {"Authorization": f"Bearer {token}"}
             assert client.get("/api/overview", headers=headers).status_code == 200
+            navigation = {
+                "Sec-Fetch-Site": "cross-site",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Dest": "document",
+            }
+            assert client.get("/", headers=navigation).status_code == 200
+            assert client.get("/api/overview", headers={**headers, **navigation}).status_code == 403
+            assert client.post("/", headers=navigation).status_code == 403
+            assert (
+                client.get("/", headers={**navigation, "Sec-Fetch-Dest": "iframe"}).status_code
+                == 403
+            )
+            assert (
+                client.get("/", headers={**navigation, "Origin": "https://example.org"}).status_code
+                == 403
+            )
             for override, status in [
                 ({"Origin": "https://example.org"}, 403),
                 ({"Host": "example.org"}, 421),

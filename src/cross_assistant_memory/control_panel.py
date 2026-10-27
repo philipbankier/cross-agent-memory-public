@@ -1823,7 +1823,14 @@ class _PanelSecurityMiddleware:
         if origin is not None and origin != self._origin:
             await self._rejection(scope, receive, send, 403, "untrusted_origin")
             return
-        if headers.get("sec-fetch-site", "").lower() == "cross-site":
+        # Opening a link may serve the inert login shell, never a data endpoint or frame.
+        shell_navigation = (
+            scope["method"] == "GET"
+            and scope["path"] == "/"
+            and headers.get("sec-fetch-mode") == "navigate"
+            and headers.get("sec-fetch-dest") == "document"
+        )
+        if headers.get("sec-fetch-site", "").lower() == "cross-site" and not shell_navigation:
             await self._rejection(scope, receive, send, 403, "cross_site_request")
             return
 
