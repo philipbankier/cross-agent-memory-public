@@ -99,6 +99,7 @@ jobs:
             --prepare-container "$context/source"
           cp -R tests "$context/source/tests"
           cp requirements-dev.lock "$context/source/requirements-dev.lock"
+          cp docs/release-source-index.json "$context/source/docs/release-source-index.json"
           chmod 0755 "$context/source"
           docker run --rm --read-only --tmpfs /tmp:rw,exec,nosuid,size=1g \
             --mount "type=bind,src=$context/source,dst=/source,readonly" \

@@ -52,15 +52,15 @@ actual published downloads. Existing deployments are not upgraded by a repositor
 
 ## Verified Candidate
 
-The runtime changes at `7addf64` were checked on macOS arm64 with Python 3.12.15 and SQLite 3.53.1.
-Documentation and screenshot updates do not change that runtime. These are local qualification
+The runtime changes at `7addf64`, plus the source inventory and drift checks at `d32236c`, were
+checked on macOS arm64 with Python 3.12.15 and SQLite 3.53.1. These are local qualification
 results, not new release attestations or another live-account acceptance claim.
 
 | Check | Result |
 | ----- | ------ |
 | Clean hash-locked setup and installed dependency consistency | Passed |
 | Ruff, formatting and Pyright | Passed |
-| Full installed Python suite | 1,038 passed; one opt-in browser test skipped |
+| Full installed Python suite | 1,040 passed; one opt-in browser test skipped |
 | The skipped browser test, run explicitly | Passed: four account fixtures, restart, offline queue, replay and recovery |
 | Extension unit tests | 88 passed |
 | Visual App type/format/bundle checks and tests | Passed; 28 tests |
@@ -70,6 +70,7 @@ results, not new release attestations or another live-account acceptance claim.
 | Real Chrome panel checks | Search, exact evidence, empty-state recovery, four views, lock/purge; no console errors |
 | Responsive checks | No horizontal overflow at 320, 375 and 1,440 CSS pixels; first result visible at 375 x 812 |
 | Demo isolation and cleanup | Owner CAM_HOME untouched; temporary node removed on SIGTERM |
+| Indexed public source archives | 170 complete archive hashes verified by [the bounded CI run](https://github.com/philipbankier/cross-agent-memory-public/actions/runs/40547016721); no archive bytes retained |
 
 The automated provider test uses controlled pages, not fresh logins to real provider accounts.
 GitHub's PR checks supply independent macOS, Linux, installed-image and browser-fixture results.
