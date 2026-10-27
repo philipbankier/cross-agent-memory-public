@@ -4,6 +4,7 @@ import base64
 import hashlib
 import io
 import json
+import re
 import runpy
 import subprocess
 import sys
@@ -15,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from packaging.utils import canonicalize_name
 
 
 def release_api() -> dict[str, Any]:
@@ -51,6 +53,61 @@ def source_fetch(data: bytes) -> Callable[[str, float], closing[io.BytesIO]]:
 
 def forbidden_fetch(_url: str, _timeout: float) -> closing[io.BytesIO]:
     pytest.fail("Source metadata must refuse before download")
+
+
+def test_checked_in_source_inventories_match_locked_inputs() -> None:
+    root = Path(__file__).resolve().parents[1]
+    release = json.loads((root / "docs/release-source-index.json").read_text())
+    portable = json.loads((root / "docs/third-party/source-index.json").read_text())
+    pins = {
+        canonicalize_name(name): version
+        for name, version in re.findall(
+            r"(?m)^([a-zA-Z0-9_.-]+)==([^\s\\]+)",
+            (root / "requirements.lock").read_text()
+            + (root / "requirements-bootstrap.lock").read_text(),
+        )
+    }
+    ui = json.loads((root / "ui/memory-app/package-lock.json").read_text())["packages"]
+    for inventory in (release, portable):
+        assert {item["name"]: item["version"] for item in inventory["python_packages"]} == pins
+        for item in inventory["bundled_ui_packages"]:
+            package = ui["node_modules/" + item["name"]]
+            assert (item["version"], item["package_archive"], item["lock_integrity"]) == (
+                package["version"],
+                package["resolved"],
+                package["integrity"],
+            )
+    for filename, digest in release["application"]["build_input_sha256"].items():
+        assert hashlib.sha256((root / filename).read_bytes()).hexdigest() == digest
+    portable_sources = {
+        item["name"]: {
+            (source["url"], source["bytes"], source["sha256"]) for source in item["sources"]
+        }
+        for item in portable["python_packages"]
+    }
+    for item in release["python_packages"]:
+        sources = {
+            (source["url"], source["bytes"], source["pypi_declared_sha256"])
+            for source in item["source_distributions"]
+        }
+        if "source_wheel" in item:
+            wheel = item["source_wheel"]
+            sources.add((wheel["url"], wheel["bytes"], wheel["sha256"]))
+        assert sources == portable_sources[item["name"]]
+
+
+def test_actual_release_index_validates_before_first_network_read() -> None:
+    root = Path(__file__).resolve().parents[1]
+    manifest = json.loads((root / "docs/release-source-index.json").read_text())
+
+    class MetadataValidated(Exception):
+        pass
+
+    def stop_at_network(_url: str, _timeout: float) -> closing[io.BytesIO]:
+        raise MetadataValidated
+
+    with pytest.raises(MetadataValidated):
+        release_api()["verify_sources"](manifest, fetch=stop_at_network)
 
 
 def test_release_sources_verifies_complete_archive_without_retaining_it() -> None:

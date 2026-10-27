@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if [ ! -x "$ROOT/.venv/bin/python" ]; then
+  echo 'Run script/setup from this clean checkout before script/demo.' >&2
+  exit 1
+fi
+exec "$ROOT/.venv/bin/python" -I -B "$ROOT/script/demo.py" "$@"

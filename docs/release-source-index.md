@@ -1,10 +1,10 @@
 # Source Index
 
-This is a prepared companion for private pilot revision
-`260384529e7db0f5712d3ee6123af49fb98ca6e3`, not a published source bundle or legal clearance.
-The application repository remains private. No public binary is offered by this document.
+This is the source inventory for the current candidate, not an attestation for a new binary
+release or legal clearance. The repository and v0.1.0 are public. That release predates the
+dependency fixes described in [release status](release-readiness.md).
 
-`release-source-index.json` records the exact application revision and build-input hashes, the pinned Python
+`release-source-index.json` records the inspected runtime revision and build-input hashes, the pinned Python
 runtime producer and source table, the 56 Debian source releases behind 80 installed packages,
 the 41 Python dependency pins and the six bundled UI packages. Debian descriptors distinguish
 required source members from one supplementary Git sidecar outside their source list. Its
@@ -26,10 +26,15 @@ and required Debian source archives total about 326 MiB; that is not the memory-
 does not include runtime sources or other build inputs. The source-bearing `bazel-runfiles`
 wheel is recorded separately because PyPI has no source distribution for its tested version.
 
-The private `Checks` workflow has an opt-in `verify_release_sources` dispatch input. It checks
+The `Checks` workflow has an opt-in `verify_release_sources` dispatch input. It checks
 the indexed Debian/Python source archives and UI archive integrity on a GitHub-hosted runner.
 It downloads at most 512 MiB, checks a ten-minute budget between reads, uses read timeouts of
 at most 20 seconds, and has a 15-minute runner limit. It refuses redirects and environment proxies
 and retains only a hash receipt. It extracts or executes no downloaded code.
 Ordinary PR runs do not start this transfer. Runtime sources, descriptor signatures, full native
 source closure, public access and signing remain separate requirements.
+
+The portable inventory in `third-party/source-index.json` carries the same Python/UI source
+bindings in the installed package. Tests compare both inventories with the dependency locks and
+compare recorded build-input hashes with the checkout. Update both when dependencies change.
+Old private-candidate image IDs are not evidence for this candidate and have been removed.

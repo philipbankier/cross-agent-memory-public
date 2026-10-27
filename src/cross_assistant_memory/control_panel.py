@@ -176,7 +176,10 @@ _PANEL_HTML = """<!doctype html>
           </fieldset>
         </form>
 
-        <div id="empty-state" class="empty-state">No retrieval has run.</div>
+        <div id="empty-state" class="empty-state">
+          <span id="empty-message">No retrieval has run.</span>
+          <button id="clear-search" class="quiet-button" type="button" hidden>Clear search</button>
+        </div>
         <ol id="results" class="results" aria-live="polite"></ol>
       </section>
 
@@ -396,14 +399,16 @@ _PANEL_HTML = """<!doctype html>
 _PANEL_CSS = """:root {
   color-scheme: light;
   font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #f4f6f5;
-  color: #18201f;
+  background: #ffffff;
+  color: #18232d;
   font-synthesis: none;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: #f4f6f5; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #ffffff; }
 button, input, select, textarea { font: inherit; letter-spacing: 0; }
 button, select, input { min-height: 38px; }
 button { cursor: pointer; }
@@ -416,37 +421,39 @@ button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: no
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  color: #f8fbfa;
-  background: #18201f;
-  border-bottom: 3px solid #2a8c82;
+  color: #18232d;
+  background: #ffffff;
+  border-bottom: 1px solid #cbd3d9;
 }
-.product { margin: 0; font-size: 16px; font-weight: 720; }
-.generation { margin: 2px 0 0; max-width: 56ch; color: #b9c4c1; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.product { margin: 0; font-size: 18px; font-weight: 720; }
+.generation { margin: 3px 0 0; max-width: 56ch; color: #5c6c7b; font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
+.topbar > div:first-child { min-width: 0; }
 .state { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; }
 .state-ready { color: #d6fff7; background: #17645d; }
 .state-attention { color: #fff4d8; background: #8a5b0a; }
 .state-locked { color: #f8eac5; background: #705416; }
 
-.workspace { min-height: calc(100vh - 58px); display: grid; grid-template-columns: minmax(260px, 330px) minmax(0, 1fr); }
+.workspace { min-height: calc(100vh - 58px); display: grid; grid-template-columns: 258px minmax(0, 1fr); }
 .source-panel { padding: 18px; }
-.source-panel { background: #fbfcfc; border-right: 1px solid #cbd3d1; }
-.work-panel { min-width: 0; padding: 0 18px 18px; }
+.source-panel { background: #f6f8fa; border-right: 1px solid #d5dce2; }
+.work-panel { min-width: 0; padding: 0 24px 24px; }
 .section-heading { min-height: 38px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 h1, h2 { margin: 0; font-size: 17px; line-height: 1.3; letter-spacing: 0; }
 .count, .muted { color: #66716e; font-size: 12px; }
 .muted { margin: 3px 0 0; }
 
-.tabs { min-height: 49px; display: flex; align-items: end; gap: 4px; border-bottom: 1px solid #abb6b3; background: #f4f6f5; }
+.tabs { min-height: 56px; display: flex; align-items: end; gap: 8px; border-bottom: 1px solid #d5dce2; background: #ffffff; }
 .tab-button { min-height: 38px; padding: 0 12px; color: #56615e; background: transparent; border: 0; border-bottom: 3px solid transparent; font-size: 13px; font-weight: 700; }
 .tab-button:hover { color: #18201f; background: #e7ecea; }
 .tab-button.active { color: #075e57; border-bottom-color: #087d73; }
 .tab-view { padding-top: 18px; }
 
 .source-grid { margin-top: 12px; display: grid; gap: 7px; }
-.source-row { min-height: 48px; padding: 8px 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; border: 1px solid #d5dcda; border-radius: 6px; background: #fff; }
+.source-row { min-height: 56px; padding: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; border: 1px solid #d5dce2; border-radius: 4px; background: #fff; }
 .source-name { min-width: 0; font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .source-detail { margin-top: 2px; color: #6c7774; font-size: 11px; }
+.source-import { display: block; }
 .source-status { width: 10px; height: 10px; border-radius: 50%; background: #9ca5a3; }
 .source-status.available { background: #168270; }
 .source-status.attention { background: #c47613; }
@@ -456,7 +463,7 @@ h1, h2 { margin: 0; font-size: 17px; line-height: 1.3; letter-spacing: 0; }
 .export-band strong { color: #1f5551; }
 
 .search-form { margin-top: 14px; padding: 14px 0; border-top: 1px solid #cbd3d1; border-bottom: 1px solid #cbd3d1; }
-label > span, legend { display: block; margin-bottom: 5px; color: #4e5b58; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+label > span, legend { display: block; margin-bottom: 6px; color: #475765; font-size: 12px; font-weight: 600; }
 textarea, input, select { width: 100%; color: #18201f; background: #fff; border: 1px solid #abb6b3; border-radius: 5px; outline: none; }
 textarea, input { padding: 9px 10px; }
 textarea { min-height: 66px; resize: vertical; line-height: 1.4; }
@@ -473,16 +480,16 @@ textarea:focus, input:focus, select:focus, button:focus-visible { border-color: 
 .quiet-button { padding: 0 10px; color: inherit; background: transparent; border: 1px solid #87928f; }
 .danger-button { padding: 0 14px; color: #fff; background: #a12628; border: 1px solid #7f1e20; }
 .danger-button:hover:not(:disabled) { background: #851f21; }
-.topbar .quiet-button { color: #f8fbfa; border-color: #687371; }
+.topbar .quiet-button { color: #344756; border-color: #c5d0d9; }
 
-.empty-state { min-height: 180px; display: grid; place-items: center; color: #75807d; font-size: 13px; }
-.results { margin: 14px 0 0; padding: 0; display: grid; gap: 9px; list-style: none; }
-.result { padding: 12px 13px; border: 1px solid #cbd3d1; border-left: 4px solid #2a8c82; border-radius: 6px; background: #fff; }
+.empty-state { min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #647381; font-size: 14px; }
+.results { margin: 10px 0 0; padding: 0; display: grid; gap: 0; list-style: none; }
+.result { padding: 20px 0; border-bottom: 1px solid #d5dce2; background: #fff; }
 .result-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.result-source { color: #17645d; font-size: 12px; font-weight: 750; }
+.result-source { color: #205cb7; font-size: 13px; font-weight: 750; }
 .result-meta { margin-top: 2px; color: #6b7673; font-size: 11px; }
-.result-text { margin: 9px 0 0; max-width: 90ch; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.5; }
-.evidence-button { min-height: 30px; flex: none; padding: 0 8px; color: #263330; background: #f8faf9; border: 1px solid #aeb8b5; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.result-text { margin: 12px 0 0; max-width: 90ch; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.65; }
+.evidence-button { min-height: 34px; flex: none; padding: 0 12px; color: #344756; background: #fff; border: 1px solid #c5d0d9; border-radius: 4px; font-size: 12px; font-weight: 600; }
 .roles { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
 .role { padding: 2px 5px; color: #5c3f0b; background: #fff1cd; border-radius: 3px; font-size: 10px; }
 .candidate-panel { padding-bottom: 18px; }
@@ -559,13 +566,19 @@ dialog::backdrop { background: rgb(16 23 22 / 48%); }
 @media (max-width: 760px) {
   .topbar { padding: 9px 12px; }
   .workspace { display: block; }
-  .source-panel { padding: 13px 12px; }
+  .source-panel { padding: 10px 12px; }
   .work-panel { padding: 0 12px 13px; }
   .source-panel { border-right: 0; border-bottom: 1px solid #cbd3d1; }
-  .source-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
-  .source-row { min-height: 48px; padding: 6px 7px; }
+  .source-grid { margin-top: 6px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  .source-row { min-height: 46px; padding: 6px 7px; gap: 4px; }
   .source-name { font-size: 11px; }
-  .source-detail { font-size: 10px; }
+  .source-detail { font-size: 10px; overflow-wrap: anywhere; }
+  .source-import { display: none; }
+  .source-panel .section-heading { min-height: 28px; }
+  .export-band { margin-top: 8px; padding-top: 8px; }
+  .tabs { min-height: 46px; gap: 4px; }
+  .tab-view { padding-top: 12px; }
+  .search-form { margin-top: 10px; padding: 10px 0; }
   .filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .candidate-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -577,16 +590,19 @@ dialog::backdrop { background: rgb(16 23 22 / 48%); }
 }
 
 @media (max-width: 390px) {
+  .topbar { gap: 8px; }
   .product { font-size: 14px; }
-  .source-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tabs { overflow-x: auto; }
-  .tab-button { flex: 0 0 auto; }
-  .filters { grid-template-columns: 1fr; }
+  .tab-button { flex: 0 0 auto; padding: 0 8px; font-size: 12px; }
   .candidate-fields { grid-template-columns: 1fr; }
   .action-grid, .compact-fields, .metrics { grid-template-columns: 1fr; }
   .metrics div { border-right: 0; border-bottom: 1px solid #d5dcda; }
   .metrics div:last-child { border-bottom: 0; }
   .scope-filters legend { float: none; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-message { transition: none; }
 }
 """
 
@@ -861,6 +877,8 @@ _PANEL_JS = """(() => {
     byId('source-grid').replaceChildren();
     byId('results').replaceChildren();
     byId('empty-state').hidden = false;
+    setText('empty-message', 'No retrieval has run.');
+    byId('clear-search').hidden = true;
     if (evidenceDialog.open) evidenceDialog.close();
     purgeEvidence();
     if (!unlockDialog.open) unlockDialog.showModal();
@@ -1209,9 +1227,12 @@ _PANEL_JS = """(() => {
       const sync = source.sync || {};
       const row = element('div', 'source-row');
       const body = element('div');
+      const detail = element('div', 'source-detail', formatState(sync.state));
+      detail.append(element('span', 'source-import', source.latest_ingested_at
+        ? `Imported ${formatEvidenceDay(source.latest_ingested_at)}` : 'Not imported'));
       body.append(
         element('div', 'source-name', sourceLabel(source.source_system)),
-        element('div', 'source-detail', `${formatState(sync.state)} / ${source.latest_ingested_at ? `imported ${formatEvidenceDay(source.latest_ingested_at)}` : 'not imported'}`)
+        detail
       );
       const visualState = sync.attention_required ? 'attention' : (source.state || 'disconnected');
       const status = element('span', `source-status ${visualState}`);
@@ -1252,7 +1273,8 @@ _PANEL_JS = """(() => {
     const list = byId('results');
     list.replaceChildren();
     byId('empty-state').hidden = results.length > 0;
-    if (!results.length) setText('empty-state', 'No matching evidence.');
+    if (!results.length) setText('empty-message', 'No matching evidence.');
+    byId('clear-search').hidden = results.length > 0;
     const selection = payload.selection || {};
     setText('result-summary', `${results.length} of ${selection.candidate_match_count || 0} matches`);
     for (const item of results) {
@@ -1454,6 +1476,14 @@ _PANEL_JS = """(() => {
     'deletion-reason'
   ]) byId(id).addEventListener('input', clearDeletionPlan);
   byId('clear-one-time').addEventListener('click', clearOneTimeValues);
+  byId('clear-search').addEventListener('click', () => {
+    searchForm.reset();
+    byId('results').replaceChildren();
+    setText('result-summary', 'Ready to search exact evidence.');
+    setText('empty-message', 'No retrieval has run.');
+    byId('clear-search').hidden = true;
+    byId('query').focus();
+  });
 
   byId('unlock-form').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -1805,7 +1835,14 @@ class _PanelSecurityMiddleware:
         if origin is not None and origin != self._origin:
             await self._rejection(scope, receive, send, 403, "untrusted_origin")
             return
-        if headers.get("sec-fetch-site", "").lower() == "cross-site":
+        # Opening a link may serve the inert login shell, never a data endpoint or frame.
+        shell_navigation = (
+            scope["method"] == "GET"
+            and scope["path"] == "/"
+            and headers.get("sec-fetch-mode") == "navigate"
+            and headers.get("sec-fetch-dest") == "document"
+        )
+        if headers.get("sec-fetch-site", "").lower() == "cross-site" and not shell_navigation:
             await self._rejection(scope, receive, send, 403, "cross_site_request")
             return
 

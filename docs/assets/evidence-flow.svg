@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="650" viewBox="0 0 1100 650" role="img" aria-labelledby="title desc">
+  <title id="title">From scattered conversations to a checkable answer</title>
+  <desc id="desc">Illustrative example. A Claude proposal says use a cloud VM. A later user decision in Codex chooses the office Mac. Grok Build reports a completed deployment. An answer must distinguish the decision from the unverified deployment report. Exact evidence remains available.</desc>
+  <rect width="1100" height="650" rx="8" fill="#f6f8fa"/>
+  <g font-family="Arial, Helvetica, sans-serif" letter-spacing="0">
+    <text x="40" y="54" fill="#15202b" font-size="28" font-weight="700">One question. More than one source.</text>
+    <text x="40" y="89" fill="#52616f" font-size="20">Where did we decide to run Atlas?</text>
+    <path d="M65 158V404" stroke="#c3cdd6" stroke-width="2"/>
+    <g fill="#fff" stroke="#d2dae1">
+      <rect x="92" y="126" width="500" height="92" rx="4"/>
+      <rect x="92" y="240" width="500" height="92" rx="4"/>
+      <rect x="92" y="354" width="500" height="92" rx="4"/>
+    </g>
+    <circle cx="65" cy="160" r="8" fill="#b97729"/><circle cx="65" cy="274" r="8" fill="#087e74"/><circle cx="65" cy="388" r="8" fill="#356bd6"/>
+    <g font-size="18" font-weight="700">
+      <text x="114" y="156" fill="#865418">Claude / assistant / Oct 1</text>
+      <text x="114" y="270" fill="#076b63">Codex / user / Oct 3</text>
+      <text x="114" y="384" fill="#2455b4">Grok Build / assistant / Oct 4</text>
+    </g>
+    <g fill="#263645" font-size="21">
+      <text x="114" y="190">Proposal: use a cloud VM.</text>
+      <text x="114" y="304">Decision: run Atlas on the office Mac.</text>
+      <text x="114" y="418">Report: deployment is complete.</text>
+    </g>
+    <path d="M612 286H654m-9-7 9 7-9 7" fill="none" stroke="#536879" stroke-width="2"/>
+    <rect x="678" y="126" width="382" height="320" rx="4" fill="#fff" stroke="#087e74" stroke-width="2"/>
+    <text x="700" y="162" fill="#076b63" font-size="19" font-weight="700">An evidence-grounded answer</text>
+    <g fill="#263645" font-size="21">
+      <text x="700" y="207">You chose the office Mac.</text>
+      <text x="700" y="251">The earlier cloud VM idea</text>
+      <text x="700" y="279">was a proposal, not the decision.</text>
+      <text x="700" y="323">Grok Build reported deployment.</text>
+      <text x="700" y="351">That is not a live machine check.</text>
+    </g>
+    <text x="700" y="413" fill="#52616f" font-size="17">Codex, Oct 3 / Grok Build, Oct 4</text>
+    <path d="M40 490H1060" stroke="#d2dae1"/>
+    <text x="40" y="532" fill="#15202b" font-size="21" font-weight="700">Follow the evidence, not just the summary.</text>
+    <text x="40" y="568" fill="#52616f" font-size="19">Source + speaker + date + exact message + completeness</text>
+    <text x="40" y="610" fill="#52616f" font-size="16">Illustrative example, not a generated answer or an answer-quality benchmark.</text>
+  </g>
+</svg>

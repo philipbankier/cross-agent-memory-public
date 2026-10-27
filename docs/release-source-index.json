@@ -1,24 +1,21 @@
 {
   "format_version": 1,
-  "status": "prepared index, not published or legal clearance",
+  "status": "Current source candidate inventory, not patch-release artifact attestation",
   "application": {
-    "revision": "260384529e7db0f5712d3ee6123af49fb98ca6e3",
-    "source": "https://github.com/philipbankier/cross-agent-memory/tree/260384529e7db0f5712d3ee6123af49fb98ca6e3",
-    "repository_private_at_preparation": true,
+    "revision": "2c9ed73852d357324c45fc0ada4ebe9c255ea7a9",
+    "source": "https://github.com/philipbankier/cross-agent-memory-public/tree/2c9ed73852d357324c45fc0ada4ebe9c255ea7a9",
+    "repository_private_at_preparation": false,
     "build_input_sha256": {
-      "Containerfile": "6e71b58a7b164b0cfdc4456bb6dc94436b3e7dd4655e11312b36882f13ef3b16",
-      ".dockerignore": "ea1fe7d3964c05d737b6ebeb9a711a469b799a8d0a8aeba7c1fa3f5bfe529806",
-      "pyproject.toml": "53663624f10fdaaccf2371de9bf63012f4836f53cf56a8e667a5168f034c6c7e",
+      "Containerfile": "19b53a291b52889dd2a80740d04e0051c61b5fb73386710d508a6937e9ae8915",
+      ".dockerignore": "5d2c60555c0dcf5b6b554299b04bcbe6c9b2c96a8ad374b4504638baad0c59c1",
+      "pyproject.toml": "8448d16913b2094e13baa1d305ea4bd35bd7af278433d6c6c1bcbd5fa02150a3",
       "cam_build.py": "95bdb40935d2b02249631570177683d614d2c391f4573b72b4e49e9ff53b69b6",
-      "requirements.lock": "e904da73f0057af43c42371278beb9b7c62bfa7df225074e851e83ad3992ea88",
-      "requirements-bootstrap.lock": "f23b6ebf62265ead51c6d9df5c74e93331230a625a23a84b23c0576153391eb9",
-      "ui/memory-app/package-lock.json": "6a44dcdf3c61136d97f841186e4427f6e8cb26f889ac88b484d91a565c3a7501"
+      "requirements.lock": "04094130de518b81f80418af3d355a06c9986975a1176ce42b16da24b9b1a17a",
+      "requirements-bootstrap.lock": "52367b794614f69d205a57c5a8074a46cd28f253532d649b4863ffcabf1d4d3c",
+      "ui/memory-app/package-lock.json": "6dbd18f2cb90654d89c72f9d2fd2d4281022af0fb3c2d0a36f04da98974ea6b9"
     }
   },
-  "tested_image_ids": {
-    "linux/amd64": "sha256:89da9c751d5219d0687fd1c360d8c912340b438ed31083518485972c7f795bd6",
-    "linux/arm64": "sha256:c4446a353cdc1dad42152cbe5231e03963d963d64d76372b0e64091b37db7d8a"
-  },
+  "tested_image_ids": {},
   "python_runtime": {
     "version": "3.12.15",
     "release": "20261013",
@@ -2827,46 +2824,46 @@
     },
     {
       "name": "mcp",
-      "version": "2.1.1",
-      "release_api": "https://pypi.org/pypi/mcp/2.1.1/json",
+      "version": "2.2.0",
+      "release_api": "https://pypi.org/pypi/mcp/2.2.0/json",
       "source_distributions": [
         {
-          "filename": "mcp-2.1.1.tar.gz",
-          "url": "https://files.pythonhosted.org/packages/d4/6e/21fb8e5d579dbe21d96ea4d5034200d46d8bdf2261053b5bd041f3c2f612/mcp-2.1.1.tar.gz",
-          "bytes": 3984589,
-          "pypi_declared_sha256": "50b7ba1ebbe117008ea7bdd288234043e69c20b403d6851d19661e6d431a75ef",
+          "filename": "mcp-2.2.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/76/31/ac54fb0fdd5b37de704486e288bba4fbbb463f24cfcfedbede407b854513/mcp-2.2.0.tar.gz",
+          "bytes": 4084129,
+          "pypi_declared_sha256": "2dc37ecb1974becdcebdbf7561e7c15a07dbbf20ba21ba16c3593b3038b3afbd",
           "yanked": false,
-          "archive_bytes_verified": false
+          "archive_bytes_verified": true
         }
       ]
     },
     {
       "name": "mcp-types",
-      "version": "2.1.1",
-      "release_api": "https://pypi.org/pypi/mcp-types/2.1.1/json",
+      "version": "2.2.0",
+      "release_api": "https://pypi.org/pypi/mcp-types/2.2.0/json",
       "source_distributions": [
         {
-          "filename": "mcp_types-2.1.1.tar.gz",
-          "url": "https://files.pythonhosted.org/packages/6a/dd/1c4417dc0b722c23a1669032d5f044e41170fe5d4773b488a50fcce98c32/mcp_types-2.1.1.tar.gz",
-          "bytes": 66674,
-          "pypi_declared_sha256": "77dcbe48fba73cca71a673f2646a5f037a017b7a0a07ac89cec1113028890eda",
+          "filename": "mcp_types-2.2.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/ae/91/762d7755d971aff8a28d75f7961656148edf27875c8026e6385aaab08ae7/mcp_types-2.2.0.tar.gz",
+          "bytes": 65892,
+          "pypi_declared_sha256": "d3ed53703ddd10d9c6399f29d322bb66f3f67ab41348ac8556ba23e07fedefad",
           "yanked": false,
-          "archive_bytes_verified": false
+          "archive_bytes_verified": true
         }
       ]
     },
     {
       "name": "opentelemetry-api",
-      "version": "1.44.0",
-      "release_api": "https://pypi.org/pypi/opentelemetry-api/1.44.0/json",
+      "version": "1.45.1",
+      "release_api": "https://pypi.org/pypi/opentelemetry-api/1.45.1/json",
       "source_distributions": [
         {
-          "filename": "opentelemetry_api-1.44.0.tar.gz",
-          "url": "https://files.pythonhosted.org/packages/ee/8b/aa9e2d8b8dfa7c946f7dec5d1f8f6ba8eca062f43509a06bdb5ce93d26c0/opentelemetry_api-1.44.0.tar.gz",
-          "bytes": 72406,
-          "pypi_declared_sha256": "67647e5e9566edcf421166fdf022b3537f818635daa852b289e34604dc6fb33a",
+          "filename": "opentelemetry_api-1.45.1.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/2e/02/6e0ae9cc61bd3169d401077b507b3ebc344745171e1051ab430be012dcd9/opentelemetry_api-1.45.1.tar.gz",
+          "bytes": 72804,
+          "pypi_declared_sha256": "aa38ed19bcc084ba42782a73255b3582283eced7ad6dddbd6695189e69adfb75",
           "yanked": false,
-          "archive_bytes_verified": false
+          "archive_bytes_verified": true
         }
       ]
     },
@@ -3037,16 +3034,16 @@
     },
     {
       "name": "setuptools",
-      "version": "84.0.0",
-      "release_api": "https://pypi.org/pypi/setuptools/84.0.0/json",
+      "version": "84.1.0",
+      "release_api": "https://pypi.org/pypi/setuptools/84.1.0/json",
       "source_distributions": [
         {
-          "filename": "setuptools-84.0.0.tar.gz",
-          "url": "https://files.pythonhosted.org/packages/6d/44/f5da03a8ef95d369145c5bb53050e7877c9f3d312e128605fd9504829143/setuptools-84.0.0.tar.gz",
-          "bytes": 1168449,
-          "pypi_declared_sha256": "f4695c21257f0d9b537ec2692c941d02ee143b7cc1276941349a546573b2ef73",
+          "filename": "setuptools-84.1.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/73/eb/7e5f628ee2eb168fecbf8026de7856b2543d6d609cc85f086b9a91ac93d6/setuptools-84.1.0.tar.gz",
+          "bytes": 1171783,
+          "pypi_declared_sha256": "23657205b63d4d31395ab917815247f694aafad28cd21316bf5fd45a51048ea0",
           "yanked": false,
-          "archive_bytes_verified": false
+          "archive_bytes_verified": true
         }
       ]
     },
@@ -3189,16 +3186,16 @@
   "bundled_ui_packages": [
     {
       "name": "@modelcontextprotocol/client",
-      "version": "2.2.0",
-      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.2.0.tgz",
-      "lock_integrity": "sha512-LxCou/CSYQ6dwEnjhLZY0KnEuc8V4UJ3IEQCl/uR2yHobSQIEdJKUlKLRYRF5i5FqRGHy1eK7une3aAWDHLtig==",
+      "version": "2.3.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.3.0.tgz",
+      "lock_integrity": "sha512-pbHtGj6EeFCHngFE8gtNPaKrsj8Mb1IMw45BLcaPML/m2WTxI7pyYmeNQvaux88Lw8BSO5r7nyRbUyIkICmGrg==",
       "archive_bytes_verified_in_this_index": false
     },
     {
       "name": "@modelcontextprotocol/core",
-      "version": "2.2.0",
-      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.2.0.tgz",
-      "lock_integrity": "sha512-iLhmprRmWI8EcosOA3wVvww22z02NkgqhV4fBH6f/odQBsi7xnJc0HGmi21yWO+/iKw2yzqVE127Zhna5/+JXw==",
+      "version": "2.3.0",
+      "package_archive": "https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.3.0.tgz",
+      "lock_integrity": "sha512-09BHFaNVBe5pB2AhzCfLj0cqmsKLERvZQ4FblzP90UMGLaXVqdZPByFjURwsUYCmxonUW2yAwgTTvle+8O2/8w==",
       "archive_bytes_verified_in_this_index": false
     },
     {
@@ -3224,9 +3221,9 @@
     },
     {
       "name": "zod",
-      "version": "4.2.0",
-      "package_archive": "https://registry.npmjs.org/zod/-/zod-4.2.0.tgz",
-      "lock_integrity": "sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==",
+      "version": "4.6.6",
+      "package_archive": "https://registry.npmjs.org/zod/-/zod-4.6.6.tgz",
+      "lock_integrity": "sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==",
       "archive_bytes_verified_in_this_index": false
     }
   ],

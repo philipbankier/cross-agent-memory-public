@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools==84.0.0"]
+requires = ["setuptools==84.1.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -13,7 +13,8 @@ requires-python = ">=3.11"
 dependencies = [
   "boto3==1.43.82",
   "httpx2==2.12.0",
-  "mcp==2.1.1",
+  "mcp==2.2.0",
+  "opentelemetry-api==1.45.1",
   "pydantic-core==2.46.4",
   "starlette==1.6.0",
   "tink==1.16.1",
@@ -59,7 +60,7 @@ target-version = "py311"
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.pyright]
-include = ["src", "tests", "script/release_sources.py"]
+include = ["src", "tests", "script/release_sources.py", "script/demo.py", "script/doctor.py"]
 exclude = [".venv"]
 pythonVersion = "3.11"
 typeCheckingMode = "strict"
