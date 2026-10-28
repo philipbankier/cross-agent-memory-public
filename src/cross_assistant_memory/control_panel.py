@@ -1225,14 +1225,16 @@ _PANEL_JS = """(() => {
     for (const source of sources) {
       if (source.state === 'available') available += 1;
       const sync = source.sync || {};
+      const syncLabel = sync.status_source === 'assisted_export_workflow' ? 'Export refresh' : 'Collection';
       const row = element('div', 'source-row');
       const body = element('div');
-      const detail = element('div', 'source-detail', formatState(sync.state));
+      const detail = element('div', 'source-detail', `Indexed history: ${formatState(source.state)}`);
       detail.append(element('span', 'source-import', source.latest_ingested_at
         ? `Imported ${formatEvidenceDay(source.latest_ingested_at)}` : 'Not imported'));
       body.append(
         element('div', 'source-name', sourceLabel(source.source_system)),
-        detail
+        detail,
+        element('div', 'source-detail', `${syncLabel}: ${formatState(sync.state)}`)
       );
       const visualState = sync.attention_required ? 'attention' : (source.state || 'disconnected');
       const status = element('span', `source-status ${visualState}`);

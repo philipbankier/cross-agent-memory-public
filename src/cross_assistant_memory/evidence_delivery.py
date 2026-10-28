@@ -6,12 +6,38 @@ import json
 from collections.abc import Iterator
 from typing import Annotated, Any
 
+from mcp.types import CallToolResult, TextContent
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 MAX_EVIDENCE_RESPONSE_BYTES = 512 * 1024
 MAX_EVIDENCE_PAGE_BYTES = 64 * 1024
+EVIDENCE_VERSION_REQUIRED_MESSAGE = (
+    "Evidence continuation requires page.expected_evidence_sha256 from "
+    "evidence_page.evidence_sha256. Keep event_id and include_context unchanged."
+)
+EVIDENCE_CHANGED_MESSAGE = (
+    "Evidence version does not match this read; restart from the first page. "
+    "Keep event_id and include_context unchanged between pages."
+)
+EVIDENCE_OFFSET_MESSAGE = (
+    "Evidence offset is outside the field or not a UTF-8 boundary. Use that field's "
+    "next_offset_bytes; null means no remaining page. Do not use raw source byte offsets "
+    "for normalized content."
+)
 Offset = Annotated[StrictInt, Field(ge=0, le=2**31 - 1)]
 Digest = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+
+
+class EvidenceVersionRequiredError(ValueError):
+    pass
+
+
+class EvidenceChangedError(ValueError):
+    pass
+
+
+class EvidenceOffsetError(ValueError):
+    pass
 
 
 class EvidencePageRequest(BaseModel):
@@ -27,10 +53,10 @@ def _encoded_size(value: dict[str, Any]) -> int:
     # Bound both SDK representations, including JSON string escaping, conservatively.
     return len(
         json.dumps(
-            {
-                "content": [{"type": "text", "text": json.dumps(value, indent=2)}],
-                "structuredContent": value,
-            }
+            CallToolResult(
+                content=[TextContent(type="text", text=json.dumps(value, indent=2))],
+                structured_content=value,
+            ).model_dump(mode="json", by_alias=True)
         ).encode()
     )
 
@@ -42,7 +68,7 @@ def _page(value: str | None, offset: int, limit: int) -> tuple[str | None, dict[
         return None, None
     raw = value.encode("utf-8")
     if offset > len(raw) or (offset < len(raw) and raw[offset] & 0xC0 == 0x80):
-        raise ValueError("evidence offset is outside a UTF-8 boundary")
+        raise EvidenceOffsetError("evidence offset is outside a UTF-8 boundary")
     end = min(len(raw), offset + limit)
     while end < len(raw) and raw[end] & 0xC0 == 0x80:
         end -= 1
@@ -73,6 +99,20 @@ def _page_limits(content_first: bool) -> Iterator[tuple[int, int]]:
 
 def _delivery_order(evidence: dict[str, Any]) -> dict[str, Any]:
     # Put access, completeness and attribution before potentially long source text.
+    evidence = {key: value for key, value in evidence.items() if key != "next_content_request"}
+    page = evidence.get("evidence_page")
+    if (
+        page is not None
+        and (offset := page["fields"]["content_text"]["next_offset_bytes"]) is not None
+    ):
+        evidence["next_content_request"] = {
+            "event_id": evidence["event_id"],
+            "include_context": "conversation_context" in evidence,
+            "page": {
+                "content_offset": offset,
+                "expected_evidence_sha256": page["evidence_sha256"],
+            },
+        }
     leading = (
         "event_id",
         "raw_record_access",
@@ -81,8 +121,30 @@ def _delivery_order(evidence: dict[str, Any]) -> dict[str, Any]:
         "authority",
         "source_system",
         "occurred_at",
+        "next_content_request",
+        "content_text",
     )
     return {**{key: evidence[key] for key in leading if key in evidence}, **evidence}
+
+
+def _bounded_delivery(
+    evidence: dict[str, Any], text_max_bytes: int | None, *, omit_context: bool = False
+) -> dict[str, Any] | None:
+    result = _delivery_order(evidence)
+    if _fits(result, text_max_bytes):
+        return result
+    context = evidence.get("conversation_context")
+    if not omit_context or text_max_bytes is None or not context or not context.get("results"):
+        return None
+    # Adjacent previews are supplemental. Keep their identities, not misleading partial rows.
+    result["conversation_context"] = {
+        **context,
+        "results": [],
+        "omitted_reason": "response_limit_fetch_omitted_event_ids",
+        "omitted_event_ids": [row["event_id"] for row in context["results"]],
+        "omitted_count": len(context["results"]),
+    }
+    return result if _fits(result, text_max_bytes) else None
 
 
 def deliver_evidence(
@@ -98,9 +160,9 @@ def deliver_evidence(
     ).hexdigest()
     offsets = (request.content_offset, request.raw_offset, request.original_content_offset)
     if any(offsets) and request.expected_evidence_sha256 is None:
-        raise ValueError("evidence continuation requires its version digest")
+        raise EvidenceVersionRequiredError("evidence continuation requires its version digest")
     if request.expected_evidence_sha256 is not None and request.expected_evidence_sha256 != binding:
-        raise ValueError("evidence changed; restart from the first page")
+        raise EvidenceChangedError("evidence changed; restart from the first page")
 
     original = evidence["correction"]["original"] if evidence.get("correction") else None
     fields = {
@@ -137,15 +199,23 @@ def deliver_evidence(
             "offset_unit": "utf8_bytes",
             "fields": {key: page for key, (_, page) in pages.items()},
         }
-        if _fits(result, text_max_bytes):
-            return _delivery_order(result)
+        if (
+            bounded := _bounded_delivery(
+                result,
+                text_max_bytes,
+                omit_context=other_limit == 4
+                or all(page is None or page["complete"] for _, page in pages.values()),
+            )
+        ) is not None:
+            return bounded
     raise ValueError("evidence metadata exceeds the bounded response limit")
 
 
 def _fits(value: dict[str, Any], text_max_bytes: int | None) -> bool:
-    return _encoded_size(value) <= MAX_EVIDENCE_RESPONSE_BYTES and (
-        text_max_bytes is None or len(json.dumps(value, indent=2).encode()) <= text_max_bytes
-    )
+    limit = MAX_EVIDENCE_RESPONSE_BYTES
+    if text_max_bytes is not None:
+        limit = min(limit, text_max_bytes)
+    return _encoded_size(value) <= limit
 
 
 class _FieldPage(BaseModel):
@@ -199,8 +269,14 @@ def limit_evidence_text(evidence: dict[str, Any], text_max_bytes: int) -> dict[s
             or (end < info.total_bytes and info.returned_bytes == 0)
         ):
             raise ValueError("inconsistent upstream evidence field")
-    if _fits(evidence, text_max_bytes):
-        return _delivery_order(evidence)
+    if (
+        bounded := _bounded_delivery(
+            evidence,
+            text_max_bytes,
+            omit_context=all(info is None or info.complete for info in page.fields.values()),
+        )
+    ) is not None:
+        return bounded
     content_first = all(
         (info := page.fields[key]) is None or info.offset_bytes == 0
         for key in ("raw_record", "original_content_text")
@@ -227,6 +303,8 @@ def limit_evidence_text(evidence: dict[str, Any], text_max_bytes: int) -> dict[s
         raw = result["evidence_page"]["fields"]["raw_record"]
         if raw is not None and not raw["complete"]:
             result["raw_record_access"] = "partial_exact"
-        if _fits(result, text_max_bytes):
-            return _delivery_order(result)
+        if (
+            bounded := _bounded_delivery(result, text_max_bytes, omit_context=other_limit == 4)
+        ) is not None:
+            return bounded
     raise ValueError("evidence metadata exceeds the bounded response limit")

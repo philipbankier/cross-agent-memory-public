@@ -13,7 +13,9 @@ from mcp.server.context import CallNext, HandlerResult, ServerRequestContext
 from mcp.server.mcpserver import Context
 from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import (
+    SERVER_INFO_META_KEY,
     CallToolResult,
+    Implementation,
     InputRequiredResult,
     ServerCapabilities,
     Tool,
@@ -35,7 +37,16 @@ from cross_assistant_memory.application import (
     pending_web_evidence_claim,
 )
 from cross_assistant_memory.config import Settings
-from cross_assistant_memory.evidence_delivery import EvidencePageRequest, deliver_evidence
+from cross_assistant_memory.evidence_delivery import (
+    EVIDENCE_CHANGED_MESSAGE,
+    EVIDENCE_OFFSET_MESSAGE,
+    EVIDENCE_VERSION_REQUIRED_MESSAGE,
+    EvidenceChangedError,
+    EvidenceOffsetError,
+    EvidencePageRequest,
+    EvidenceVersionRequiredError,
+    deliver_evidence,
+)
 from cross_assistant_memory.evidence_locations import EncryptedEvidenceReader
 from cross_assistant_memory.mcp_app import (
     create_memory_app,
@@ -97,6 +108,12 @@ def _authorized_tool_call(label: str, operation: Callable[[], ToolResult]) -> To
         raise ToolError(SEARCH_CHANGED_MESSAGE) from None
     except SearchTooLargeError:
         raise ToolError(SEARCH_TOO_LARGE_MESSAGE) from None
+    except EvidenceVersionRequiredError:
+        raise ToolError(EVIDENCE_VERSION_REQUIRED_MESSAGE) from None
+    except EvidenceChangedError:
+        raise ToolError(EVIDENCE_CHANGED_MESSAGE) from None
+    except EvidenceOffsetError:
+        raise ToolError(EVIDENCE_OFFSET_MESSAGE) from None
     except (KeyError, ValueError) as error:
         raise ToolError(f"{label} request is invalid") from error
 
@@ -318,6 +335,20 @@ def create_mcp_server(
         middleware=[memory_app_discovery if memory_app else _tool_only_discovery],
         extensions=[create_memory_app(memory_status)] if memory_app else [],
     )
+    # Modern SDK transports add this identity after the tool handler returns.
+    identity = Implementation(
+        name=server.name,
+        version=server.version,
+        title=server.title,
+        description=server.description,
+        website_url=server.website_url,
+        icons=server.icons,
+    ).model_dump(mode="json", by_alias=True, exclude_none=True)
+    envelope_overhead = len(json.dumps({SERVER_INFO_META_KEY: identity}).encode()) - len(b"null")
+    if evidence_text_max_bytes is not None:
+        evidence_text_max_bytes -= envelope_overhead
+    if search_text_max_bytes is not None:
+        search_text_max_bytes -= envelope_overhead
 
     @server.tool(annotations=READ_ONLY_TOOL_ANNOTATIONS)
     def memory_search(
@@ -392,6 +423,23 @@ def create_mcp_server(
                 },
                 page,
                 text_max_bytes=search_text_max_bytes,
+                continuation_arguments={
+                    "query": query,
+                    "mode": parsed_mode.value,
+                    "project_id": project_id,
+                    "limit": limit,
+                    "authorities": (
+                        [item.value for item in parsed_authorities]
+                        if parsed_authorities is not None
+                        else None
+                    ),
+                    "contexts": (
+                        [item.model_dump(mode="json") for item in contexts]
+                        if contexts is not None
+                        else None
+                    ),
+                    "retrieval_control": RetrievalControl(retrieval_control).value,
+                },
             )
 
         return _authorized_tool_call("memory search", search_operation)
@@ -425,7 +473,8 @@ def create_mcp_server(
 
         Set include_context to inspect short replies or references to earlier discussion.
         Adds previews of up to two preceding and two following admitted messages from the
-        same source file and conversation. Native histories require the same branch; web
+        same conversation. Native histories use the same verified source stream and branch,
+        including across upload batches; legacy unmapped records stay within one file. Web
         exports follow explicit parent links. Web branch_id values identify root-to-message
         paths: different hashes do not establish unrelated branches. Linked context preserves
         speakers and authority, not approval or correction links. Previews are not exact raw

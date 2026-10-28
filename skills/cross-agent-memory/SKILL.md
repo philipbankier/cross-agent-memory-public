@@ -49,8 +49,9 @@ rerun setup, start a collector or change configuration merely to answer a questi
    `source_object_id` is not interchangeable. Check arguments against the tool schema before
    treating an invalid request as a connection or login failure.
    For a short reply or reference to earlier discussion, set `include_context=true` to inspect up
-   to two preceding and two following admitted messages in the same source file and conversation.
-   Native histories use branch adjacency; web exports use explicit parent links, stopping at gaps
+   to two preceding and two following admitted messages in the same conversation.
+   Native histories use the same verified source stream and branch across upload batches;
+   unmapped legacy records stay within one file. Web exports use explicit parent links, stopping at gaps
    and ambiguity. Web `branch_id` hashes identify root-to-message paths, not shared branch labels;
    unequal hashes do not negate an explicit parent link. Empty context does not establish that
    no earlier discussion exists. These are
@@ -65,6 +66,10 @@ rerun setup, start a collector or change configuration merely to answer a questi
    Spend continuations on `content_text`, not the raw envelope, unless the question requires raw
    bytes. If the budget cannot cover the needed qualifications, state that the evidence remains
    incomplete instead of promoting a search preview or partial read to an established decision.
+   When provided, copy `next_content_request` for the next evidence call and
+   `next_search_request` for the next selected-results page. These retain the context and filters.
+   A size-limited response may list `conversation_context.omitted_event_ids`; fetch those IDs
+   when needed. Omission is not absence from the conversation.
 5. Synthesize the supported answer, separating requests, suggestions, approvals, observed actions,
    reported outcomes and later changes. Permission or a plan does not establish execution; an
    assistant's completion claim remains a report unless supported by an observation of that action.

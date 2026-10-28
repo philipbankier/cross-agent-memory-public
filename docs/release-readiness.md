@@ -3,7 +3,23 @@
 Current source and published artifacts are different things. This page records the boundary,
 not a blanket claim that every deployment or assistant answer is safe.
 
-## v0.1.1
+## v0.1.2
+
+This correction restores deployed behavior omitted from the earlier public source:
+native context across verified upload batches, bounded complete MCP envelopes, copyable
+continuation requests, fixed continuation-error feedback, literal-identifier ranking,
+Boolean-query diagnostics and collector read-budget fairness. The accompanying regression
+tests include the request-scoped SSH lifecycle and its four-connection limit.
+
+It retains v0.1.1's dependency, parser, recovery, maintenance and interface repairs. There is
+no database migration, credential rotation, account expansion or browser-permission change.
+Browser capture executable files remain version 0.2.2. Qualification includes equal-input,
+read-only comparisons against a working node before any fleet switch; synthetic tests alone
+did not catch the previous omission. The signed release and download-verification results
+are recorded in the [v0.1.2 release notes](https://github.com/philipbankier/cross-agent-memory-public/releases/tag/v0.1.2).
+Publication and fleet deployment remain separate outcomes.
+
+## Published v0.1.1
 
 This patch includes the dependency fixes, prerequisite checks, disposable demo, first-run repair
 and documentation improvements below. The [release notes](https://github.com/philipbankier/cross-agent-memory-public/releases/tag/v0.1.1)

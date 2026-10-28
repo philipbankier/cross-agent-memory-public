@@ -70,7 +70,10 @@ jobs:
           npm run check:bundle --prefix ui/memory-app
           npm test --prefix ui/memory-app
       - name: Check provider fixtures and capture recovery
-        run: script/test-browser-capture
+        run: |
+          command -v node
+          script/test tests/test_control_panel_source_states.py
+          script/test-browser-capture
 
   container:
     if: github.event_name != 'workflow_dispatch' || !inputs.verify_release_sources

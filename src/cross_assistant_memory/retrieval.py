@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
@@ -93,7 +94,31 @@ def lexical_score(query: str, content: str) -> float:
     counts = Counter(content_tokens)
     frequency = sum(min(counts[token], 8) for token in query_tokens)
     phrase_bonus = 4 if " ".join(query_tokens) in " ".join(content_tokens) else 0
-    return float(phrase_bonus + frequency) + frequency / max(1, len(content_tokens))
+    identifier_bonus = 0
+    identifier_text = query.strip()
+    identifier = identifier_text.casefold()
+    if (
+        re.fullmatch(r"\w+(?:-\w+)+", identifier_text)
+        and identifier.count("-") == len(query_tokens) - 1
+    ):
+        folded_content = content.casefold()
+        # Combining marks belong to adjacent identifiers even though Python's \w omits them.
+        if any(
+            (
+                match.start() == 0
+                or not unicodedata.category(folded_content[match.start() - 1]).startswith("M")
+            )
+            and (
+                match.end() == len(folded_content)
+                or not unicodedata.category(folded_content[match.end()]).startswith("M")
+            )
+            for match in re.finditer(rf"(?<![\w-]){re.escape(identifier)}(?![\w-])", folded_content)
+        ):
+            # The existing score is at most 9 * token_count + 4, including repeated query tokens.
+            identifier_bonus = 9 * len(query_tokens) + 5
+    return float(identifier_bonus + phrase_bonus + frequency) + frequency / max(
+        1, len(content_tokens)
+    )
 
 
 def assemble_evidence_workset(
