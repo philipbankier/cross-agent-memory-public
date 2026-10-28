@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 from typing import Any, cast
 
 import pytest
 
 from cross_assistant_memory.control_panel import _PANEL_JS  # pyright: ignore[reportPrivateUsage]
+
+pytestmark = pytest.mark.skipif(
+    shutil.which("node") is None, reason="Node is required; enforced by the interfaces CI job"
+)
 
 HARNESS = r"""
 const assert = require('node:assert/strict');
