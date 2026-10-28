@@ -129,7 +129,14 @@ class _ScanBudget:
     segments: int = 0
     reserved_bytes: int = 0
 
-    def reserve(self, read_bytes: int) -> bool:
+    def reserve(self, read_bytes: int, *, segment_start: _ScanBudget | None = None) -> bool:
+        if segment_start is not None and (
+            self.segments - segment_start.segments + 1 > MAX_SEGMENTS_PER_SYNC
+            or self.reserved_bytes - segment_start.reserved_bytes + read_bytes
+            > MAX_SOURCE_READ_BYTES_PER_SYNC
+        ):
+            # An impossible segment must rotate, not consume the first turn on every run.
+            raise _SourceReadLimit
         if (
             self.segments >= MAX_SEGMENTS_PER_SYNC
             or self.reserved_bytes + read_bytes > MAX_SOURCE_READ_BYTES_PER_SYNC
@@ -599,6 +606,7 @@ def _scan_source(
         initial = source.initial_cursor_for(path)
         queue.validate_initial_cursor(source_key, initial)
         for _index in range(MAX_SEGMENTS_PER_SOURCE):
+            segment_start = replace(budget)
             held = queue.schema_hold(source_key)
             checkpoint = queue.cursor_checkpoint(source_key)
             if held is not None and checkpoint is not None:
@@ -626,16 +634,41 @@ def _scan_source(
             read_bytes = _segment_read_reservation(
                 source.source_system, source_size, cursor, segment_limit
             )
-            if read_bytes > MAX_SOURCE_READ_BYTES_PER_SYNC:
+            fresh = retained is None and replay_limit is None
+            start = 0 if cursor is None else cursor.next_byte_offset
+            probe_bytes = (
+                MAX_COLLECTOR_SEGMENT_BYTES
+                if fresh and source_size - start >= MAX_COLLECTOR_SEGMENT_BYTES
+                else 0
+            )
+            if read_bytes + probe_bytes > MAX_SOURCE_READ_BYTES_PER_SYNC:
                 queue.record_scan_attempt(source_key, priority=priority)
                 state = "source_read_limit"
                 break
-            if not budget.reserve(read_bytes):
+            if not budget.reserve(read_bytes + probe_bytes, segment_start=segment_start):
                 state = "work_limit"
                 break
             # Rotation is not an evidence cursor. A crash must not pin every retry to this file.
             if _index == 0:
                 queue.record_scan_attempt(source_key, priority=priority)
+            frame_length = None
+            if probe_bytes:
+                frame_length = _large_record_length(
+                    path, cursor, source_size, budget=budget, segment_start=segment_start
+                )
+                segment_limit = frame_length
+                if frame_length is not None:
+                    extra_reads = (
+                        _segment_read_reservation(
+                            source.source_system, source_size, cursor, frame_length
+                        )
+                        - read_bytes
+                    )
+                    if extra_reads > 0 and not budget.reserve(
+                        extra_reads, segment_start=segment_start
+                    ):
+                        state = "work_limit"
+                        break
             parsed = _parse_next_segment(
                 path,
                 source.source_system,
@@ -643,6 +676,11 @@ def _scan_source(
                 max_increment_bytes=segment_limit,
                 max_source_bytes=source_size,
             )
+            if frame_length is not None and (
+                parsed.segment_end_byte != parsed.segment_start_byte + frame_length
+                or parsed.segment_end_ordinal_exclusive != parsed.segment_start_ordinal + 1
+            ):
+                raise RuntimeError("large record framing changed before verification")
             if (
                 len(parsed.records) > MAX_UPLOAD_RECORDS
                 and not parsed.unknown_record_types
@@ -659,7 +697,7 @@ def _scan_source(
                 if extra_reads > MAX_SOURCE_READ_BYTES_PER_SYNC:
                     state = "source_read_limit"
                     break
-                if not budget.reserve(extra_reads):
+                if not budget.reserve(extra_reads, segment_start=segment_start):
                     state = "work_limit"
                     break
                 parsed = _parse_next_segment(
@@ -669,25 +707,6 @@ def _scan_source(
                     max_increment_bytes=limit,
                     max_source_bytes=source_size,
                 )
-            if (
-                parsed.segment_end_byte == parsed.segment_start_byte
-                and source_size - parsed.segment_start_byte >= MAX_COLLECTOR_SEGMENT_BYTES
-                and retained is None
-                and replay_limit is None
-            ):
-                limit = min(MAX_SINGLE_RECORD_BYTES, source_size - parsed.segment_start_byte)
-                extra_reads = limit + 1
-                if extra_reads > MAX_SOURCE_READ_BYTES_PER_SYNC:
-                    state = "source_read_limit"
-                    break
-                if not budget.reserve(extra_reads):
-                    state = "work_limit"
-                    break
-                larger = _parse_large_record(
-                    path, source.source_system, cursor, source_size, limit, budget=budget
-                )
-                if larger is not None:
-                    parsed = larger
             large_frame = (
                 parsed.segment_end_byte - parsed.segment_start_byte > MAX_COLLECTOR_SEGMENT_BYTES
             )
@@ -955,17 +974,19 @@ def _replay_limit(
     return replay_bytes
 
 
-def _parse_large_record(
+def _large_record_length(
     path: Path,
-    source_system: SourceSystem,
     cursor: SourceCursor | InitialSourceCursor | None,
     source_size: int,
-    limit: int,
     *,
     budget: _ScanBudget,
-) -> ParseResult | None:
-    """Locate one bounded complete frame, then reparse its exact range with normal verification."""
+    segment_start: _ScanBudget,
+) -> int | None:
+    """Measure a fresh row after reserving its ordinary probe and verified parser pass."""
     start = 0 if cursor is None else cursor.next_byte_offset
+    if source_size - start < MAX_COLLECTOR_SEGMENT_BYTES:
+        return None
+    limit = min(MAX_SINGLE_RECORD_BYTES, source_size - start)
     descriptor, _normalized = open_regular_file_no_symlinks(path, "collector large record")
     length = 0
     complete = False
@@ -974,29 +995,21 @@ def _parse_large_record(
             raise RuntimeError("source grew beyond the reserved large-record read budget")
         handle.seek(start)
         while length <= limit:
-            chunk = handle.readline(min(READ_CHUNK_BYTES, limit + 1 - length))
+            if length == MAX_COLLECTOR_SEGMENT_BYTES and not budget.reserve(
+                limit + 1 - length, segment_start=segment_start
+            ):
+                raise _ScanWorkLimit
+            boundary = (
+                MAX_COLLECTOR_SEGMENT_BYTES if length < MAX_COLLECTOR_SEGMENT_BYTES else limit + 1
+            )
+            chunk = handle.readline(min(READ_CHUNK_BYTES, boundary - length))
             if not chunk:
                 break
             length += len(chunk)
             if chunk.endswith(b"\n"):
                 complete = True
                 break
-    if not complete or length > limit:
-        return None
-    read_bytes = _segment_read_reservation(source_system, source_size, cursor, length)
-    if read_bytes > MAX_SOURCE_READ_BYTES_PER_SYNC:
-        raise _SourceReadLimit
-    if not budget.reserve(read_bytes):
-        raise _ScanWorkLimit
-    parsed = _parse_next_segment(
-        path, source_system, cursor, max_increment_bytes=length, max_source_bytes=source_size
-    )
-    if (
-        parsed.segment_end_byte != start + length
-        or parsed.segment_end_ordinal_exclusive != parsed.segment_start_ordinal + 1
-    ):
-        raise RuntimeError("large record framing changed before verification")
-    return parsed
+    return length if complete and MAX_COLLECTOR_SEGMENT_BYTES < length <= limit else None
 
 
 def _flush_due_uploads(

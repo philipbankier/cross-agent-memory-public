@@ -4,6 +4,7 @@ import hashlib
 import json
 from typing import Annotated, Any
 
+from mcp.types import CallToolResult, TextContent
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 from cross_assistant_memory.retrieval import MAX_WORKSET_RESULTS
@@ -34,6 +35,7 @@ def deliver_search(
     request: SearchPageRequest | None = None,
     *,
     text_max_bytes: int | None = None,
+    continuation_arguments: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Page an authorized workset; omit optional context only when a single hit cannot fit."""
     request = request or SearchPageRequest()
@@ -58,8 +60,6 @@ def deliver_search(
 
     for end in range(len(items), offset, -1):
         result = {
-            **workset,
-            "results": items[offset:end],
             "search_page": {
                 "version": 1,
                 "search_sha256": binding,
@@ -71,18 +71,41 @@ def deliver_search(
                 "complete": offset == 0 and end == len(items),
                 "selection_scope": "whole_workset",
             },
+            **workset,
+            "results": items[offset:end],
         }
+        if continuation_arguments is not None and end < len(items):
+            result = {
+                "search_page": result["search_page"],
+                "next_search_request": {
+                    **continuation_arguments,
+                    "page": {"result_offset": end, "expected_search_sha256": binding},
+                },
+                **result,
+            }
         if _fits(result, text_max_bytes):
             return result
+        if end == offset + 1 and "next_search_request" in result:
+            without_helper = {
+                key: value for key, value in result.items() if key != "next_search_request"
+            }
+            if _fits(without_helper, text_max_bytes):
+                return without_helper
         if end == offset + 1 and "conversation_context" in items[offset]:
             # Preserve the matching hit and explicitly disclose the omitted adjunct.
             result["results"] = [
                 {
                     **items[offset],
                     "conversation_context": {
+                        **items[offset]["conversation_context"],
                         "results": [],
                         "history_complete": False,
-                        "omitted_reason": "response_limit_use_exact_evidence_with_context",
+                        "omitted_reason": "response_limit_fetch_omitted_event_ids",
+                        "omitted_event_ids": [
+                            row["event_id"]
+                            for row in items[offset]["conversation_context"]["results"]
+                        ],
+                        "omitted_count": len(items[offset]["conversation_context"]["results"]),
                     },
                 }
             ]
@@ -90,12 +113,18 @@ def deliver_search(
                 result.pop("search_page")
             if _fits(result, text_max_bytes):
                 return result
+            result.pop("next_search_request", None)
+            if _fits(result, text_max_bytes):
+                return result
     raise SearchTooLargeError("search metadata or one result exceeds the bounded response limit")
 
 
 def _fits(value: dict[str, Any], text_max_bytes: int | None) -> bool:
     text = json.dumps(value, indent=2)
-    envelope = {"content": [{"type": "text", "text": text}], "structuredContent": value}
-    return len(json.dumps(envelope).encode()) <= MAX_SEARCH_RESPONSE_BYTES and (
-        text_max_bytes is None or len(text.encode()) <= text_max_bytes
-    )
+    envelope = CallToolResult(
+        content=[TextContent(type="text", text=text)], structured_content=value
+    ).model_dump(mode="json", by_alias=True)
+    limit = MAX_SEARCH_RESPONSE_BYTES
+    if text_max_bytes is not None:
+        limit = min(limit, text_max_bytes)
+    return len(json.dumps(envelope).encode()) <= limit

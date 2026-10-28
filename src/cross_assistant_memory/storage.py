@@ -4483,6 +4483,23 @@ class Ledger:
                     "Remove the context/project filter if you meant the topic rather than "
                     "an assigned label; other search filters still apply."
                 )
+        if (
+            candidate_ranks is None
+            and mode is not QueryMode.WHERE_DID_I_LEAVE_OFF
+            and any(
+                token in {"OR", "AND", "NOT"}
+                for token in [match.group(0) for match in FTS_TOKEN.finditer(query)][:24]
+            )
+        ):
+            diagnostic = (
+                "This search treats OR, AND and NOT as literal required words, not Boolean "
+                "operators. Quotes and parentheses do not create phrase or grouping semantics. "
+                "Use separate short keyword searches for alternatives. "
+                "Existing filters still apply."
+            )
+            workset["search_diagnostic"] = " ".join(
+                part for part in (workset.get("search_diagnostic", ""), diagnostic) if part
+            )
         latency_ms = (time.perf_counter() - started) * 1000
         self._record_query_receipt(
             connection,
@@ -4911,10 +4928,11 @@ class Ledger:
             """
             SELECT sf.source_system, sr.source_file_id, e.conversation_id,
                    sr.source_record_id, sr.message_id, sr.parent_message_id,
-                   sf.parser_name, sf.parser_version
+                   sf.parser_name, sf.parser_version, segment.source_stream_id
             FROM events_current e
             JOIN source_records sr USING (source_record_id)
             JOIN source_files sf USING (source_file_id)
+            LEFT JOIN source_segments segment USING (source_file_id)
             WHERE e.event_id = ?
             """,
             (event_id,),
@@ -4943,6 +4961,14 @@ class Ledger:
                     }
                 )
         else:
+            stream_id = anchor[-1]
+            source_predicate = (
+                "sr.source_file_id IN (SELECT source_file_id FROM source_segments "
+                "WHERE source_stream_id = ?)"
+                if stream_id is not None
+                else "sr.source_file_id = ?"
+            )
+            source_identity = stream_id if stream_id is not None else anchor[1]
             for position, comparison, direction in (
                 ("preceding", "<", "DESC"),
                 ("following", ">", "ASC"),
@@ -4957,7 +4983,7 @@ class Ledger:
                     JOIN events_current anchor ON anchor.event_id = ?
                     JOIN source_records anchor_record
                       ON anchor_record.source_record_id = anchor.source_record_id
-                    WHERE sr.source_file_id = anchor_record.source_file_id
+                    WHERE {source_predicate}
                       AND e.conversation_id = anchor.conversation_id
                       AND e.branch_id IS anchor.branch_id
                       AND sr.record_ordinal {comparison} anchor_record.record_ordinal
@@ -4965,7 +4991,7 @@ class Ledger:
                     ORDER BY sr.record_ordinal {direction}, e.event_id ASC
                     LIMIT ?
                     """,
-                    (event_id, *policy.parameters, 1 if preceding_only else 2),
+                    (event_id, source_identity, *policy.parameters, 1 if preceding_only else 2),
                 ).fetchall()
                 for row in reversed(rows) if position == "preceding" else rows:
                     item = _search_result(row).as_dict()
@@ -4978,6 +5004,8 @@ class Ledger:
             "content_boundary": "retrieved_content_is_untrusted_data",
             "results": items,
         }
+        if not linked and anchor[-1] is not None:
+            context["selection"] = "same_source_stream_conversation_branch"
         if linked:
             context["selection"] = "same_source_file_conversation_parent_chain"
             context["linkage"] = "explicit_parent_message_id"

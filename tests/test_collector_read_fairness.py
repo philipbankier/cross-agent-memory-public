@@ -19,7 +19,7 @@ from cross_assistant_memory.collector import (
     load_collector_config,
 )
 from cross_assistant_memory.collector_queue import CollectorQueue, QueueFailureCode, source_key_for
-from cross_assistant_memory.models import SourceCursor, SourceSystem
+from cross_assistant_memory.models import ParseResult, SourceCursor, SourceSystem
 from cross_assistant_memory.uploads import parse_upload_batch
 
 
@@ -208,7 +208,7 @@ def test_initial_deferred_lanes_keep_their_first_unfinished_source(
         assert [path for path in attempts if path in lanes[priority]] == lanes[priority][:2]
 
 
-@pytest.mark.parametrize("denial", [None, "remaining_work", "absolute_limit"])
+@pytest.mark.parametrize("denial", [None, "aggregate_limit", "absolute_limit"])
 def test_large_frame_reserves_its_measured_length_before_verified_reparse(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, denial: str | None
 ) -> None:
@@ -240,14 +240,9 @@ def test_large_frame_reserves_its_measured_length_before_verified_reparse(
     reserve = runtime._segment_read_reservation  # pyright: ignore[reportPrivateUsage]
     size = source.stat().st_size
     probe_limit = size - cursor.next_byte_offset
-    required = (
-        reserve(SourceSystem.CODEX, size, cursor, None)
-        + probe_limit
-        + 1
-        + reserve(SourceSystem.CODEX, size, cursor, len(raw))
-    )
+    required = probe_limit + 1 + reserve(SourceSystem.CODEX, size, cursor, len(raw))
     monkeypatch.setattr(
-        runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", required - int(denial == "remaining_work")
+        runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", required - int(denial == "aggregate_limit")
     )
     if denial == "absolute_limit":
 
@@ -260,15 +255,34 @@ def test_large_frame_reserves_its_measured_length_before_verified_reparse(
             return required + 1 if limit == len(raw) else reserve(system, size, cursor, limit)
 
         monkeypatch.setattr(runtime, "_segment_read_reservation", oversized_reservation)
+    parse = runtime._parse_next_segment  # pyright: ignore[reportPrivateUsage]
+    parsed_limits: list[int | None] = []
+
+    def counted_parse(
+        path: Path,
+        system: SourceSystem,
+        cursor: SourceCursor | InitialSourceCursor | None,
+        *,
+        max_increment_bytes: int | None = None,
+        max_source_bytes: int | None = None,
+    ) -> ParseResult:
+        parsed_limits.append(max_increment_bytes)
+        return parse(
+            path,
+            system,
+            cursor,
+            max_increment_bytes=max_increment_bytes,
+            max_source_bytes=max_source_bytes,
+        )
+
+    monkeypatch.setattr(runtime, "_parse_next_segment", counted_parse)
     result = runtime.sync_collector(config, transport=transport, now_epoch=101)
     if denial is not None:
+        assert parsed_limits == []
         assert result["segments_enqueued"] == 0
-        assert result["status"] == (
-            "attention_required" if denial == "absolute_limit" else "pending"
-        )
-        if denial == "absolute_limit":
-            attention = cast(list[dict[str, object]], result["source_attention"])
-            assert [item["state"] for item in attention] == ["source_read_limit"]
+        assert result["status"] == "attention_required"
+        attention = cast(list[dict[str, object]], result["source_attention"])
+        assert [item["state"] for item in attention] == ["source_read_limit"]
         assert queue.cursor(key) == cursor
         assert queue.status(now_epoch=101).queued_items == 0
         monkeypatch.setattr(runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", required)
@@ -283,6 +297,7 @@ def test_large_frame_reserves_its_measured_length_before_verified_reparse(
         == hashlib.sha256(source.read_bytes()[: advanced.next_byte_offset]).hexdigest()
     )
     assert result["segments_enqueued"] == 1
+    assert parsed_limits == [len(raw)]
     assert result["status"] == "pending"
     assert cast(dict[str, object], result["scan_work"])["source_read_bytes_reserved"] == required
     completed = runtime.sync_collector(config, transport=transport, now_epoch=102)
@@ -334,26 +349,102 @@ def test_denied_large_reparse_preserves_an_already_enqueued_prefix(
     reserve = runtime._segment_read_reservation  # pyright: ignore[reportPrivateUsage]
     size = source.stat().st_size
     probe_limit = size - prefix_cursor.next_byte_offset
-    required = (
-        reserve(SourceSystem.CODEX, size, cursor, None)
-        + reserve(SourceSystem.CODEX, size, prefix_cursor, None)
-        + probe_limit
-        + 1
-    )
+    required = probe_limit + 1 + reserve(SourceSystem.CODEX, size, prefix_cursor, len(raw))
     monkeypatch.setattr(runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", required)
     result = runtime.sync_collector(config, transport=transport, now_epoch=101)
     assert result["segments_enqueued"] == 1
     assert result["status"] == "pending"
     assert queue.cursor(key) == prefix_cursor
     assert queue.status(now_epoch=101).queued_items == 0
-    monkeypatch.setattr(runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", 2 * required)
-    completed = runtime.sync_collector(config, transport=transport, now_epoch=102)
+    resumed = runtime.sync_collector(config, transport=transport, now_epoch=102)
+    assert resumed["status"] == "pending"
+    assert resumed["segments_enqueued"] == 1
+    after_frame = queue.cursor(key)
+    assert after_frame is not None
+    assert after_frame.next_byte_offset == prefix_cursor.next_byte_offset + len(raw)
+    completed = runtime.sync_collector(config, transport=transport, now_epoch=103)
     assert completed["status"] == "ok", completed
     final = queue.cursor(key)
     assert final is not None and final.next_byte_offset == size
     assert (
-        runtime.sync_collector(config, transport=transport, now_epoch=103)["uploaded_batches"] == 0
+        runtime.sync_collector(config, transport=transport, now_epoch=104)["uploaded_batches"] == 0
     )
+
+
+@pytest.mark.parametrize("priority", [True, False])
+@pytest.mark.parametrize("limit_kind", ["bytes", "reads", "probe"])
+def test_impossible_dense_reparse_does_not_starve_a_healthy_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, priority: bool, limit_kind: str
+) -> None:
+    now = 2_000_000_000
+    root = tmp_path / "codex"
+    paths = [root / f"source-{index}.jsonl" for index in range(2)]
+    paths.sort(
+        key=lambda path: source_key_for(
+            SourceSystem.CODEX,
+            "source_account:codex",
+            hashlib.sha256(str(path).encode()).hexdigest(),
+        )
+    )
+    for path, count in zip(paths, (3, 1), strict=True):
+        write_jsonl(
+            path,
+            [
+                {"type": "session_meta", "payload": {"id": path.stem, "source": "cli"}},
+                *[_codex_message(f"Synthetic request {index}.") for index in range(count)],
+            ],
+        )
+        modified = now if priority else now - 3600
+        os.utime(path, (modified, modified))
+    config = _write_config(tmp_path, [("codex", root, "source_account:codex")])
+    dense_size = paths[0].stat().st_size
+    monkeypatch.setattr(runtime, "MAX_UPLOAD_RECORDS", 2)
+    monkeypatch.setattr(
+        runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", 100 if limit_kind == "bytes" else 1000
+    )
+    monkeypatch.setattr(runtime, "MAX_SEGMENTS_PER_SYNC", 1 if limit_kind == "reads" else 64)
+    if limit_kind == "probe":
+        probe = paths[1].stat().st_size + 1
+        assert probe < dense_size
+        monkeypatch.setattr(runtime, "MAX_COLLECTOR_SEGMENT_BYTES", probe)
+        monkeypatch.setattr(runtime, "MAX_SOURCE_READ_BYTES_PER_SYNC", probe + 59)
+        monkeypatch.setattr(runtime, "MAX_SOURCES_PER_SYNC", 1)
+
+    def reservation(
+        _system: SourceSystem,
+        size: int,
+        _cursor: SourceCursor | InitialSourceCursor | None,
+        limit: int | None,
+    ) -> int:
+        return 50 if size == dense_size and limit is not None else 60
+
+    monkeypatch.setattr(runtime, "_segment_read_reservation", reservation)
+    sent: list[str] = []
+
+    def transport(_node: CollectorNodeConfig, _credential: str, body: bytes) -> None:
+        sent.append(parse_upload_batch(body).parsed.conversation_id)
+
+    first = runtime.sync_collector(config, transport=transport, now_epoch=now)
+    assert sent == []
+    assert first["status"] == "attention_required"
+    attention = cast(list[dict[str, object]], first["source_attention"])
+    assert [(item["source_path_hash"], item["state"]) for item in attention] == [
+        (hashlib.sha256(str(paths[0]).encode()).hexdigest(), "source_read_limit")
+    ]
+    queue = CollectorQueue.open(load_collector_config(config).queue)
+    assert queue.status(now_epoch=now).queued_items == 0
+    second = runtime.sync_collector(config, transport=transport, now_epoch=now + 1)
+    assert sent == [paths[1].stem]
+    assert second["uploaded_batches"] == 1
+    queue = CollectorQueue.open(load_collector_config(config).queue)
+    for path, expected in ((paths[0], None), (paths[1], paths[1].stat().st_size)):
+        key = source_key_for(
+            SourceSystem.CODEX,
+            "source_account:codex",
+            hashlib.sha256(str(path).encode()).hexdigest(),
+        )
+        cursor = queue.cursor(key)
+        assert (cursor.next_byte_offset if cursor else None) == expected
 
 
 @pytest.mark.parametrize("retry_at", [106, 100_000], ids=["retained", "expired"])

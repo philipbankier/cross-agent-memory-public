@@ -50,7 +50,8 @@ before importing real data. Set `PYTHON_BIN=/path/to/python3` for both commands 
 
 These commands follow current source. For a fixed version, use
 [signed release artifacts](docs/deployment/verify-release.md) and their verification instructions.
-v0.1.1 includes the dependency fixes; v0.1.0 does not. See [release status](docs/release-readiness.md).
+v0.1.2 retains the dependency fixes and restores cross-batch context and bounded delivery.
+See [release status](docs/release-readiness.md).
 Do not install from GitHub's automatic source ZIP; the build needs Git provenance.
 
 ## See It Before Connecting Accounts

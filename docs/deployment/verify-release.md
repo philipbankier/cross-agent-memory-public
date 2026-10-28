@@ -5,7 +5,7 @@ support `gh attestation verify`; inspect its help before using a different versi
 a new empty directory. Verify artifacts before installing packages or loading image archives.
 
 ```sh
-gh release download v0.1.1 --repo philipbankier/cross-agent-memory-public
+gh release download v0.1.2 --repo philipbankier/cross-agent-memory-public
 ```
 
 Set `RELEASE_REVISION` to the complete source commit shown in the release notes. The commands below

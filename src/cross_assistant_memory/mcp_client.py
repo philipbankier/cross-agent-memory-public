@@ -24,7 +24,12 @@ from mcp.types import (
 )
 
 from cross_assistant_memory.collector_runtime import load_transport_credential
-from cross_assistant_memory.evidence_delivery import limit_evidence_text
+from cross_assistant_memory.evidence_delivery import (
+    EVIDENCE_CHANGED_MESSAGE,
+    EVIDENCE_OFFSET_MESSAGE,
+    EVIDENCE_VERSION_REQUIRED_MESSAGE,
+    limit_evidence_text,
+)
 from cross_assistant_memory.search_delivery import SEARCH_CHANGED_MESSAGE, SEARCH_TOO_LARGE_MESSAGE
 
 READ_ONLY_TOOLS = frozenset({"memory_status", "memory_search", "memory_get_evidence"})
@@ -95,6 +100,12 @@ async def create_readonly_relay(
                 messages = ["invalid arguments; consult its input schema"]
                 if params.name == "memory_search":
                     messages += [SEARCH_CHANGED_MESSAGE, SEARCH_TOO_LARGE_MESSAGE]
+                elif params.name == "memory_get_evidence":
+                    messages += [
+                        EVIDENCE_VERSION_REQUIRED_MESSAGE,
+                        EVIDENCE_CHANGED_MESSAGE,
+                        EVIDENCE_OFFSET_MESSAGE,
+                    ]
                 for message in messages:
                     safe = TextContent(
                         type="text", text=f"Error executing tool {params.name}: {message}"
@@ -111,13 +122,25 @@ async def create_readonly_relay(
                     or json.loads(result.content[0].text) != value
                 ):
                     return _failure()
-                bounded = limit_evidence_text(value, evidence_text_max_bytes)
+                # Paging budgets a bare result; reserve the metadata retained from upstream.
+                envelope = result.model_copy(update={"content": [], "structured_content": {}})
+                bare = CallToolResult(content=[], structured_content={})
+                overhead = max(
+                    0,
+                    len(json.dumps(envelope.model_dump(mode="json", by_alias=True)).encode())
+                    - len(json.dumps(bare.model_dump(mode="json", by_alias=True)).encode()),
+                )
+                bounded = limit_evidence_text(value, evidence_text_max_bytes - overhead)
                 result = result.model_copy(
                     update={
                         "structured_content": bounded,
                         "content": [TextContent(type="text", text=json.dumps(bounded, indent=2))],
                     }
                 )
+                if len(json.dumps(result.model_dump(mode="json", by_alias=True)).encode()) > (
+                    evidence_text_max_bytes
+                ):
+                    return _failure()
         except Exception:
             return _failure()
         return result
