@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from collections import Counter
 from dataclasses import dataclass
-from typing import NoReturn, cast
+from dataclasses import field as dataclass_field
+from typing import Literal, NoReturn, cast
+from uuid import UUID
+
+from cross_assistant_memory.admission import classify_record
 
 MAX_PAGE_BYTES = 1024 * 1024
 MAX_PAGE_RECORDS = 200
@@ -54,8 +59,131 @@ class TranscriptInspection:
         return False
 
 
+@dataclass(frozen=True)
+class ReplyRequest:
+    page_record_index: int
+    content_index: int
+    native_tool_call_id: str
+    content_text: str = dataclass_field(repr=False)
+    end_turn: bool | None = None
+    delivery: Literal["requested_not_verified"] = "requested_not_verified"
+    conversation_id: None = None
+
+
+@dataclass(frozen=True)
+class TranscriptProjection:
+    """Filtered source representation, not an enrolled or admitted conversation."""
+
+    bot_id: str
+    source_sha256: str
+    source_bytes: int
+    inspection: TranscriptInspection
+    replies: tuple[ReplyRequest, ...]
+    excluded_replies: int
+
+    def canonical_bytes(self) -> bytes:
+        return json.dumps(
+            {
+                "format_version": 1,
+                "source_system": "grok_bot",
+                "representation": "native_reply_request_projection",
+                "bot_id": self.bot_id,
+                "source_sha256": self.source_sha256,
+                "source_bytes": self.source_bytes,
+                "page_start": self.inspection.page_start,
+                "page_end": self.inspection.page_end,
+                "total": self.inspection.total,
+                "before": self.inspection.before,
+                "position_gaps": self.inspection.position_gaps,
+                "conversation_identity_verified": False,
+                "audience_verified": False,
+                "admission_ready": False,
+                "excluded_replies": self.excluded_replies,
+                "replies": [
+                    {
+                        "page_record_index": reply.page_record_index,
+                        "content_index": reply.content_index,
+                        "native_tool_call_id": reply.native_tool_call_id,
+                        "content_text": reply.content_text,
+                        "end_turn": reply.end_turn,
+                        "delivery": reply.delivery,
+                        "conversation_id": reply.conversation_id,
+                    }
+                    for reply in self.replies
+                ],
+            },
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+
+
 def inspect_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptInspection:
     """Inspect the observed native framing in memory without retaining its private payloads."""
+    return _read_page(data, expected_bot_id)[0]
+
+
+def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptProjection:
+    """Exclude private internals before producing a bounded reply-only projection."""
+    inspection, records = _read_page(data, expected_bot_id)
+    try:
+        canonical_id = str(UUID(expected_bot_id))
+    except ValueError:
+        raise ValueError("Grok Bot projection target identifier is unsupported") from None
+    if canonical_id != expected_bot_id:
+        raise ValueError("Grok Bot projection target identifier is unsupported")
+    replies: list[ReplyRequest] = []
+    seen: set[str] = set()
+    excluded = 0
+    for index, item in enumerate(records):
+        if item["role"] != "assistant":
+            continue
+        message = cast(dict[str, object], item["message"])
+        for content_index, value in enumerate(cast(list[object], message["content"])):
+            block = cast(dict[str, object], value)
+            if block["type"] != "tool_use" or block.get("name") != "SendToUser":
+                continue
+            arguments = cast(dict[str, object], block["input"])
+            if arguments.keys() not in ({"content"}, {"content", "end_turn"}):
+                raise ValueError("Grok Bot reply request fields are unsupported")
+            end_turn = arguments.get("end_turn")
+            if "end_turn" in arguments and type(end_turn) is not bool:
+                raise ValueError("Grok Bot reply request turn marker is unsupported")
+            content = arguments["content"]
+            call_id = cast(str, block["id"])
+            if (
+                not isinstance(content, str)
+                or not content.strip()
+                or re.fullmatch(r"[A-Za-z0-9_:-]{1,256}", call_id) is None
+            ):
+                raise ValueError("Grok Bot reply request fields are unsupported")
+            if call_id in seen:
+                raise ValueError("Grok Bot reply request has a duplicate tool call id")
+            seen.add(call_id)
+            raw = json.dumps(
+                {"native_tool_call_id": call_id, "content_text": content}, ensure_ascii=False
+            ).encode("utf-8")
+            decision = classify_record(None, content, raw, max_record_bytes=64 * 1024)
+            if not decision.accepted:
+                excluded += 1
+                continue
+            replies.append(
+                ReplyRequest(index, content_index, call_id, content, cast(bool | None, end_turn))
+            )
+    return TranscriptProjection(
+        expected_bot_id,
+        hashlib.sha256(data).hexdigest(),
+        len(data),
+        inspection,
+        tuple(replies),
+        excluded,
+    )
+
+
+def _read_page(
+    data: bytes, expected_bot_id: str
+) -> tuple[TranscriptInspection, tuple[dict[str, object], ...]]:
     if type(data) is not bytes or not 0 < len(data) <= MAX_PAGE_BYTES:
         raise ValueError("Grok Bot transcript exceeds its byte limit")
     if type(expected_bot_id) is not str or not 1 <= len(expected_bot_id) <= 256:
@@ -66,7 +194,9 @@ def inspect_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptI
         raise ValueError("Grok Bot transcript encoding or structure is invalid") from None
 
 
-def _inspect(data: bytes, expected_bot_id: str) -> TranscriptInspection:
+def _inspect(
+    data: bytes, expected_bot_id: str
+) -> tuple[TranscriptInspection, tuple[dict[str, object], ...]]:
     lines = data.decode("utf-8").splitlines()
     if len(lines) < 6:
         raise ValueError("Grok Bot transcript framing is incomplete")
@@ -91,6 +221,7 @@ def _inspect(data: bytes, expected_bot_id: str) -> TranscriptInspection:
     if not 1 <= len(rows) <= min(MAX_PAGE_RECORDS, end - start + 1):
         raise ValueError("Grok Bot transcript record count is invalid")
     counts: Counter[str] = Counter()
+    records: list[dict[str, object]] = []
     for row in rows:
         record: object = json.loads(
             row, object_pairs_hook=_unique_object, parse_constant=_reject_constant
@@ -115,8 +246,12 @@ def _inspect(data: bytes, expected_bot_id: str) -> TranscriptInspection:
                 if not valid:
                     raise ValueError("Grok Bot transcript content field type is invalid")
             counts[kind] += 1
+        records.append(item)
     # A page's local row index is not a provider message position or identity.
-    return TranscriptInspection(start, end, total, before, len(rows), tuple(sorted(counts.items())))
+    return (
+        TranscriptInspection(start, end, total, before, len(rows), tuple(sorted(counts.items()))),
+        tuple(records),
+    )
 
 
 def _object(value: object, fields: set[str]) -> dict[str, object]:

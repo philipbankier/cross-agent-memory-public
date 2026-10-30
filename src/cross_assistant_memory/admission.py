@@ -110,12 +110,13 @@ def raw_record_has_uninspected_attachment(raw_record: bytes) -> bool:
 
 
 def classify_record(
-    source_system: SourceSystem,
+    source_system: SourceSystem | None,
     content_text: str,
     raw_record: bytes,
     *,
     max_record_bytes: int,
 ) -> AdmissionDecision:
+    """Apply common privacy checks; None does not select a provider-specific policy."""
     if len(raw_record) > max_record_bytes:
         return AdmissionDecision(False, Privacy.NO_MEMORY, "oversized_record")
 
