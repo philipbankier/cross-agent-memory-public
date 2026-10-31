@@ -134,7 +134,7 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
     if canonical_id != expected_bot_id:
         raise ValueError("Grok Bot projection target identifier is unsupported")
     replies: list[ReplyRequest] = []
-    seen: set[str] = set()
+    seen: dict[str, tuple[str, bool | None]] = {}
     excluded = 0
     for index, item in enumerate(records):
         if item["role"] != "assistant":
@@ -158,9 +158,12 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
                 or re.fullmatch(r"[A-Za-z0-9_:-]{1,256}", call_id) is None
             ):
                 raise ValueError("Grok Bot reply request fields are unsupported")
-            if call_id in seen:
+            identity = (content, cast(bool | None, end_turn))
+            if call_id in seen and seen[call_id] != identity:
                 raise ValueError("Grok Bot reply request has a duplicate tool call id")
-            seen.add(call_id)
+            if call_id in seen:
+                continue
+            seen[call_id] = identity
             raw = json.dumps(
                 {"native_tool_call_id": call_id, "content_text": content}, ensure_ascii=False
             ).encode("utf-8")

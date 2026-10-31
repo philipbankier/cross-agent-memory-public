@@ -67,6 +67,12 @@ user-message IDs, byte-identical user text coalesces; edits, utterance counts an
 are not qualified. Do not treat admission order as conversation order. Status is
 read-only, including for an existing older queue.
 
+The observed native transcript can repeat an identical reply tool call within one page. Exact
+call-ID/content/end-turn matches coalesce; conflicting reuse of that ID on a page refuses capture.
+Tool-call IDs remain source metadata, not globally unique event keys. Ledger identity includes the
+source stream and complete normalized observation object. Neither duplicate observations nor
+header position ranges establish the number or chronology of unique native messages.
+
 Queue schema 7 widens the source checks, preserving ciphertext, cursor state and relationships
 when explicitly initialized from schemas 3 through 6. Older collectors cannot open schema 7;
 an old wrapper is not a queue rollback. This change does not migrate the ledger schema.

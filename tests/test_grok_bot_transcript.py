@@ -252,11 +252,52 @@ def test_projection_does_not_trust_a_user_embedded_send_block() -> None:
     assert _project(_page(records)).replies == ()
 
 
-def test_projection_rejects_ambiguous_duplicate_send_call_ids() -> None:
+def test_projection_coalesces_only_identical_native_send_observations() -> None:
     records = _records()
     records[0] = records[2]
+    projected = _project(_page(records))
+    assert len(projected.replies) == 1
+    assert projected.replies[0].native_tool_call_id == "call-2"
+    assert projected.replies[0].page_record_index == 0
+
+
+@pytest.mark.parametrize(
+    "arguments", [{"content": "different"}, {"content": "canary", "end_turn": False}]
+)
+def test_projection_refuses_conflicting_reuse_of_a_send_call_id(
+    arguments: dict[str, object],
+) -> None:
+    records = _records()
+    records[0] = {
+        "role": "assistant",
+        "message": {
+            "content": [
+                {"type": "tool_use", "id": "call-2", "name": "SendToUser", "input": arguments}
+            ]
+        },
+    }
     with pytest.raises(ValueError, match="duplicate"):
         _project(_page(records))
+
+
+def test_duplicate_private_send_observations_remain_excluded() -> None:
+    repeated = {
+        "role": "assistant",
+        "message": {
+            "content": [
+                {
+                    "type": "tool_use",
+                    "id": "private-call",
+                    "name": "SendToUser",
+                    "input": {"content": "[private] synthetic private beacon"},
+                }
+            ]
+        },
+    }
+    projected = _project(_page([repeated, repeated]))
+    assert projected.replies == ()
+    assert projected.excluded_replies == 1
+    assert b"synthetic private beacon" not in projected.canonical_bytes()
 
 
 def test_projection_refuses_malformed_rows_instead_of_skipping() -> None:
