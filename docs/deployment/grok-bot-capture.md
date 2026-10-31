@@ -18,6 +18,11 @@ and device. Keep its token and the queue encryption key in different owner-only 
 the queue. All personal Bots on a shared provider computer may be able to read those files;
 this is not per-Bot credential isolation. Shared/group capture is not qualified.
 
+The existing control panel names this source Grok Bot, separately from Grok Build and Grok web
+history. Use its ordinary source-registration and deletion controls; registration does not
+enable capture or prove a routine is running. Source status distinguishes indexed history from
+observed collection and never promises freshness from an upload receipt.
+
 The collector JSON uses the ordinary native collector configuration, with `sources: []` and
 a dedicated encrypted queue. `CollectorConfig` in `collector.py` defines that contract.
 The separate `0400` owner-only policy has this shape, using returned account IDs and actual
@@ -69,6 +74,13 @@ an old wrapper is not a queue rollback. This change does not migrate the ledger 
 CAM snapshots restore admitted evidence and configuration, not Grok's cloud computer, its
 native learned memories or connector logins. Retain the queue and its separately protected key
 for unsent records. Never reconstruct an acknowledgement or skip a failed page to catch up.
+
+For a private remote node, the optional [upload-only relay](../../deploy/grok-bot-upload/README.md)
+forwards only this enrolled source/account to the existing native writer. It has no query route
+or stored bearer credential. Its VPC binding must target the writer, not a read-only App reader.
+Batch-bound publication-pending responses remain retryable progress, never acknowledgements.
+Keep the existing query OAuth connection unchanged and enable neither route nor routine until
+compatible readers and actual admission/recovery checks pass.
 
 ## Remaining Qualification
 
