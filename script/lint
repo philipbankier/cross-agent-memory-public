@@ -13,3 +13,5 @@ cd "$ROOT"
 for source in browser/capture/*.js browser/capture/*.mjs; do
   node --check "$source"
 done
+node --check deploy/grok-bot-upload/worker.mjs
+node --check deploy/grok-bot-upload/worker.test.mjs
