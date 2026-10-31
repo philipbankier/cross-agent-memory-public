@@ -181,6 +181,29 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
     )
 
 
+def project_user_texts(data: bytes, *, expected_bot_id: str) -> tuple[tuple[str, ...], int]:
+    """Keep native user-role text verbatim, without treating embedded markup as identity."""
+    _, records = _read_page(data, expected_bot_id)
+    texts: list[str] = []
+    excluded = 0
+    for item in records:
+        if item["role"] != "user":
+            continue
+        message = cast(dict[str, object], item["message"])
+        blocks = cast(list[dict[str, object]], message["content"])
+        if any(block["type"] != "text" for block in blocks):
+            excluded += 1
+            continue
+        for block in blocks:
+            text = cast(str, block["text"])
+            decision = classify_record(None, text, text.encode("utf-8"), max_record_bytes=64 * 1024)
+            if not text.strip() or not decision.accepted:
+                excluded += 1
+                continue
+            texts.append(text)
+    return tuple(texts), excluded
+
+
 def _read_page(
     data: bytes, expected_bot_id: str
 ) -> tuple[TranscriptInspection, tuple[dict[str, object], ...]]:

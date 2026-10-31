@@ -170,6 +170,61 @@ def test_grok_bot_capture_is_not_a_grok_build_or_web_record(tmp_path: Path) -> N
     assert parsed.records[0].assistant == "grok_bot"
 
 
+def test_user_role_text_is_verbatim_observation_not_verified_human_authorship(
+    tmp_path: Path,
+) -> None:
+    text = (
+        "<timestamp>2026-10-30T12:00:00Z</timestamp>\n<user_query>\n"
+        "[t1u]\n[Sent from machine synthetic-machine]\nSynthetic user text.\n</user_query>"
+    )
+    observation = capture.GrokBotUserTextObservation(BOT, text)
+    raw = observation.canonical_bytes()
+    parsed = capture.parse_grok_bot_capture(raw, Path("/synthetic/user.json"))
+    (record,) = parsed.records
+    assert record.content_text == text
+    assert record.actor_kind == "source"
+    assert record.authority is Authority.TOOL_OBSERVATION
+    assert record.event_type == "native_user_role_text"
+    assert record.message_id is None and record.message_id_kind is None
+    assert record.occurred_at is None and record.turn_id is None
+    assert "Synthetic" not in repr(observation)
+    assert capture.parse_grok_bot_capture_record(raw) == observation
+    application, principal, account = _capture_case(tmp_path / "node")
+    body = capture.build_grok_bot_capture_upload(observation, source_account_id=account)
+    assert parse_upload_batch(body).parsed.records[0].raw_record == raw
+    assert application.upload_batch(principal, parse_upload_batch(body))["status"] == "applied"
+    hit = Ledger(Settings(tmp_path / "node"), read_only=True).search("Synthetic user text")[0]
+    assert hit.authority == Authority.TOOL_OBSERVATION.value
+
+
+@pytest.mark.parametrize(
+    "text", ["[private] synthetic", "[no-memory] synthetic", "xai-" + "0" * 32]
+)
+def test_user_role_observation_uses_the_existing_privacy_checks(text: str) -> None:
+    with pytest.raises(ValueError):
+        capture.GrokBotUserTextObservation(BOT, text)
+
+
+@pytest.mark.parametrize(
+    ("key", "value"),
+    [
+        ("native_author_id", "owner"),
+        ("native_tool_call_id", "invented-user-id"),
+        ("native_conversation_id", BOT),
+        ("native_occurred_at", "2026-10-30T12:00:00Z"),
+        ("end_turn", True),
+        ("delivery", "delivered"),
+        ("surface", "shared_group"),
+    ],
+)
+def test_user_text_envelope_cannot_smuggle_identity_or_delivery(key: str, value: object) -> None:
+    raw = capture.GrokBotUserTextObservation(BOT, "Synthetic role observation.").canonical_bytes()
+    loaded = json.loads(raw)
+    loaded[key] = value
+    with pytest.raises(ValueError):
+        capture.parse_grok_bot_capture_record(json.dumps(loaded).encode())
+
+
 def test_grok_bot_admission_replay_exact_evidence_and_restore(tmp_path: Path) -> None:
     from cross_assistant_memory.backup import create_offline_clone, create_snapshot, verify_snapshot
 

@@ -72,7 +72,7 @@ def grok_bot_capture_status(config_path: Path, policy_path: Path) -> dict[str, o
         "source_system": "grok_bot",
         "enrolled_bot_count": len(policy.scope.bot_ids),
         "excluded_bot_count": len(policy.scope.excluded_bot_ids),
-        "coverage": "reply_requests_only",
+        "coverage": "user_text_and_reply_requests",
         "native_conversation_identity_verified": False,
         "freshness_guaranteed": False,
         "queue": queue.status().as_dict(),
@@ -124,7 +124,7 @@ def flush_grok_bot_capture(
     return {
         "text_free": True,
         "status": "pending" if pending.queued_items or result.failed else "ready",
-        "coverage": "reply_requests_only",
+        "coverage": "user_text_and_reply_requests",
         **asdict(result),
         "queued_items": pending.queued_items,
         "blocked_items": pending.blocked_items,

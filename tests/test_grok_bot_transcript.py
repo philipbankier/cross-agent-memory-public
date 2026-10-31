@@ -104,6 +104,22 @@ def test_page_local_record_count_does_not_invent_native_positions() -> None:
     assert not hasattr(report, "message_positions")
 
 
+def test_user_text_projection_does_not_extract_or_invent_authority() -> None:
+    texts, excluded = grok_bot_transcript.project_user_texts(_page(_records()), expected_bot_id=BOT)
+    assert texts == ("canary",)
+    assert excluded == 0
+
+
+def test_private_user_record_is_excluded_without_copying_internal_blocks() -> None:
+    records = _records()
+    records.append(
+        {"role": "user", "message": {"content": [{"type": "text", "text": "[private] hidden"}]}}
+    )
+    source = _page(records, end=105, total=106)
+    texts, excluded = grok_bot_transcript.project_user_texts(source, expected_bot_id=BOT)
+    assert texts == ("canary",) and excluded == 1
+
+
 @pytest.mark.parametrize("replacement", [b"this session", b"another account"])
 def test_unbound_scope_is_not_an_enrolled_bot(replacement: bytes) -> None:
     source = _page(_records()).replace(f'agent "Synthetic Bot" ({BOT})'.encode(), replacement)

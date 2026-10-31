@@ -4,9 +4,11 @@ This feature branch is not released full Grok Bot support. Native read-only quer
 source collection are separate permissions. An OAuth memory reader cannot upload history.
 Do not point an older six-source node at these uploads or change a working fleet to test them.
 
-The current adapter retains only eligible outward `SendToUser` requests from a target-bound
-native `ReadTranscript` page. It does not retain reasoning, other tool traffic or user-role
-messages. Sending a reply is not proof of delivery. The internal `grok-bot-app:<Bot ID>` scope
+The current adapter retains eligible outward `SendToUser` requests and verbatim user-role text
+from a target-bound native `ReadTranscript` page. It does not retain reasoning or other tool
+traffic. User-role text is a source observation, not attested human authorship: embedded timestamp,
+turn and machine tags are not parsed into authoritative fields. Sending a reply is not proof of delivery.
+The internal `grok-bot-app:<Bot ID>` scope
 is not a provider conversation ID. Author, native conversation and occurrence time stay unknown.
 
 ## Enrolled Collection
@@ -55,7 +57,9 @@ Page capture performs no network request. It reads one bounded stable page and r
 filtered observations in the existing encrypted queue. A queued observation is not searchable
 yet. Flush uses existing authenticated uploads and exact receipt validation; it advances only
 after node acknowledgement. A lost acknowledgement can be retried with the identical queued
-body after restart. Duplicate pages retain one pending item per exact observation. Status is
+body after restart. Duplicate pages retain one pending item per exact observation. Without native
+user-message IDs, byte-identical user text coalesces; edits, utterance counts and complete chronology
+are not qualified. Do not treat admission order as conversation order. Status is
 read-only, including for an existing older queue.
 
 Queue schema 7 widens the source checks, preserving ciphertext, cursor state and relationships
@@ -69,7 +73,7 @@ for unsent records. Never reconstruct an acknowledgement or skip a failed page t
 ## Remaining Qualification
 
 - Real source enrollment, compatible deployed readers and a separately approved upload route.
-- User messages, native memories, autonomous/delegated work and linked artifact representations.
+- Verified user authorship/chronology, native memories, autonomous/delegated work and linked artifacts.
 - Native identity, chronology, edits, visibility and completeness limits, without fabricated IDs.
 - Real capture, reconnect, replay, revocation and restore through the approved transport.
 - The approved six-hour native routine, created only after actual admission/recovery acceptance.

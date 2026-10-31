@@ -77,8 +77,15 @@ def _case(root: Path) -> tuple[Path, Path, Path]:
     }
     page.write_text(
         '<cursor_untrusted_data_1337 source="ReadTranscript">\n\n'
-        f'Transcript of agent "Synthetic" ({BOT}), positions 0\u20130 of 1:\n'
+        f'Transcript of agent "Synthetic" ({BOT}), positions 0\u20131 of 2:\n'
         + json.dumps(record)
+        + "\n"
+        + json.dumps(
+            {
+                "role": "user",
+                "message": {"content": [{"type": "text", "text": "Synthetic user-role text."}]},
+            }
+        )
         + "\n\n</cursor_untrusted_data_1337>\n"
     )
     return config, policy, page
@@ -104,20 +111,23 @@ def test_capture_cli_queues_without_network_and_status_is_read_only(
     result = json.loads(capsys.readouterr().out)
     assert result["status"] == "queued_not_admitted"
     assert result["pending_replies"] == 1
+    assert result["pending_user_texts"] == 1
     assert "outward" not in json.dumps(result)
     queue = CollectorQueue.open(load_collector_config(config).queue)
     before = hashlib.sha256(queue.database_path.read_bytes()).hexdigest()
     status = grok_bot_capture_status(config, policy)
-    assert status["coverage"] == "reply_requests_only"
+    assert status["coverage"] == "user_text_and_reply_requests"
     assert status["native_conversation_identity_verified"] is False
     assert status["freshness_guaranteed"] is False
-    assert cast(dict[str, object], status["queue"])["queued_items"] == 1
+    assert cast(dict[str, object], status["queue"])["queued_items"] == 2
     assert hashlib.sha256(queue.database_path.read_bytes()).hexdigest() == before
     assert b"outward reply" not in queue.database_path.read_bytes()
     assert b"excluded thought" not in queue.database_path.read_bytes()
+    assert b"user-role text" not in queue.database_path.read_bytes()
     replay = queue_grok_bot_page(config, policy, page, bot_id=BOT)
     assert replay["pending_replies"] == 1
-    assert queue.status().queued_items == 1
+    assert replay["pending_user_texts"] == 1
+    assert queue.status().queued_items == 2
 
 
 def test_disabled_policy_refuses_page_and_network_without_changing_queue(tmp_path: Path) -> None:
@@ -134,7 +144,7 @@ def test_disabled_policy_refuses_page_and_network_without_changing_queue(tmp_pat
     with pytest.raises(PermissionError):
         flush_grok_bot_capture(config, policy)
     assert queue.database_path.read_bytes() == before
-    assert queue.status().queued_items == 1
+    assert queue.status().queued_items == 2
     assert grok_bot_capture_status(config, policy)["enabled"] is False
 
 
