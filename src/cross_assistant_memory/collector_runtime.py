@@ -15,6 +15,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from cross_assistant_memory.collector import (
+    COLLECTOR_ADAPTER_NAME,
+    COLLECTOR_ADAPTER_VERSION,
     CollectorConfig,
     CollectorNodeConfig,
     InitialSourceCursor,
@@ -477,6 +479,7 @@ def post_upload_batch(
         headers={
             "Authorization": f"Bearer {credential}",
             "Content-Type": "application/json",
+            "User-Agent": f"{COLLECTOR_ADAPTER_NAME}/{COLLECTOR_ADAPTER_VERSION}",
         },
         method="POST",
     )
