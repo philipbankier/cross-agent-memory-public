@@ -285,6 +285,59 @@ def test_grok_bot_upload_requires_capture_capability_and_correct_device(tmp_path
         application.upload_batch(other, batch)
 
 
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        {"type": "attachment", "url": "file:///workspace/results/synthetic-artifact.md"},
+        {
+            "type": "widget",
+            "widget": {
+                "prompt": "Synthetic question",
+                "steps": [
+                    {"prompt": "Choose", "options": [{"label": "Synthetic option", "value": "a"}]}
+                ],
+            },
+        },
+    ],
+)
+def test_structured_requests_admit_replay_and_restore_without_becoming_user_claims(
+    tmp_path: Path, arguments: dict[str, object]
+) -> None:
+    from cross_assistant_memory.backup import create_offline_clone, create_snapshot, verify_snapshot
+    from cross_assistant_memory.grok_bot_outward import canonical_outward_request
+
+    root = tmp_path / "node"
+    application, principal, account = _capture_case(root)
+    kind, content = canonical_outward_request(arguments)
+    observation = capture.GrokBotStructuredRequestObservation(
+        BOT, "synthetic-request", content, kind
+    )
+    batch = parse_upload_batch(
+        capture.build_grok_bot_capture_upload(observation, source_account_id=account)
+    )
+    assert application.upload_batch(principal, batch)["status"] == "applied"
+    ledger = Ledger(Settings(root), read_only=True)
+    hits = ledger.search("synthetic")
+    assert len(hits) == 1
+    evidence = ledger.get_evidence(hits[0].event_id)
+    assert evidence["raw_record"].encode() == observation.canonical_bytes()
+    assert evidence["event_type"] == f"native_{kind}"
+    assert evidence["authority"] == Authority.ASSISTANT_OUTPUT.value
+    assert evidence["occurred_at"] is None and evidence["source_account_id"] == account
+    before = ledger.generation_digest()
+    assert application.upload_batch(principal, batch)["status"] == "already_applied"
+    assert Ledger(Settings(root), read_only=True).generation_digest() == before
+    snapshot = tmp_path / "snapshot"
+    create_snapshot(Settings(root), snapshot, max_bytes=4 * 1024 * 1024)
+    assert verify_snapshot(snapshot)["status"] == "verified"
+    clone = tmp_path / "restored"
+    create_offline_clone(snapshot, clone)
+    assert (
+        Ledger(Settings(clone), read_only=True).get_evidence(hits[0].event_id)["raw_record"]
+        == evidence["raw_record"]
+    )
+
+
 @pytest.mark.parametrize("captured_at", ["invalid", "2026-10-30T12:00:00", True])
 def test_capture_time_cannot_be_an_unverified_native_timestamp(captured_at: object) -> None:
     observation = capture.parse_grok_bot_capture_record(json.dumps(_value()).encode())

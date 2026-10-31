@@ -59,7 +59,15 @@ def case(root: Path) -> tuple[Path, Path, Path]:
     return config, policy, private / "progress.json"
 
 
-def page(root: Path, start: int, end: int, total: int, *, internal_only: bool = False) -> Path:
+def page(
+    root: Path,
+    start: int,
+    end: int,
+    total: int,
+    *,
+    internal_only: bool = False,
+    send_arguments: dict[str, object] | None = None,
+) -> Path:
     records = [
         {
             "role": "assistant",
@@ -82,7 +90,11 @@ def page(root: Path, start: int, end: int, total: int, *, internal_only: bool = 
                             "type": "tool_use",
                             "id": f"call_{start}",
                             "name": "SendToUser",
-                            "input": {"content": f"Synthetic response {start}."},
+                            "input": (
+                                send_arguments
+                                if send_arguments is not None
+                                else {"content": f"Synthetic response {start}."}
+                            ),
                         }
                     ]
                 },
@@ -392,4 +404,60 @@ def test_changed_original_page_and_cli_errors_keep_pending_progress_private(
     assert error.value.code == 2
     captured = capsys.readouterr()
     assert "Untrusted" not in captured.err and str(source) not in captured.err
+    assert progress.read_bytes() == before
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        {"type": "attachment", "url": "file:///workspace/results/synthetic.md"},
+        {
+            "type": "widget",
+            "widget": {
+                "prompt": "Synthetic question",
+                "steps": [
+                    {"prompt": "Synthetic choice", "options": [{"label": "Yes", "value": "yes"}]}
+                ],
+            },
+        },
+    ],
+)
+def test_structured_requests_use_the_same_encrypted_acknowledged_page_progress(
+    tmp_path: Path, arguments: dict[str, object]
+) -> None:
+    from cross_assistant_memory.uploads import parse_upload_batch
+
+    config, policy, progress = case(tmp_path)
+    original = page(tmp_path, 8, 11, 12, send_arguments=arguments)
+    result = backfill.queue_grok_bot_backfill_page(config, policy, progress, original, bot_id=BOT)
+    assert result["pending_replies"] == 1 and result["pending_user_texts"] == 1
+    queue = CollectorQueue.open(load_collector_config(config).queue)
+    items = queue.due_uploads()
+    assert {parse_upload_batch(item.body).parsed.parser_version for item in items} == {
+        "0.1.0",
+        "0.2.0",
+    }
+    assert all(
+        parse_upload_batch(item.body).parsed.records[0].raw_record
+        not in queue.database_path.read_bytes()
+        for item in items
+    )
+    assert (
+        backfill.next_grok_bot_backfill_page(config, policy, progress, bot_id=BOT)["action"]
+        == "flush"
+    )
+    acknowledge(config)
+    assert (
+        backfill.next_grok_bot_backfill_page(config, policy, progress, bot_id=BOT)["request"][
+            "before"
+        ]
+        == 8
+    )
+    before = progress.read_bytes()
+    assert (
+        backfill.queue_grok_bot_backfill_page(config, policy, progress, original, bot_id=BOT)[
+            "status"
+        ]
+        == "already_traversed"
+    )
     assert progress.read_bytes() == before

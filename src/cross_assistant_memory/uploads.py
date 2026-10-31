@@ -30,6 +30,9 @@ from cross_assistant_memory.grok_bot_capture import (
     SOURCE_LABEL as GROK_BOT_SOURCE_LABEL,
 )
 from cross_assistant_memory.grok_bot_capture import (
+    STRUCTURED_PARSER_VERSION as GROK_BOT_STRUCTURED_PARSER_VERSION,
+)
+from cross_assistant_memory.grok_bot_capture import (
     parse_grok_bot_capture,
 )
 from cross_assistant_memory.models import (
@@ -187,6 +190,8 @@ def accepted_native_parsers(source_system: SourceSystem) -> tuple[tuple[str, str
         )
     if source_system is SourceSystem.CLAUDE_CODE:
         return (current, (CLAUDE_PARSER_NAME, "0.4.1"), (CLAUDE_PARSER_NAME, "0.4.0"))
+    if source_system is SourceSystem.GROK_BOT:
+        return (current, (GROK_BOT_PARSER_NAME, GROK_BOT_STRUCTURED_PARSER_VERSION))
     return (current,)
 
 
@@ -719,7 +724,7 @@ def _reparse_record(
             for item in records
         )
     elif source_system is SourceSystem.GROK_BOT:
-        observed = parse_grok_bot_capture(raw, path)
+        observed = parse_grok_bot_capture(raw, path, parser_version=parser_version)
         parsed_conversation_id = observed.conversation_id
         records = tuple(
             replace(item, record_ordinal=ordinal, byte_start=byte_start, byte_end=byte_end)

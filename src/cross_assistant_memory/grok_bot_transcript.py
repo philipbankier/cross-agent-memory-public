@@ -10,6 +10,7 @@ from typing import Literal, NoReturn, cast
 from uuid import UUID
 
 from cross_assistant_memory.admission import classify_record
+from cross_assistant_memory.grok_bot_outward import canonical_outward_request
 
 MAX_PAGE_BYTES = 1024 * 1024
 MAX_PAGE_RECORDS = 200
@@ -68,6 +69,7 @@ class ReplyRequest:
     end_turn: bool | None = None
     delivery: Literal["requested_not_verified"] = "requested_not_verified"
     conversation_id: None = None
+    kind: Literal["reply_request", "question_request", "attachment_reference"] = "reply_request"
 
 
 @dataclass(frozen=True)
@@ -108,6 +110,7 @@ class TranscriptProjection:
                         "end_turn": reply.end_turn,
                         "delivery": reply.delivery,
                         "conversation_id": reply.conversation_id,
+                        **({"kind": reply.kind} if reply.kind != "reply_request" else {}),
                     }
                     for reply in self.replies
                 ],
@@ -134,7 +137,7 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
     if canonical_id != expected_bot_id:
         raise ValueError("Grok Bot projection target identifier is unsupported")
     replies: list[ReplyRequest] = []
-    seen: dict[str, tuple[str, bool | None]] = {}
+    seen: dict[str, tuple[str, str, bool | None]] = {}
     excluded = 0
     for index, item in enumerate(records):
         if item["role"] != "assistant":
@@ -145,12 +148,16 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
             if block["type"] != "tool_use" or block.get("name") != "SendToUser":
                 continue
             arguments = cast(dict[str, object], block["input"])
-            if arguments.keys() not in ({"content"}, {"content", "end_turn"}):
-                raise ValueError("Grok Bot reply request fields are unsupported")
-            end_turn = arguments.get("end_turn")
-            if "end_turn" in arguments and type(end_turn) is not bool:
-                raise ValueError("Grok Bot reply request turn marker is unsupported")
-            content = arguments["content"]
+            kind: Literal["reply_request", "question_request", "attachment_reference"]
+            if arguments.keys() in ({"content"}, {"content", "end_turn"}):
+                kind = "reply_request"
+                end_turn = arguments.get("end_turn")
+                if "end_turn" in arguments and type(end_turn) is not bool:
+                    raise ValueError("Grok Bot reply request turn marker is unsupported")
+                content = arguments["content"]
+            else:
+                kind, content = canonical_outward_request(arguments)
+                end_turn = None
             call_id = cast(str, block["id"])
             if (
                 not isinstance(content, str)
@@ -158,7 +165,7 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
                 or re.fullmatch(r"[A-Za-z0-9_:-]{1,256}", call_id) is None
             ):
                 raise ValueError("Grok Bot reply request fields are unsupported")
-            identity = (content, cast(bool | None, end_turn))
+            identity = (kind, content, cast(bool | None, end_turn))
             if call_id in seen and seen[call_id] != identity:
                 raise ValueError("Grok Bot reply request has a duplicate tool call id")
             if call_id in seen:
@@ -172,7 +179,9 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
                 excluded += 1
                 continue
             replies.append(
-                ReplyRequest(index, content_index, call_id, content, cast(bool | None, end_turn))
+                ReplyRequest(
+                    index, content_index, call_id, content, cast(bool | None, end_turn), kind=kind
+                )
             )
     return TranscriptProjection(
         expected_bot_id,

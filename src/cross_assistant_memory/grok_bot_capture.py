@@ -10,6 +10,10 @@ from typing import TYPE_CHECKING, Literal, NoReturn, cast
 from uuid import UUID
 
 from cross_assistant_memory.admission import classify_record
+from cross_assistant_memory.grok_bot_outward import (
+    StructuredRequestKind,
+    canonical_outward_request,
+)
 from cross_assistant_memory.models import (
     Authority,
     CollectorProvenance,
@@ -28,6 +32,7 @@ if TYPE_CHECKING:
 
 PARSER_NAME = "grok-bot-native-observation"
 PARSER_VERSION = "0.1.0"
+STRUCTURED_PARSER_VERSION = "0.2.0"
 CAPTURE_CAPABILITY = "filtered-native-transcript-observation"
 SOURCE_LABEL = "grok_bot_personal_app_observation"
 ADAPTER_NAME = "cross-memory-grok-bot-collector"
@@ -99,9 +104,11 @@ class CapturePageResult:
     source_bytes: int
     source_sha256: str
     before: int | None
-    coverage: Literal["user_text_and_reply_requests"] = "user_text_and_reply_requests"
+    coverage: Literal["user_text_and_outward_requests"] = "user_text_and_outward_requests"
     pending_user_texts: int = 0
     excluded_user_texts: int = 0
+    question_requests: int = 0
+    attachment_references: int = 0
 
 
 def capture_transcript_page(
@@ -146,6 +153,10 @@ def capture_transcript_page(
         projection.inspection.before,
         pending_user_texts=pending_users,
         excluded_user_texts=excluded_users,
+        question_requests=sum(item.kind == "question_request" for item in projection.replies),
+        attachment_references=sum(
+            item.kind == "attachment_reference" for item in projection.replies
+        ),
     )
 
 
@@ -165,8 +176,14 @@ def transcript_page_uploads(
     bodies = tuple(
         (
             build_grok_bot_capture_upload(
-                GrokBotReplyObservation(
-                    bot_id, reply.native_tool_call_id, reply.content_text, reply.end_turn
+                (
+                    GrokBotReplyObservation(
+                        bot_id, reply.native_tool_call_id, reply.content_text, reply.end_turn
+                    )
+                    if reply.kind == "reply_request"
+                    else GrokBotStructuredRequestObservation(
+                        bot_id, reply.native_tool_call_id, reply.content_text, kind=reply.kind
+                    )
                 ),
                 source_account_id=scope.source_account_id,
             ),
@@ -369,9 +386,62 @@ class GrokBotUserTextObservation:
         ).encode("utf-8")
 
 
+@dataclass(frozen=True)
+class GrokBotStructuredRequestObservation:
+    bot_id: str
+    native_tool_call_id: str
+    content_text: str = field(repr=False)
+    kind: StructuredRequestKind
+    format_version: Literal[2] = 2
+    surface: Literal["operator_enrolled_personal_app_chat"] = "operator_enrolled_personal_app_chat"
+    end_turn: None = None
+    delivery: Literal["requested_not_verified"] = "requested_not_verified"
+    native_conversation_id: None = None
+    native_author_id: None = None
+    native_occurred_at: None = None
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.format_version) is not int
+            or self.format_version != 2
+            or self.end_turn is not None
+        ):
+            raise ValueError("Grok Bot structured request version or turn marker is unsupported")
+        # Reuse the existing scope and privacy checks without claiming a native text reply.
+        GrokBotReplyObservation(
+            self.bot_id,
+            self.native_tool_call_id,
+            self.content_text,
+            None,
+            surface=self.surface,
+            delivery=self.delivery,
+            native_conversation_id=self.native_conversation_id,
+            native_author_id=self.native_author_id,
+            native_occurred_at=self.native_occurred_at,
+        )
+        try:
+            value: object = json.loads(
+                self.content_text, object_pairs_hook=_unique_object, parse_constant=_reject_constant
+            )
+            kind, content = canonical_outward_request(value)
+        except (ValueError, RecursionError, UnicodeError):
+            raise ValueError("Grok Bot structured request is invalid") from None
+        if kind != self.kind or content != self.content_text:
+            raise ValueError("Grok Bot structured request kind or representation is invalid")
+
+    @property
+    def conversation_id(self) -> str:
+        return f"grok-bot-app:{self.bot_id}"
+
+    def canonical_bytes(self) -> bytes:
+        return json.dumps(
+            asdict(self), ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+
+
 def parse_grok_bot_capture_record(
     raw: bytes,
-) -> GrokBotReplyObservation | GrokBotUserTextObservation:
+) -> GrokBotReplyObservation | GrokBotUserTextObservation | GrokBotStructuredRequestObservation:
     if type(raw) is not bytes or not 0 < len(raw) <= MAX_CAPTURE_BYTES:
         raise ValueError("Grok Bot capture byte envelope is invalid")
     try:
@@ -381,6 +451,20 @@ def parse_grok_bot_capture_record(
         if not isinstance(loaded, dict) or loaded.keys() != _FIELDS:
             raise ValueError("Grok Bot capture fields are unsupported")
         value = cast(dict[str, object], loaded)
+        if value["kind"] in ("question_request", "attachment_reference"):
+            return GrokBotStructuredRequestObservation(
+                bot_id=cast(str, value["bot_id"]),
+                native_tool_call_id=cast(str, value["native_tool_call_id"]),
+                content_text=cast(str, value["content_text"]),
+                kind=value["kind"],
+                format_version=cast(Literal[2], value["format_version"]),
+                surface=cast(Literal["operator_enrolled_personal_app_chat"], value["surface"]),
+                end_turn=cast(None, value["end_turn"]),
+                delivery=cast(Literal["requested_not_verified"], value["delivery"]),
+                native_conversation_id=cast(None, value["native_conversation_id"]),
+                native_author_id=cast(None, value["native_author_id"]),
+                native_occurred_at=cast(None, value["native_occurred_at"]),
+            )
         if value["kind"] == "user_role_text":
             return GrokBotUserTextObservation(
                 bot_id=cast(str, value["bot_id"]),
@@ -412,16 +496,25 @@ def parse_grok_bot_capture_record(
         raise ValueError("Grok Bot capture record is invalid or unsupported") from None
 
 
-def parse_grok_bot_capture(raw: bytes, path: Path) -> ParseResult:
+def parse_grok_bot_capture(
+    raw: bytes, path: Path, *, parser_version: str | None = None
+) -> ParseResult:
     observation = parse_grok_bot_capture_record(raw)
-    is_reply = isinstance(observation, GrokBotReplyObservation)
+    is_reply = not isinstance(observation, GrokBotUserTextObservation)
+    version = (
+        STRUCTURED_PARSER_VERSION
+        if isinstance(observation, GrokBotStructuredRequestObservation)
+        else PARSER_VERSION
+    )
+    if parser_version is not None and parser_version != version:
+        raise ValueError("Grok Bot observation does not match its pinned parser version")
     digest = hashlib.sha256(raw).hexdigest()
     record = ParsedRecord(
         raw_record=raw,
         record_ordinal=0,
         byte_start=0,
         byte_end=len(raw),
-        event_type="native_reply_request" if is_reply else "native_user_role_text",
+        event_type=f"native_{observation.kind}" if is_reply else "native_user_role_text",
         actor_kind="assistant" if is_reply else "source",
         assistant="grok_bot",
         authority=Authority.ASSISTANT_OUTPUT if is_reply else Authority.TOOL_OBSERVATION,
@@ -435,7 +528,7 @@ def parse_grok_bot_capture(raw: bytes, path: Path) -> ParseResult:
     return ParseResult(
         source_system=SourceSystem.GROK_BOT,
         parser_name=PARSER_NAME,
-        parser_version=PARSER_VERSION,
+        parser_version=version,
         path=path,
         file_digest=digest,
         file_size=len(raw),
@@ -465,7 +558,9 @@ def grok_bot_observation_path(digest: str) -> Path:
 
 
 def build_grok_bot_capture_upload(
-    observation: GrokBotReplyObservation | GrokBotUserTextObservation,
+    observation: GrokBotReplyObservation
+    | GrokBotUserTextObservation
+    | GrokBotStructuredRequestObservation,
     *,
     source_account_id: str,
     source_client_version: str = "unknown",
@@ -473,7 +568,11 @@ def build_grok_bot_capture_upload(
 ) -> bytes:
     from cross_assistant_memory.uploads import build_upload_batch
 
-    if type(observation) not in {GrokBotReplyObservation, GrokBotUserTextObservation}:
+    if type(observation) not in {
+        GrokBotReplyObservation,
+        GrokBotUserTextObservation,
+        GrokBotStructuredRequestObservation,
+    }:
         raise ValueError("Grok Bot capture observation is required")
     if captured_at is not None:
         try:

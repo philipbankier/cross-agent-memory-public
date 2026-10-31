@@ -112,11 +112,15 @@ def test_capture_cli_queues_without_network_and_status_is_read_only(
     assert result["status"] == "queued_not_admitted"
     assert result["pending_replies"] == 1
     assert result["pending_user_texts"] == 1
-    assert "outward" not in json.dumps(result)
+    assert "outward" not in json.dumps(
+        {key: value for key, value in result.items() if key != "coverage"}
+    )
     queue = CollectorQueue.open(load_collector_config(config).queue)
     before = hashlib.sha256(queue.database_path.read_bytes()).hexdigest()
     status = grok_bot_capture_status(config, policy)
-    assert status["coverage"] == "user_text_and_reply_requests"
+    assert status["coverage"] == "user_text_and_outward_requests"
+    assert status["attachment_contents_captured"] is False
+    assert status["question_answers_attested"] is False
     assert status["native_conversation_identity_verified"] is False
     assert status["freshness_guaranteed"] is False
     assert cast(dict[str, object], status["queue"])["queued_items"] == 2

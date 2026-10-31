@@ -5,11 +5,31 @@ source collection are separate permissions. An OAuth memory reader cannot upload
 Do not point an older six-source node at these uploads or change a working fleet to test them.
 
 The current adapter retains eligible outward `SendToUser` requests and verbatim user-role text
-from a target-bound native `ReadTranscript` page. It does not retain reasoning or other tool
-traffic. User-role text is a source observation, not attested human authorship: embedded timestamp,
+from a target-bound native `ReadTranscript` page. Outward requests include text replies, the
+qualified question widget, and attachment references. It does not retain reasoning or unrelated
+tool traffic. User-role text is a source observation, not attested human authorship: embedded timestamp,
 turn and machine tags are not parsed into authoritative fields. Sending a reply is not proof of delivery.
 The internal `grok-bot-app:<Bot ID>` scope
 is not a provider conversation ID. Author, native conversation and occurrence time stay unknown.
+
+Text and user-role observations retain format 1 and parser `0.1.0`, including their original
+hashes and replay identities. Structured requests use format 2 and parser `0.2.0`. A compatible
+node must accept both before the collector emits structured requests. Declaring a structured
+record as the old parser, or a text record as the new parser, refuses.
+
+The observed question widget has `prompt` and `steps`; each step has `prompt`, `options`, and
+optional boolean `allowCustom`. Options contain string `label` and `value`. Preserve the exact
+structured request as canonical JSON, not as an answered question or an approval. Unknown fields,
+types and widgets refuse. The 32-step and 64-option bounds are CAM resource limits, not claims
+about provider limits. Ordinary privacy and byte limits still apply before retention.
+
+The qualified attachment send has `type=attachment` and one `file:///workspace/...` URL. Retain
+that locator as an attachment reference only: do not open it or imply its bytes, delivery or
+original version are verified. Hosts, query/fragment credentials, path traversal and unqualified
+URL schemes refuse. A reference does not authorize reading an arbitrary file. Binary retention,
+artifact contents/versions and other provider attachment layouts require their own acquisition
+and privacy qualification; do not silently omit them and call history complete. Status reports
+`attachment_contents_captured=false` and `question_answers_attested=false`.
 
 ## Enrolled Collection
 
