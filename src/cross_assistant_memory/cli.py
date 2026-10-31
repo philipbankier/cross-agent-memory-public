@@ -86,6 +86,10 @@ from cross_assistant_memory.evidence_rotation import (
     resume_rotation,
     rotation_status,
 )
+from cross_assistant_memory.grok_bot_backfill import (
+    next_grok_bot_backfill_page,
+    queue_grok_bot_backfill_page,
+)
 from cross_assistant_memory.grok_bot_collector import (
     flush_grok_bot_capture,
     grok_bot_capture_status,
@@ -300,7 +304,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     collector_status_parser.add_argument("--config", type=Path, required=True)
 
-    for operation in ("page", "flush", "status"):
+    for operation in ("page", "flush", "status", "next"):
         bot_capture = subparsers.add_parser(
             f"grok-bot-capture-{operation}", help=f"{operation} the opted-in Grok Bot capture queue"
         )
@@ -309,6 +313,11 @@ def build_parser() -> argparse.ArgumentParser:
         if operation == "page":
             bot_capture.add_argument("--transcript", type=Path, required=True)
             bot_capture.add_argument("--bot-id", required=True)
+            bot_capture.add_argument("--progress", type=Path)
+        elif operation == "next":
+            bot_capture.add_argument("--bot-id", required=True)
+            bot_capture.add_argument("--progress", type=Path, required=True)
+            bot_capture.add_argument("--limit", type=int, default=20, choices=range(1, 201))
         elif operation == "flush":
             bot_capture.add_argument("--limit", type=int, default=4, choices=range(1, 5))
 
@@ -1977,11 +1986,27 @@ def _dispatch(args: argparse.Namespace, settings: Settings) -> dict[str, Any] | 
     if command == "collector-status":
         return collector_status(cast_path(args.config))
     if command == "grok-bot-capture-page":
+        if args.progress is not None:
+            return queue_grok_bot_backfill_page(
+                cast_path(args.config),
+                cast_path(args.policy),
+                cast_path(args.progress),
+                cast_path(args.transcript),
+                bot_id=str(args.bot_id),
+            )
         return queue_grok_bot_page(
             cast_path(args.config),
             cast_path(args.policy),
             cast_path(args.transcript),
             bot_id=str(args.bot_id),
+        )
+    if command == "grok-bot-capture-next":
+        return next_grok_bot_backfill_page(
+            cast_path(args.config),
+            cast_path(args.policy),
+            cast_path(args.progress),
+            bot_id=str(args.bot_id),
+            limit=int(args.limit),
         )
     if command == "grok-bot-capture-flush":
         return flush_grok_bot_capture(

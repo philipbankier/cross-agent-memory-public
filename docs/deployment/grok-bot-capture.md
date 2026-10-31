@@ -77,6 +77,58 @@ Queue schema 7 widens the source checks, preserving ciphertext, cursor state and
 when explicitly initialized from schemas 3 through 6. Older collectors cannot open schema 7;
 an old wrapper is not a queue rollback. This change does not migrate the ledger schema.
 
+## Older History Progress
+
+Keep ordinary head refresh separate from older-history traversal. A recent page or a positive
+overlap count is not proof of complete history. Native header positions can include gaps; do not
+convert their spans into message counts or infer individual message positions from page overlap.
+
+Use one private progress file per enrolled Bot, with its parent owned by the current user and
+mode `0700`. The file is `0400`, bound to the enrolled source/Bot, collector and queue/key. It
+stores only pagination metadata, observation digests and the original provider file's path, not
+transcript text. It is not another database or scheduler.
+
+```sh
+script/cross-memory grok-bot-capture-next --config /private/collector.json \
+  --policy /private/grok-bot-policy.json --bot-id <enrolled-UUID> \
+  --progress /private/bot-progress.json --limit 20
+```
+
+`read_page` returns the exact native `in`, `limit` and `before` request. On first use it requests
+a head page, without creating progress. Acquire the original native output and submit it with
+the progress file:
+
+```sh
+script/cross-memory grok-bot-capture-page --config /private/collector.json \
+  --policy /private/grok-bot-policy.json --bot-id <enrolled-UUID> \
+  --progress /private/bot-progress.json --transcript /provider-owned/original-page.txt
+```
+
+Before any observation is queued, the command durably records the complete pending-page intent.
+It still uses the same privacy filter, ciphertext queue and authenticated upload protocol. Flush
+with the existing command, then call `grok-bot-capture-next` again. Its actions are:
+
+- `flush`: retained uploads remain; honor normal backoff and the existing four-item flush bound.
+- `replay_page`: the queue has no pending uploads but acknowledgement is missing. Replay only the
+  returned original file/hash, including after expiry or a partial enqueue interruption.
+- `attention`: a blocked upload or schema hold needs diagnosis; never skip it or force a cursor.
+- `read_page`: all expected observations have acknowledged cursors. Only then does older-page
+  progress move to the actual native footer token.
+- `native_pagination_exhausted`: the validated native page chain reached its beginning. This does
+  not attest a complete conversation, unexposed messages, stable revisions or native memories.
+
+The next older page must end immediately before the requested native boundary. A skipped page,
+changed pending source, wrong Bot/account/queue/key or unsafe progress file refuses. Replaying the
+last exact traversed page is a no-op. An empty queue alone never advances progress: expiry is not
+acknowledgement. Internal-only or excluded-only pages may record validated traversal without
+claiming any node ingestion. Normal head capture without `--progress` cannot reset this frontier.
+
+Retain original provider page files until their page intent is acknowledged. A process restart can
+flush queued ciphertext first, then replay a partially queued original. If the original is lost
+and some observations were never queued, report that source gap; do not reconstruct source text
+with a model or repair SQLite. Keep the queue, progress file and separate queue key for this
+collector's recovery. They are distinct from CAM's admitted-evidence snapshots.
+
 CAM snapshots restore admitted evidence and configuration, not Grok's cloud computer, its
 native learned memories or connector logins. Retain the queue and its separately protected key
 for unsent records. Never reconstruct an acknowledgement or skip a failed page to catch up.
@@ -96,6 +148,12 @@ compatible readers and actual admission/recovery checks pass.
 - Real capture, reconnect, replay, revocation and restore through the approved transport.
 - The approved six-hour native routine, created only after actual admission/recovery acceptance.
 - Panel/setup integration and clean-user qualification before calling the feature supported.
+
+The tested personal runtime exposes memory through ranked `RecallMemory`, including the calling
+Bot's memory and shared user memory, not a verified exact per-Bot snapshot with revisions. A
+Bot-named cache folder or an empty local transcript table is not that snapshot. Do not read
+other Bots or shared-memory contents merely because the computer is account-shared. Keep this
+limitation separate from the qualified conversation-observation path.
 
 Memory search is not a complete memory snapshot. A routine read is not its execution history.
 An artifact link or current text is not its version history. Keep these distinctions visible

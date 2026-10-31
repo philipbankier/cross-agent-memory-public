@@ -53,7 +53,7 @@ def load_grok_bot_policy(path: Path) -> GrokBotCollectorPolicy:
     )
 
 
-def _configuration(
+def load_grok_bot_configuration(
     config_path: Path, policy_path: Path
 ) -> tuple[CollectorConfig, GrokBotCollectorPolicy]:
     config = load_collector_config(config_path)
@@ -63,7 +63,7 @@ def _configuration(
 
 
 def grok_bot_capture_status(config_path: Path, policy_path: Path) -> dict[str, object]:
-    config, policy = _configuration(config_path, policy_path)
+    config, policy = load_grok_bot_configuration(config_path, policy_path)
     # Status must not create, migrate, expire or flush a queue.
     queue = CollectorQueue.open(config.queue)
     return {
@@ -82,9 +82,17 @@ def grok_bot_capture_status(config_path: Path, policy_path: Path) -> dict[str, o
 def queue_grok_bot_page(
     config_path: Path, policy_path: Path, transcript_path: Path, *, bot_id: str
 ) -> dict[str, object]:
-    config, policy = _configuration(config_path, policy_path)
+    config, policy = load_grok_bot_configuration(config_path, policy_path)
     if not policy.enabled or not policy.scope.allows(bot_id):
         raise PermissionError("Grok Bot capture is disabled or its target is not enrolled")
+    data = read_transcript_page(transcript_path)
+    with exclusive_collector_sync(config.queue):
+        queue = CollectorQueue.initialize(config.queue)
+        result = capture_transcript_page(queue, data, bot_id=bot_id, scope=policy.scope)
+    return {"text_free": True, "status": "queued_not_admitted", **asdict(result)}
+
+
+def read_transcript_page(transcript_path: Path) -> bytes:
     descriptor, _ = open_regular_file_no_symlinks(transcript_path, "native transcript page")
     try:
         before = os.fstat(descriptor)
@@ -102,10 +110,7 @@ def queue_grok_bot_page(
             raise RuntimeError("Grok Bot transcript changed during its bounded read")
     finally:
         os.close(descriptor)
-    with exclusive_collector_sync(config.queue):
-        queue = CollectorQueue.initialize(config.queue)
-        result = capture_transcript_page(queue, data, bot_id=bot_id, scope=policy.scope)
-    return {"text_free": True, "status": "queued_not_admitted", **asdict(result)}
+    return data
 
 
 def flush_grok_bot_capture(
@@ -113,7 +118,7 @@ def flush_grok_bot_capture(
 ) -> dict[str, object]:
     if type(limit) is not int or not 1 <= limit <= 4:
         raise ValueError("Grok Bot capture flush limit must be between one and four")
-    config, policy = _configuration(config_path, policy_path)
+    config, policy = load_grok_bot_configuration(config_path, policy_path)
     if not policy.enabled:
         raise PermissionError("Grok Bot capture is disabled")
     with exclusive_collector_sync(config.queue):

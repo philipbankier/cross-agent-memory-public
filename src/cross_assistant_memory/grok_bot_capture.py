@@ -24,6 +24,7 @@ if TYPE_CHECKING:
     from cross_assistant_memory.collector import CollectorNodeConfig
     from cross_assistant_memory.collector_queue import CollectorQueue
     from cross_assistant_memory.collector_runtime import FlushResult, UploadTransport
+    from cross_assistant_memory.grok_bot_transcript import TranscriptProjection
 
 PARSER_NAME = "grok-bot-native-observation"
 PARSER_VERSION = "0.1.0"
@@ -112,11 +113,49 @@ def capture_transcript_page(
     now_epoch: int | None = None,
 ) -> CapturePageResult:
     from cross_assistant_memory.collector_queue import source_key_for
+    from cross_assistant_memory.uploads import parse_upload_batch
+
+    projection, excluded_users, bodies = transcript_page_uploads(data, bot_id=bot_id, scope=scope)
+    pending = pending_users = acknowledged = 0
+    for body, is_reply in bodies:
+        batch = parse_upload_batch(body)
+        source_key = source_key_for(
+            SourceSystem.GROK_BOT, scope.source_account_id, batch.source_path_hash
+        )
+        cursor = queue.cursor(source_key)
+        if cursor is not None and (
+            cursor.conversation_id == batch.parsed.conversation_id
+            and cursor.source_kind is batch.parsed.source_kind
+            and cursor.next_record_ordinal == batch.parsed.segment_end_ordinal_exclusive
+            and cursor.next_byte_offset == batch.parsed.segment_end_byte
+            and cursor.prefix_digest == batch.parsed.end_prefix_digest
+        ):
+            acknowledged += 1
+            continue
+        queue.enqueue_upload(body, now_epoch=now_epoch)
+        if is_reply:
+            pending += 1
+        else:
+            pending_users += 1
+    return CapturePageResult(
+        pending,
+        acknowledged,
+        projection.excluded_replies,
+        projection.source_bytes,
+        projection.source_sha256,
+        projection.inspection.before,
+        pending_user_texts=pending_users,
+        excluded_user_texts=excluded_users,
+    )
+
+
+def transcript_page_uploads(
+    data: bytes, *, bot_id: str, scope: GrokBotCaptureScope
+) -> tuple[TranscriptProjection, int, tuple[tuple[bytes, bool], ...]]:
     from cross_assistant_memory.grok_bot_transcript import (
         project_transcript_page,
         project_user_texts,
     )
-    from cross_assistant_memory.uploads import parse_upload_batch
 
     if type(scope) is not GrokBotCaptureScope or not scope.allows(bot_id):
         raise PermissionError("Grok Bot target is not enrolled for capture")
@@ -143,37 +182,7 @@ def capture_transcript_page(
         )
         for text in user_texts
     )
-    pending = pending_users = acknowledged = 0
-    for body, is_reply in bodies:
-        batch = parse_upload_batch(body)
-        source_key = source_key_for(
-            SourceSystem.GROK_BOT, scope.source_account_id, batch.source_path_hash
-        )
-        cursor = queue.cursor(source_key)
-        if cursor is not None and (
-            cursor.conversation_id == batch.parsed.conversation_id
-            and cursor.source_kind is batch.parsed.source_kind
-            and cursor.next_record_ordinal == batch.parsed.segment_end_ordinal_exclusive
-            and cursor.next_byte_offset == batch.parsed.segment_end_byte
-            and cursor.prefix_digest == batch.parsed.end_prefix_digest
-        ):
-            acknowledged += 1
-            continue
-        queue.enqueue_upload(body, now_epoch=now_epoch)
-        if is_reply:
-            pending += 1
-        else:
-            pending_users += 1
-    return CapturePageResult(
-        pending,
-        acknowledged,
-        projection.excluded_replies,
-        len(data),
-        projection.source_sha256,
-        projection.inspection.before,
-        pending_user_texts=pending_users,
-        excluded_user_texts=excluded_users,
-    )
+    return projection, excluded_users, bodies
 
 
 def flush_queued_grok_bot_capture(
@@ -451,6 +460,10 @@ def parse_grok_bot_capture(raw: bytes, path: Path) -> ParseResult:
     )
 
 
+def grok_bot_observation_path(digest: str) -> Path:
+    return Path(f"/grok-bot-observations/{digest}.json")
+
+
 def build_grok_bot_capture_upload(
     observation: GrokBotReplyObservation | GrokBotUserTextObservation,
     *,
@@ -474,7 +487,7 @@ def build_grok_bot_capture_upload(
     raw = observation.canonical_bytes()
     digest = hashlib.sha256(raw).hexdigest()
     parsed = replace(
-        parse_grok_bot_capture(raw, Path(f"/grok-bot-observations/{digest}.json")),
+        parse_grok_bot_capture(raw, grok_bot_observation_path(digest)),
         captured_at=captured_at,
     )
     return build_upload_batch(
