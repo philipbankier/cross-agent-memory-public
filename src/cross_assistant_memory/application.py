@@ -349,7 +349,7 @@ def _source_operations_views(
             else:
                 sync_state = "not_configured"
                 status_source = "node_observation"
-        elif source_system in NATIVE_SOURCE_SYSTEMS:
+        elif source_system in NATIVE_SOURCE_SYSTEMS or source_system is SourceSystem.GROK_BOT:
             if cast(int, source["upload_batches"]):
                 sync_state = "upload_observed"
                 status_source = "central_upload_receipt"

@@ -11,6 +11,27 @@ from pathlib import Path
 from typing import cast
 
 from cross_assistant_memory.admission import classify_record, is_admission_exclusion_reason
+from cross_assistant_memory.grok_bot_capture import (
+    ADAPTER_NAME as GROK_BOT_ADAPTER_NAME,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    ADAPTER_VERSION as GROK_BOT_ADAPTER_VERSION,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    CAPTURE_CAPABILITY as GROK_BOT_CAPTURE_CAPABILITY,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    PARSER_NAME as GROK_BOT_PARSER_NAME,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    PARSER_VERSION as GROK_BOT_PARSER_VERSION,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    SOURCE_LABEL as GROK_BOT_SOURCE_LABEL,
+)
+from cross_assistant_memory.grok_bot_capture import (
+    parse_grok_bot_capture,
+)
 from cross_assistant_memory.models import (
     CollectorProvenance,
     ExclusionReceipt,
@@ -66,8 +87,15 @@ SUPPORTED_NATIVE_PARSERS = {
     SourceSystem.CODEX: (CODEX_PARSER_NAME, CODEX_PARSER_VERSION),
     SourceSystem.CLAUDE_CODE: (CLAUDE_PARSER_NAME, CLAUDE_PARSER_VERSION),
     SourceSystem.GROK_BUILD: (GROK_BUILD_PARSER_NAME, GROK_BUILD_PARSER_VERSION),
+    SourceSystem.GROK_BOT: (GROK_BOT_PARSER_NAME, GROK_BOT_PARSER_VERSION),
 }
 SUPPORTED_NATIVE_COLLECTORS = {
+    SourceSystem.GROK_BOT: (
+        "grok-bot",
+        GROK_BOT_CAPTURE_CAPABILITY,
+        GROK_BOT_ADAPTER_NAME,
+        GROK_BOT_ADAPTER_VERSION,
+    ),
     SourceSystem.CODEX: (
         "codex",
         "native-jsonl-history",
@@ -690,6 +718,14 @@ def _reparse_record(
             )
             for item in records
         )
+    elif source_system is SourceSystem.GROK_BOT:
+        observed = parse_grok_bot_capture(raw, path)
+        parsed_conversation_id = observed.conversation_id
+        records = tuple(
+            replace(item, record_ordinal=ordinal, byte_start=byte_start, byte_end=byte_end)
+            for item in observed.records
+        )
+        unknown, malformed = (), 0
     else:  # pragma: no cover - guarded before dispatch
         raise ValueError("upload source system is unsupported")
     if parsed_conversation_id != conversation_id:
@@ -761,6 +797,16 @@ def _parser_metadata(
         if branch_id != conversation_id:
             raise ValueError("Grok Build source branch must match its conversation")
         return None, None
+    if source_system is SourceSystem.GROK_BOT:
+        if (
+            branch_id != conversation_id
+            or parent_conversation_id is not None
+            or history_base is not None
+            or source_kind is not SourceKind.UNKNOWN
+            or source_label != GROK_BOT_SOURCE_LABEL
+        ):
+            raise ValueError("Grok Bot observation scope is invalid")
+        return None, None
     raise ValueError("upload source system is unsupported")
 
 
@@ -794,6 +840,10 @@ def _derive_source_kind(
         if source_label != "grok_build" or parent_conversation_id is not None:
             raise ValueError("Grok Build source provenance is invalid")
         return SourceKind.INTERACTIVE
+    if source_system is SourceSystem.GROK_BOT:
+        if source_label != GROK_BOT_SOURCE_LABEL or parent_conversation_id is not None:
+            raise ValueError("Grok Bot observation provenance is invalid")
+        return SourceKind.UNKNOWN
     raise ValueError("upload source system is unsupported")
 
 

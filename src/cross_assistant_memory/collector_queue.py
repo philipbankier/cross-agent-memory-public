@@ -21,7 +21,7 @@ from cross_assistant_memory.models import ParseResult, SourceCursor, SourceKind,
 from cross_assistant_memory.tink_crypto import AeadPrimitive, Keyset
 from cross_assistant_memory.uploads import UploadBatch, parse_upload_batch, reclassify_upload_batch
 
-QUEUE_SCHEMA_VERSION = 6
+QUEUE_SCHEMA_VERSION = 7
 QUEUE_PAYLOAD_FORMAT_VERSION = 3
 QUEUE_DATABASE_FILENAME = "queue.sqlite3"
 QUEUE_SYNC_LOCK_FILENAME = ".sync.lock"
@@ -180,7 +180,20 @@ CREATE TABLE initial_selections (
   start_prefix_sha256 TEXT NOT NULL CHECK (length(start_prefix_sha256) = 64)
 );
 """
-QUEUE_SCHEMA = QUEUE_SCHEMA_V5 + QUEUE_SELECTION_SCHEMA
+QUEUE_SCHEMA_V6 = QUEUE_SCHEMA_V5 + QUEUE_SELECTION_SCHEMA
+_SOURCE_SYSTEM_CHECK_V6 = "CHECK (source_system IN ('codex', 'claude_code', 'grok_build'))"
+_SOURCE_SYSTEM_CHECK_V7 = (
+    "CHECK (source_system IN ('codex', 'claude_code', 'grok_build', 'grok_bot'))"
+)
+
+
+def _queue_schema_v7() -> str:
+    if QUEUE_SCHEMA_V6.count(_SOURCE_SYSTEM_CHECK_V6) != 2:
+        raise RuntimeError("collector queue source check drifted")
+    return QUEUE_SCHEMA_V6.replace(_SOURCE_SYSTEM_CHECK_V6, _SOURCE_SYSTEM_CHECK_V7)
+
+
+QUEUE_SCHEMA = _queue_schema_v7()
 
 
 @dataclass(frozen=True)
@@ -1930,25 +1943,8 @@ class CollectorQueue:
                     if connection.in_transaction:
                         connection.rollback()
                     raise
-            elif version in {3, 4, 5}:
-                try:
-                    connection.execute("BEGIN IMMEDIATE")
-                    if _schema_signature(connection) != _expected_schema_signature(version):
-                        raise RuntimeError("collector queue database has an unknown legacy schema")
-                    integrity = connection.execute("PRAGMA integrity_check").fetchone()[0]
-                    if integrity != "ok":
-                        raise RuntimeError("collector queue database integrity check failed")
-                    if version == 3:
-                        connection.execute(QUEUE_SCAN_SCHEMA)
-                    if version < 5:
-                        for statement in QUEUE_OBSERVATION_STATEMENTS:
-                            connection.execute(statement)
-                    connection.execute(QUEUE_SELECTION_SCHEMA)
-                    connection.execute(f"PRAGMA user_version = {QUEUE_SCHEMA_VERSION}")
-                    connection.commit()
-                except (sqlite3.Error, RuntimeError):
-                    connection.rollback()
-                    raise
+            elif version in {3, 4, 5, 6}:
+                _migrate_legacy_queue(connection, version)
             elif version != QUEUE_SCHEMA_VERSION:
                 raise RuntimeError("collector queue database schema is unsupported")
         self.database_path.chmod(0o600)
@@ -1957,7 +1953,7 @@ class CollectorQueue:
     def _validate_database(self) -> None:
         with self._connect(validate_schema=False) as connection:
             version = cast(int, connection.execute("PRAGMA user_version").fetchone()[0])
-            if version not in {3, 4, 5, QUEUE_SCHEMA_VERSION}:
+            if version not in {3, 4, 5, 6, QUEUE_SCHEMA_VERSION}:
                 raise RuntimeError("collector queue database schema is unsupported")
             integrity = cast(str, connection.execute("PRAGMA integrity_check").fetchone()[0])
             if integrity != "ok":
@@ -2262,6 +2258,7 @@ def _validate_native_source(source_system: SourceSystem) -> None:
         SourceSystem.CODEX,
         SourceSystem.CLAUDE_CODE,
         SourceSystem.GROK_BUILD,
+        SourceSystem.GROK_BOT,
     }:
         raise ValueError("collector queue supports native sources only")
 
@@ -2319,16 +2316,98 @@ def _schema_signature(connection: sqlite3.Connection) -> tuple[tuple[str, str, s
     )
 
 
-@lru_cache(maxsize=4)
-def _expected_schema_signature(version: int) -> tuple[tuple[str, str, str], ...]:
+def _migrate_legacy_queue(connection: sqlite3.Connection, version: int) -> None:
+    if _schema_signature(connection) != _expected_schema_signature(version):
+        raise RuntimeError("collector queue database has an unknown legacy schema")
+    integrity = connection.execute("PRAGMA integrity_check").fetchone()[0]
+    if integrity != "ok":
+        raise RuntimeError("collector queue database integrity check failed")
+    if connection.in_transaction:
+        raise RuntimeError("collector queue migration requires autocommit")
+    try:
+        # A CHECK cannot be widened in place. Suspend foreign keys only while the
+        # referenced parent is rebuilt, then prove every child key still matches.
+        connection.execute("PRAGMA foreign_keys = OFF")
+        if connection.execute("PRAGMA foreign_keys").fetchone()[0] != 0:
+            raise RuntimeError("collector queue migration could not suspend foreign keys")
+        connection.execute("BEGIN IMMEDIATE")
+        locked_version = cast(int, connection.execute("PRAGMA user_version").fetchone()[0])
+        if locked_version != version or _schema_signature(connection) != _expected_schema_signature(
+            version
+        ):
+            raise RuntimeError("collector queue database changed before migration")
+        if version == 3:
+            connection.execute(QUEUE_SCAN_SCHEMA)
+        if version < 5:
+            for statement in QUEUE_OBSERVATION_STATEMENTS:
+                connection.execute(statement)
+        if version < 6:
+            connection.execute(QUEUE_SELECTION_SCHEMA)
+            if _schema_signature(connection) != _expected_schema_signature(6):
+                raise RuntimeError("collector queue database has an unknown legacy schema")
+        _rebuild_native_source_tables(connection)
+        if _schema_signature(connection) != _expected_schema_signature(QUEUE_SCHEMA_VERSION):
+            raise RuntimeError("collector queue database schema does not match the pinned schema")
+        if connection.execute("PRAGMA foreign_key_check").fetchall():
+            raise RuntimeError("collector queue database integrity check failed")
+        migrated = connection.execute("PRAGMA integrity_check").fetchone()[0]
+        if migrated != "ok":
+            raise RuntimeError("collector queue database integrity check failed")
+        connection.execute(f"PRAGMA user_version = {QUEUE_SCHEMA_VERSION}")
+        connection.commit()
+    except (sqlite3.Error, RuntimeError):
+        if connection.in_transaction:
+            connection.rollback()
+        raise
+    finally:
+        if connection.in_transaction:
+            connection.rollback()
+        connection.execute("PRAGMA foreign_keys = ON")
+
+
+def _rebuild_native_source_tables(connection: sqlite3.Connection) -> None:
+    create_sql = _current_source_object_sql()
+    connection.execute("CREATE TABLE queue_items__schema7 AS SELECT * FROM queue_items")
+    connection.execute("CREATE TABLE source_state__schema7 AS SELECT * FROM source_state")
+    connection.execute("DROP TABLE queue_items")
+    connection.execute("DROP TABLE source_state")
+    connection.execute(create_sql["source_state"])
+    connection.execute("INSERT INTO source_state SELECT * FROM source_state__schema7")
+    connection.execute("DROP TABLE source_state__schema7")
+    connection.execute(create_sql["queue_items"])
+    connection.execute("INSERT INTO queue_items SELECT * FROM queue_items__schema7")
+    connection.execute("DROP TABLE queue_items__schema7")
+    connection.execute(create_sql["queue_items_due"])
+    connection.execute(create_sql["queue_items_source_order"])
+
+
+@lru_cache(maxsize=1)
+def _current_source_object_sql() -> dict[str, str]:
+    names = ("queue_items", "source_state", "queue_items_due", "queue_items_source_order")
     with sqlite3.connect(":memory:") as connection:
-        connection.executescript(
-            QUEUE_SCHEMA_V3
-            if version == 3
-            else QUEUE_SCHEMA_V4
-            if version == 4
-            else QUEUE_SCHEMA_V5
-            if version == 5
-            else QUEUE_SCHEMA
-        )
+        connection.executescript(QUEUE_SCHEMA)
+        rows = connection.execute(
+            f"SELECT name, sql FROM sqlite_master WHERE name IN ({', '.join('?' * len(names))})",
+            names,
+        ).fetchall()
+    found = {cast(str, row[0]): cast(str, row[1]) for row in rows}
+    if set(found) != set(names):
+        raise RuntimeError("collector queue schema objects are incomplete")
+    return found
+
+
+@lru_cache(maxsize=8)
+def _expected_schema_signature(version: int) -> tuple[tuple[str, str, str], ...]:
+    schemas = {
+        3: QUEUE_SCHEMA_V3,
+        4: QUEUE_SCHEMA_V4,
+        5: QUEUE_SCHEMA_V5,
+        6: QUEUE_SCHEMA_V6,
+        QUEUE_SCHEMA_VERSION: QUEUE_SCHEMA,
+    }
+    schema = schemas.get(version)
+    if schema is None:
+        raise RuntimeError("collector queue database schema is unsupported")
+    with sqlite3.connect(":memory:") as connection:
+        connection.executescript(schema)
         return _schema_signature(connection)
