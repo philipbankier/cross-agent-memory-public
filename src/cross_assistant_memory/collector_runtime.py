@@ -33,6 +33,7 @@ from cross_assistant_memory.collector_queue import (
     ReplayBoundary,
     exclusive_collector_sync,
     source_key_for,
+    upload_source_key_for,
 )
 from cross_assistant_memory.collector_service import COLLECTOR_SERVICE_SCHEDULE_SECONDS
 from cross_assistant_memory.ingest import (
@@ -1073,9 +1074,7 @@ def _flush_due_uploads(
             break
         item = due[0]
         batch = parse_upload_batch(item.body)
-        source_key = source_key_for(
-            batch.parsed.source_system, batch.source_account_id, batch.source_path_hash
-        )
+        source_key = upload_source_key_for(batch)
         try:
             queue.validate_initial_cursor(source_key, (initial_selections or {}).get(source_key))
         except QueueConflictError:

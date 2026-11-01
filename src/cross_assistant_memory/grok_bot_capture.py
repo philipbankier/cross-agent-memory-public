@@ -210,6 +210,7 @@ def flush_queued_grok_bot_capture(
     transport: UploadTransport | None = None,
     limit: int = 4,
     now_epoch: int | None = None,
+    preserve_sent_artifacts: bool = False,
 ) -> FlushResult:
     from cross_assistant_memory.collector_queue import QueueFailureCode
     from cross_assistant_memory.collector_runtime import flush_capture_uploads, post_upload_batch
@@ -231,6 +232,7 @@ def flush_queued_grok_bot_capture(
             batch.parsed.source_system is not SourceSystem.GROK_BOT
             or batch.source_account_id != scope.source_account_id
             or len(batch.parsed.records) != 1
+            or (batch.native_attachments and not preserve_sent_artifacts)
         ):
             return QueueFailureCode.SOURCE_EXCLUDED
         observation = parse_grok_bot_capture_record(batch.parsed.records[0].raw_record)

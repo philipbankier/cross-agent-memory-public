@@ -93,6 +93,7 @@ from cross_assistant_memory.grok_bot_backfill import (
 from cross_assistant_memory.grok_bot_collector import (
     flush_grok_bot_capture,
     grok_bot_capture_status,
+    queue_grok_bot_artifact,
     queue_grok_bot_page,
 )
 from cross_assistant_memory.identity_setup import (
@@ -304,16 +305,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     collector_status_parser.add_argument("--config", type=Path, required=True)
 
-    for operation in ("page", "flush", "status", "next"):
+    for operation in ("page", "flush", "status", "next", "artifact"):
         bot_capture = subparsers.add_parser(
             f"grok-bot-capture-{operation}", help=f"{operation} the opted-in Grok Bot capture queue"
         )
         bot_capture.add_argument("--config", type=Path, required=True)
         bot_capture.add_argument("--policy", type=Path, required=True)
-        if operation == "page":
+        if operation in ("page", "artifact"):
             bot_capture.add_argument("--transcript", type=Path, required=True)
             bot_capture.add_argument("--bot-id", required=True)
-            bot_capture.add_argument("--progress", type=Path)
+            if operation == "page":
+                bot_capture.add_argument("--progress", type=Path)
+            else:
+                bot_capture.add_argument("--tool-call-id", required=True)
+                bot_capture.add_argument("--max-bytes", type=int, default=1024 * 1024)
         elif operation == "next":
             bot_capture.add_argument("--bot-id", required=True)
             bot_capture.add_argument("--progress", type=Path, required=True)
@@ -1985,6 +1990,15 @@ def _dispatch(args: argparse.Namespace, settings: Settings) -> dict[str, Any] | 
         return result
     if command == "collector-status":
         return collector_status(cast_path(args.config))
+    if command == "grok-bot-capture-artifact":
+        return queue_grok_bot_artifact(
+            cast_path(args.config),
+            cast_path(args.policy),
+            cast_path(args.transcript),
+            bot_id=str(args.bot_id),
+            native_tool_call_id=str(args.tool_call_id),
+            max_bytes=int(args.max_bytes),
+        )
     if command == "grok-bot-capture-page":
         if args.progress is not None:
             return queue_grok_bot_backfill_page(

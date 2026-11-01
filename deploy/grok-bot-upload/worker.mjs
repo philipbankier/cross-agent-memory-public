@@ -3,7 +3,8 @@
 /** @typedef {{fetch(request: Request): Promise<Response>}} PrivateOrigin */
 /** @typedef {{PUBLIC_ORIGIN: string, PRIVATE_ORIGIN_URL: string, SOURCE_ACCOUNT_ID: string, PRIVATE_COLLECTOR_ORIGIN: PrivateOrigin}} UploadEnvironment */
 
-const MAX_BODY_BYTES = 256 * 1024;
+const MAX_BODY_BYTES = 2 * 1024 * 1024;
+const MAX_REFERENCE_BODY_BYTES = 256 * 1024;
 const MAX_RECEIPT_BYTES = 64 * 1024;
 
 /** @param {number} status @param {string} code */
@@ -101,7 +102,7 @@ export async function handleUpload(request, env) {
       new TextDecoder("utf-8", { fatal: true }).decode(body),
     );
     if (
-      envelope?.format_version !== 2 ||
+      ![2, 3].includes(envelope?.format_version) ||
       envelope.source_system !== "grok_bot" ||
       envelope.source_account_id !== env.SOURCE_ACCOUNT_ID ||
       !/^batch:[0-9a-f]{64}$/.test(envelope.batch_id) ||
@@ -109,6 +110,16 @@ export async function handleUpload(request, env) {
       envelope.records.length !== 1
     )
       return refuse(403, "source_not_enrolled");
+    if (envelope.format_version === 2 && body.length > MAX_REFERENCE_BODY_BYTES)
+      return refuse(413, "invalid_body");
+    if (envelope.format_version === 3 && (
+      !Array.isArray(envelope.native_attachments) ||
+      envelope.native_attachments.length !== 1 ||
+      !Number.isInteger(envelope.native_attachments[0]?.byte_length) ||
+      envelope.native_attachments[0].byte_length < 0 ||
+      envelope.native_attachments[0].byte_length > 1024 * 1024 ||
+      !Array.isArray(envelope.exclusions) || envelope.exclusions.length !== 0
+    )) return refuse(403, "invalid_attachment_envelope");
     batchId = envelope.batch_id;
   } catch {
     return refuse(400, "invalid_envelope");

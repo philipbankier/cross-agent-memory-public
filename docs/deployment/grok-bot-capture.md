@@ -28,8 +28,8 @@ that locator as an attachment reference only: do not open it or imply its bytes,
 original version are verified. Hosts, query/fragment credentials, path traversal and unqualified
 URL schemes refuse. A reference does not authorize reading an arbitrary file. Binary retention,
 artifact contents/versions and other provider attachment layouts require their own acquisition
-and privacy qualification; do not silently omit them and call history complete. Status reports
-`attachment_contents_captured=false` and `question_answers_attested=false`.
+and privacy qualification; do not silently omit them and call history complete. Default policy
+status reports `attachment_contents_captured=false` and `question_answers_attested=false`.
 
 ## Sent Artifact Acquisition
 
@@ -47,10 +47,37 @@ payload bytes. A file URL does not attest the version sent, its creator, deliver
 Observed filesystem times stay separate from stable content identity: touching an unchanged
 file must not invent a new artifact version.
 
-This reader is not yet a deployed artifact-retention path. Queue admission, encrypted-object
-linkage, model delivery, deletion and recovery must be qualified together before activation.
-In particular, a file must not remain exposed or retained after its source reference is excluded
-or erased. Do not infer artifact support from the existing attachment-reference observation.
+Artifact retention is a separate opt-in. Use policy format 2 with the same enrolled source/Bots
+and `preserve_sent_artifacts: true`; policy format 1 remains reference-only. Both the collector
+and native writer must be updated first. The node requires encrypted evidence publication,
+including when the encrypted backend is a local filesystem rather than B2.
+
+```sh
+script/cross-memory grok-bot-capture-artifact --config /private/collector.json \
+  --policy /private/grok-bot-policy.json --bot-id <enrolled-UUID> \
+  --transcript /provider-owned/original-page.txt --tool-call-id <exact-send-call-ID> \
+  --max-bytes 1048576
+```
+
+This command queues one bounded current-file observation, never uploads directly. Ordinary
+flush and exact receipts apply. The format-3 upload preserves the original reference/parser and
+adds one independently hashed payload. The encrypted queue gives this child upload its own
+batch-bound receipt cursor, without rewinding or duplicating the parent transcript stream.
+Lost receipts and restarts replay the identical ciphertext. The parent event gains metadata-only
+manifests, not another searchable event or payload-reading tool. Changing bytes can retain a new
+observed content version, never overwrite or attest the originally sent version. Admission caps
+each file at 1 MiB and each parent at 32 observations; larger or unavailable files remain gaps.
+These are implementation resource bounds, not provider limits.
+
+Ledger schema 25 adds only the child-object linkage. Upgrade all readers before admission and
+preserve the prior schema-24 recovery checkpoint; older readers cannot open schema 25. Snapshots
+include links and exact objects, and parent erasure includes unshared child objects. Old collectors
+cannot decode retained format-3 uploads: retain the compatible runtime, queue and separate key
+until those receipts settle. Do not treat an old wrapper as a compatible rollback.
+
+This candidate is not yet deployed or live-qualified for artifact retention. Local tests do not
+establish real sent-file acquisition, remote publication or scheduled capture. Do not infer those
+outcomes from the existing attachment-reference observations or an enabled policy switch.
 
 ## Enrolled Collection
 

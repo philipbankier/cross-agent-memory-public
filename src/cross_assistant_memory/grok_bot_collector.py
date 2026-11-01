@@ -21,22 +21,28 @@ from cross_assistant_memory.safe_files import open_regular_file_no_symlinks
 class GrokBotCollectorPolicy:
     enabled: bool
     scope: GrokBotCaptureScope
+    preserve_sent_artifacts: bool = False
 
 
 def load_grok_bot_policy(path: Path) -> GrokBotCollectorPolicy:
     value = load_owner_only_json(path, label="Grok Bot capture policy", max_bytes=32 * 1024)
+    artifact_policy = type(value.get("format_version")) is int and value.get("format_version") == 2
     if (
         value.keys()
-        != {
-            "format_version",
-            "enabled",
-            "source_account_id",
-            "bot_ids",
-            "collector_bot_id",
-            "excluded_bot_ids",
-        }
+        != (
+            {
+                "format_version",
+                "enabled",
+                "source_account_id",
+                "bot_ids",
+                "collector_bot_id",
+                "excluded_bot_ids",
+            }
+            | ({"preserve_sent_artifacts"} if artifact_policy else set())
+        )
         or type(value["format_version"]) is not int
-        or value["format_version"] != 1
+        or value["format_version"] not in (1, 2)
+        or (artifact_policy and type(value["preserve_sent_artifacts"]) is not bool)
         or type(value["enabled"]) is not bool
         or type(value["bot_ids"]) is not list
         or type(value["excluded_bot_ids"]) is not list
@@ -50,6 +56,7 @@ def load_grok_bot_policy(path: Path) -> GrokBotCollectorPolicy:
             cast(str, value["collector_bot_id"]),
             tuple(cast(list[str], value["excluded_bot_ids"])),
         ),
+        cast(bool, value["preserve_sent_artifacts"]) if artifact_policy else False,
     )
 
 
@@ -73,7 +80,8 @@ def grok_bot_capture_status(config_path: Path, policy_path: Path) -> dict[str, o
         "enrolled_bot_count": len(policy.scope.bot_ids),
         "excluded_bot_count": len(policy.scope.excluded_bot_ids),
         "coverage": "user_text_and_outward_requests",
-        "attachment_contents_captured": False,
+        "attachment_contents_captured": None if policy.preserve_sent_artifacts else False,
+        "sent_artifact_retention_enabled": policy.preserve_sent_artifacts,
         "question_answers_attested": False,
         "native_conversation_identity_verified": False,
         "freshness_guaranteed": False,
@@ -92,6 +100,42 @@ def queue_grok_bot_page(
         queue = CollectorQueue.initialize(config.queue)
         result = capture_transcript_page(queue, data, bot_id=bot_id, scope=policy.scope)
     return {"text_free": True, "status": "queued_not_admitted", **asdict(result)}
+
+
+def queue_grok_bot_artifact(
+    config_path: Path,
+    policy_path: Path,
+    transcript_path: Path,
+    *,
+    bot_id: str,
+    native_tool_call_id: str,
+    max_bytes: int,
+) -> dict[str, object]:
+    from cross_assistant_memory.grok_bot_artifacts import (
+        capture_sent_artifact,
+        select_sent_attachment,
+    )
+
+    config, policy = load_grok_bot_configuration(config_path, policy_path)
+    if not policy.enabled or not policy.preserve_sent_artifacts or not policy.scope.allows(bot_id):
+        raise PermissionError("Grok Bot sent artifact retention is not enabled for this target")
+    references = select_sent_attachment(
+        read_transcript_page(transcript_path), bot_id=bot_id, scope=policy.scope
+    )
+    selected = [item for item in references if item.native_tool_call_id == native_tool_call_id]
+    if len(selected) != 1:
+        raise ValueError("Grok Bot sent artifact reference is missing or ambiguous")
+    with exclusive_collector_sync(config.queue):
+        queue = CollectorQueue.initialize(config.queue)
+        return {
+            "text_free": True,
+            **capture_sent_artifact(
+                queue,
+                selected[0],
+                scope=policy.scope,
+                max_bytes=max_bytes,
+            ),
+        }
 
 
 def read_transcript_page(transcript_path: Path) -> bytes:
@@ -126,7 +170,13 @@ def flush_grok_bot_capture(
     with exclusive_collector_sync(config.queue):
         queue = CollectorQueue.initialize(config.queue)
         queue.expire()
-        result = flush_queued_grok_bot_capture(queue, config.node, scope=policy.scope, limit=limit)
+        result = flush_queued_grok_bot_capture(
+            queue,
+            config.node,
+            scope=policy.scope,
+            limit=limit,
+            preserve_sent_artifacts=policy.preserve_sent_artifacts,
+        )
         pending = queue.status()
     return {
         "text_free": True,

@@ -704,6 +704,15 @@ not permitted.
   digests and provenance unchanged, and identify withheld raw evidence rather than presenting a
   filtered record as exact. Known secrets and explicit no-memory exclusions remain blocked.
   This exception does not authorize importing new uninspectable attachments.
+- A separately opted-in personal Grok Bot source MAY preserve files explicitly sent by its
+  enrolled Bot under the sent-artifact policy. Only exact qualified workspace references may
+  be opened, with bounded stable reads and no directory scans or external URL following.
+  Node admission MUST bind the bytes to the included parent reference and require encrypted
+  publication before acknowledgement. Known secrets and privacy exclusions still refuse;
+  uninspectable text MUST NOT be reclassified as opaque media. All file contents remain
+  unavailable to model-facing evidence and search under this policy. Child objects inherit
+  the parent's access, exclusion and erasure, and snapshots MUST cover their links and bytes.
+  A current workspace file MUST NOT be labeled as its attested original sent version.
 
 ## Community Adapters
 

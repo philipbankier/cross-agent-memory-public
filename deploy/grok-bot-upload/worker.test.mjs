@@ -122,6 +122,30 @@ test("bounded bodies, invalid JSON and missing credentials refuse without forwar
   }
 });
 
+test("one bounded attachment reaches the same source-bound route unchanged", async () => {
+  const { env, calls } = setup();
+  const body = JSON.stringify({ ...envelope, format_version: 3, exclusions: [],
+    native_attachments: [{byte_length: 1024 * 1024, data_base64: "A".repeat(1398104)}] });
+  assert.equal((await handleUpload(request(body), env)).status, 201);
+  assert.equal(await calls[0].text(), body);
+});
+
+test("ordinary references retain their previous body limit", async () => {
+  const { env, calls } = setup();
+  const body = JSON.stringify({ ...envelope, padding: "x".repeat(256 * 1024) });
+  assert.equal((await handleUpload(request(body), env)).status, 413);
+  assert.equal(calls.length, 0);
+});
+
+for (const attachments of [[], [{byte_length: true}], [{byte_length: -1}],
+  [{byte_length: 1024 * 1024 + 1}], [{byte_length: 1}, {byte_length: 1}]])
+  test("unbounded or ambiguous attachment envelopes never reach the node", async () => {
+    const { env, calls } = setup();
+    const body = JSON.stringify({...envelope, format_version: 3, native_attachments: attachments, exclusions: []});
+    assert.equal((await handleUpload(request(body), env)).status, 403);
+    assert.equal(calls.length, 0);
+  });
+
 test("missing configuration and unexpected private origin stay disabled", async () => {
   for (const change of [
     { SOURCE_ACCOUNT_ID: "unknown" },

@@ -45,6 +45,10 @@ from cross_assistant_memory.models import (
     SourceSystem,
     UploadReceipt,
 )
+from cross_assistant_memory.native_attachments import (
+    NativeAttachmentUpload,
+    validate_native_attachments,
+)
 from cross_assistant_memory.parsers.claude_code import (
     AUTOMATION_ENTRYPOINTS as CLAUDE_AUTOMATION_ENTRYPOINTS,
 )
@@ -129,6 +133,7 @@ class UploadBatch:
     provenance: CollectorProvenance
     parsed: ParseResult
     exclusion_receipts: tuple[ExclusionReceipt, ...]
+    native_attachments: tuple[NativeAttachmentUpload, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -396,6 +401,10 @@ def _parse_upload_batch(
         value: object = json.loads(body, object_pairs_hook=_unique_json_object)
     except (RecursionError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
         raise ValueError("upload request must be valid JSON") from error
+    if not isinstance(value, dict):
+        raise ValueError("upload request must be an object")
+    value = cast(dict[str, object], value)
+    attachment_format = value.get("format_version") == 3
     root = _exact_object(
         value,
         {
@@ -410,13 +419,14 @@ def _parse_upload_batch(
             "segment",
             "records",
             "exclusions",
-        },
+        }
+        | ({"native_attachments"} if attachment_format else set()),
         "upload request",
     )
     batch_id = _required_string(root, "batch_id")
     if BATCH_ID.fullmatch(batch_id) is None:
         raise ValueError("upload batch id is invalid")
-    if _required_int(root, "format_version") != UPLOAD_BATCH_FORMAT_VERSION:
+    if _required_int(root, "format_version") not in (UPLOAD_BATCH_FORMAT_VERSION, 3):
         raise ValueError("upload batch format version is unsupported")
     core = {key: item for key, item in root.items() if key != "batch_id"}
     request_digest = hashlib.sha256(_canonical_json(core)).hexdigest()
@@ -659,6 +669,18 @@ def _parse_upload_batch(
         observed_file_size=observed_file_size,
         schema_fingerprint=provenance.schema_fingerprint,
     )
+    attachments: tuple[NativeAttachmentUpload, ...] = ()
+    if attachment_format:
+        items = root["native_attachments"]
+        if not isinstance(items, list) or len(cast(list[object], items)) != 1 or exclusions:
+            raise ValueError("native attachment requires one included reference")
+        attachments = (NativeAttachmentUpload.from_dict(cast(list[object], items)[0]),)
+        validate_native_attachments(parsed, attachments)
+        if (
+            sum(len(item.raw_record) for item in records) + len(attachments[0].data)
+            > MAX_UPLOAD_DECODED_BYTES
+        ):
+            raise ValueError("upload decoded payload exceeds its size limit")
     return UploadBatch(
         batch_id=batch_id,
         request_digest=request_digest,
@@ -667,6 +689,7 @@ def _parse_upload_batch(
         provenance=provenance,
         parsed=parsed,
         exclusion_receipts=tuple(exclusions),
+        native_attachments=attachments,
     )
 
 

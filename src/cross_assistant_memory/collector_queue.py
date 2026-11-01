@@ -1735,11 +1735,7 @@ class CollectorQueue:
         return _QueueMetadata(
             item_id=f"queue:{uuid.uuid4().hex}",
             kind=QueueItemKind.UPLOAD_BATCH,
-            source_key=source_key_for(
-                parsed.source_system,
-                batch.source_account_id,
-                batch.source_path_hash,
-            ),
+            source_key=upload_source_key_for(batch),
             source_system=parsed.source_system,
             source_path_hash=batch.source_path_hash,
             conversation_id=parsed.conversation_id,
@@ -1977,6 +1973,16 @@ class CollectorQueue:
             yield connection
         finally:
             connection.close()
+
+
+def upload_source_key_for(batch: UploadBatch) -> str:
+    # Child blobs have independent receipts, never rewind the parent transcript cursor.
+    path_hash = (
+        hashlib.sha256(("native-attachment-upload:" + batch.batch_id).encode()).hexdigest()
+        if batch.native_attachments
+        else batch.source_path_hash
+    )
+    return source_key_for(batch.parsed.source_system, batch.source_account_id, path_hash)
 
 
 def source_key_for(

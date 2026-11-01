@@ -28,7 +28,10 @@ does not deploy until its source-account ID, public origin and private service a
 Set the collector URL to the new HTTPS origin's `/upload/batches`, with explicit `:443` in the
 collector configuration. The query gateway and its grants remain unchanged.
 
-The Worker accepts only a single-record format-2 Grok Bot upload for its configured account.
+The Worker accepts a single-record format-2 reference upload, or a format-3 upload with one
+bounded sent-artifact payload, only for its configured Grok Bot account. Format 2 retains its
+256-KiB body limit. Format 3 permits at most a 1-MiB file within a 2-MiB body; the node independently
+checks canonical bytes, digests, reference linkage, privacy and encrypted-publication policy.
 It forwards the caller's collector bearer and exact body to the configured loopback origin;
 the node validates credentials, device/account authorization, parser, hashes and record privacy.
 It has no other route and refuses cookies or browser-origin requests. Payloads, receipt reads and

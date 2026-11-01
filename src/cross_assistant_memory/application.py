@@ -1063,6 +1063,7 @@ class MemoryApplication:
             source_path_hash=batch.source_path_hash,
             provenance=batch.provenance,
             exclusion_receipts=batch.exclusion_receipts,
+            native_attachments=batch.native_attachments,
             # Yield between objects; full-ledger integrity checks can dominate publication.
             max_publication_objects=1,
         )

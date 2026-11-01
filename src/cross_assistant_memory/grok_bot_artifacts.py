@@ -48,6 +48,11 @@ class SentArtifactError(ValueError):
         super().__init__(f"Grok Bot sent artifact: {code}")
 
 
+def sent_artifact_media_type(url: str) -> str:
+    suffix = PurePosixPath(unquote(urlsplit(url).path)).suffix.casefold()
+    return _MEDIA_HINTS.get(suffix, "application/octet-stream")
+
+
 @dataclass(frozen=True)
 class SentArtifactSnapshot:
     bot_id: str
@@ -158,8 +163,10 @@ def read_sent_artifact(
     decision = classify_record(SourceSystem.GROK_BOT, "", data, max_record_bytes=max_bytes)
     if not decision.accepted:
         raise SentArtifactError("excluded:" + decision.reason)
-    media = _MEDIA_HINTS.get(relative.suffix.casefold(), "application/octet-stream")
+    media = sent_artifact_media_type(value["url"])
     inspected = classify_attachment(SourceSystem.GROK_BOT, media, data, max_record_bytes=max_bytes)
+    if (media.startswith("text/") or media == "application/json") and not inspected.accepted:
+        raise SentArtifactError("excluded:" + inspected.reason)
     text = data.decode("utf-8-sig") if inspected.accepted else None
     return SentArtifactSnapshot(
         reference.bot_id,
@@ -171,6 +178,44 @@ def read_sent_artifact(
         before.st_mtime_ns,
         before.st_ctime_ns,
     )
+
+
+def capture_sent_artifact(
+    queue: object,
+    reference: GrokBotStructuredRequestObservation,
+    *,
+    scope: GrokBotCaptureScope,
+    max_bytes: int,
+) -> dict[str, object]:
+    from cross_assistant_memory.collector_queue import CollectorQueue, upload_source_key_for
+    from cross_assistant_memory.grok_bot_capture import build_grok_bot_capture_upload
+    from cross_assistant_memory.native_attachments import (
+        MAX_NATIVE_ATTACHMENT_BYTES,
+        NativeAttachmentUpload,
+        attach_native_artifact,
+    )
+    from cross_assistant_memory.uploads import parse_upload_batch
+
+    if type(queue) is not CollectorQueue:
+        raise SentArtifactError("invalid_queue")
+    if type(max_bytes) is not int or not 0 < max_bytes <= MAX_NATIVE_ATTACHMENT_BYTES:
+        raise SentArtifactError("invalid_byte_limit")
+    snapshot = read_sent_artifact(reference, scope=scope, max_bytes=max_bytes)
+    body = attach_native_artifact(
+        build_grok_bot_capture_upload(reference, source_account_id=scope.source_account_id),
+        NativeAttachmentUpload(
+            0, snapshot.reference_sha256, snapshot.media_type_hint, snapshot.data
+        ),
+    )
+    cursor = queue.cursor(upload_source_key_for(parse_upload_batch(body)))
+    acknowledged = cursor is not None and cursor.next_record_ordinal == 1
+    if not acknowledged:
+        queue.enqueue_upload(body)
+    return {
+        "status": "already_acknowledged" if acknowledged else "queued_not_admitted",
+        **snapshot.manifest(),
+        "content_access": "metadata_only",
+    }
 
 
 def _identity(value: os.stat_result) -> tuple[int, ...]:

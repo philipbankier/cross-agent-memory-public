@@ -48,6 +48,7 @@ from cross_assistant_memory.storage import (
     validate_schema21_objects,
     validate_schema22_objects,
     validate_schema23_objects,
+    validate_schema24_objects,
 )
 
 SNAPSHOT_FORMAT_VERSION = 1
@@ -744,7 +745,7 @@ def _snapshot_database_generation(settings: Settings, *, require_checkpointed: b
             validate_current_schema_objects(connection)
             require_rotation_access(connection, settings)
             return maintenance_generation(connection)
-        if version in {20, 21, 22, 23}:
+        if version in {20, 21, 22, 23, 24}:
             if version >= 21:
                 require_rotation_access(connection, settings)
             return legacy_snapshot_generation(connection)
@@ -954,6 +955,8 @@ def _database_state(path: Path) -> dict[str, Any]:
             validate_schema22_objects(connection)
         elif schema_version == 23:
             validate_schema23_objects(connection)
+        elif schema_version == 24:
+            validate_schema24_objects(connection)
         table_names = base_table_names + (("event_corrections",) if schema_version >= 2 else ())
         if schema_version >= 3:
             table_names += ("source_streams", "source_segments", "source_cursors")
@@ -1013,6 +1016,8 @@ def _database_state(path: Path) -> dict[str, Any]:
             )
         if schema_version >= 23:
             table_names += ("web_export_import_receipts",)
+        if schema_version >= 25:
+            table_names += ("native_attachment_objects",)
         counts = {
             name: cast(int, connection.execute(f"SELECT COUNT(*) FROM {name}").fetchone()[0])
             for name in table_names

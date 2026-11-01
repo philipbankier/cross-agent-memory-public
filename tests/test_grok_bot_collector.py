@@ -14,6 +14,7 @@ from cross_assistant_memory.grok_bot_collector import (
     flush_grok_bot_capture,
     grok_bot_capture_status,
     load_grok_bot_policy,
+    queue_grok_bot_artifact,
     queue_grok_bot_page,
 )
 
@@ -132,6 +133,25 @@ def test_capture_cli_queues_without_network_and_status_is_read_only(
     assert replay["pending_replies"] == 1
     assert replay["pending_user_texts"] == 1
     assert queue.status().queued_items == 2
+
+
+def test_artifact_policy_requires_a_separate_explicit_opt_in(tmp_path: Path) -> None:
+    config, policy, page = _case(tmp_path)
+    with pytest.raises(PermissionError, match="retention is not enabled"):
+        queue_grok_bot_artifact(
+            config, policy, page, bot_id=BOT, native_tool_call_id="synthetic-call-1", max_bytes=4096
+        )
+    value = json.loads(policy.read_text())
+    value["format_version"] = 2
+    value["preserve_sent_artifacts"] = True
+    policy.chmod(0o600)
+    policy.write_text(json.dumps(value))
+    policy.chmod(0o400)
+    assert load_grok_bot_policy(policy).preserve_sent_artifacts is True
+    with pytest.raises(ValueError, match="missing or ambiguous"):
+        queue_grok_bot_artifact(
+            config, policy, page, bot_id=BOT, native_tool_call_id="synthetic-call-1", max_bytes=4096
+        )
 
 
 def test_disabled_policy_refuses_page_and_network_without_changing_queue(tmp_path: Path) -> None:
