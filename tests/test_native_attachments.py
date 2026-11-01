@@ -434,6 +434,40 @@ def test_artifact_queue_reconnect_does_not_rewind_acknowledged_parent(
         )
 
 
+@pytest.mark.parametrize("target", ["parent", "child"])
+def test_missing_registered_object_cannot_be_hidden_by_publication_completion(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    target: str,
+) -> None:
+    from typing import NoReturn
+
+    app, principal, account, _reader = encrypted_case(tmp_path / "node")
+    ref = reference()
+    data = b"Synthetic registered artifact payload."
+    batch = parse_upload_batch(
+        attach_native_artifact(
+            build_grok_bot_capture_upload(ref, source_account_id=account),
+            NativeAttachmentUpload(
+                0, hashlib.sha256(ref.canonical_bytes()).hexdigest(), "text/markdown", data
+            ),
+        )
+    )
+    admit(app, principal, batch)
+    digest = hashlib.sha256(data if target == "child" else ref.canonical_bytes()).hexdigest()
+
+    def interrupt(ledger: Ledger, *, max_objects: int | None = None) -> NoReturn:
+        assert max_objects == 1
+        with closing(sqlite3.connect(ledger.settings.database_path)) as connection, connection:
+            # Deliberate corruption fixture, not an operation permitted by normal FK checks.
+            connection.execute("DELETE FROM objects WHERE plaintext_digest = ?", (digest,))
+        raise EvidencePublicationYielded(0)
+
+    monkeypatch.setattr(Ledger, "drain_evidence_publications", interrupt)
+    with pytest.raises(RuntimeError):
+        app.upload_batch(principal, batch)
+
+
 def test_native_attachment_refuses_plaintext_only_node_without_admission(tmp_path: Path) -> None:
     app, principal, account = capture_case(tmp_path / "node")
     ref = reference()

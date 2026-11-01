@@ -10508,11 +10508,12 @@ class Ledger:
             ).fetchone():
                 return False
             for object_id, size, storage_kind in connection.execute(
-                "SELECT o.object_id, o.byte_length, o.storage_kind FROM objects o "
-                "WHERE o.object_id IN (SELECT object_id FROM source_records "
+                "SELECT refs.object_id, o.byte_length, o.storage_kind FROM "
+                "(SELECT object_id FROM source_records "
                 "WHERE source_file_id = ? "
                 "UNION SELECT a.object_id FROM native_attachment_objects a "
-                "JOIN source_records r USING(source_record_id) WHERE r.source_file_id = ?)",
+                "JOIN source_records r USING(source_record_id) WHERE r.source_file_id = ?) refs "
+                "LEFT JOIN objects o USING(object_id)",
                 (source_file_id, source_file_id),
             ):
                 location = read_location(connection, object_id)
