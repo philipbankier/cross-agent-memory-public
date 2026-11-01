@@ -31,6 +31,27 @@ artifact contents/versions and other provider attachment layouts require their o
 and privacy qualification; do not silently omit them and call history complete. Status reports
 `attachment_contents_captured=false` and `question_answers_attested=false`.
 
+## Sent Artifact Acquisition
+
+The guarded reader in `grok_bot_artifacts.py` selects attachment sends from a target-bound
+transcript page and the existing explicit personal-Bot scope. It opens only the exact referenced
+workspace file, with no symlink traversal, folder discovery, URL fetching or filename substitution.
+Credential and collector paths, hard links and foreign-owned files refuse before payload access.
+The caller must supply a byte bound. File-descriptor and directory-entry identity must remain
+stable across the bounded read; a missing, oversized or changed file is a disclosed gap.
+
+Known privacy exclusions apply even to opaque media metadata. The existing deterministic text
+policy can make eligible text inspectable; other payloads remain uninspected and must not enter
+model-facing output. Manifests contain reference/content digests, size and media hints, never
+payload bytes. A file URL does not attest the version sent, its creator, delivery or immutability.
+Observed filesystem times stay separate from stable content identity: touching an unchanged
+file must not invent a new artifact version.
+
+This reader is not yet a deployed artifact-retention path. Queue admission, encrypted-object
+linkage, model delivery, deletion and recovery must be qualified together before activation.
+In particular, a file must not remain exposed or retained after its source reference is excluded
+or erased. Do not infer artifact support from the existing attachment-reference observation.
+
 ## Enrolled Collection
 
 Use an existing separately enrolled collector principal, bound to one Grok Bot source account
