@@ -163,7 +163,10 @@ def test_attachment_upload_cannot_attach_to_a_different_reference() -> None:
         attach_native_artifact(body, attachment)
 
 
-def test_attachment_admission_delivery_replay_and_recovery(tmp_path: Path) -> None:
+@pytest.mark.parametrize("parent_first", [True, False])
+def test_attachment_admission_delivery_replay_and_recovery(
+    tmp_path: Path, parent_first: bool
+) -> None:
     import hashlib
 
     from cross_assistant_memory.backup import create_offline_clone, create_snapshot, verify_snapshot
@@ -179,7 +182,14 @@ def test_attachment_admission_delivery_replay_and_recovery(tmp_path: Path) -> No
     )
     body = build_grok_bot_capture_upload(ref, source_account_id=account)
     combined = parse_upload_batch(attach_native_artifact(body, attachment))
-    assert app.upload_batch(principal, parse_upload_batch(body))["status"] == "applied"
+    if parent_first:
+        assert app.upload_batch(principal, parse_upload_batch(body))["status"] == "applied"
+    else:
+        assert admit(app, principal, combined)["status"] in {"applied", "already_applied"}
+        assert admit(app, principal, parse_upload_batch(body))["status"] in {
+            "applied",
+            "already_applied",
+        }
     ledger = Ledger(Settings(root), read_only=True, encrypted_evidence_reader=reader)
     parent = ledger.search("synthetic.md")[0]
     assert admit(app, principal, combined)["status"] in {"applied", "already_applied"}
