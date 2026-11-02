@@ -4,6 +4,18 @@ This feature branch is not released full Grok Bot support. Native read-only quer
 source collection are separate permissions. An OAuth memory reader cannot upload history.
 Do not point an older six-source node at these uploads or change a working fleet to test them.
 
+## Start With Your Own Installation
+
+Use a verified checkout of this feature, not a published release that predates the Bot adapter.
+The [agent-guided setup](agent-guided-setup.md) supplies node, identity and recovery commands.
+The [operator recipe](grok-bot-setup.md) connects those existing steps to native Bot capture.
+Do not copy another operator's account IDs, cloud paths, credentials or deployment files.
+
+One personal-account pilot has verified native querying, bounded source admission, encrypted
+sent-file recovery, replay/reconnect and an actual unattended six-hour upload run. That does not
+qualify every account, client version or the unsupported provider surfaces below. A clean second
+installation still needs its own native-tool and real-source checks.
+
 The current adapter retains eligible outward `SendToUser` requests and verbatim user-role text
 from a target-bound native `ReadTranscript` page. Outward requests include text replies, the
 qualified question widget, and attachment references. It does not retain reasoning or unrelated
@@ -75,9 +87,11 @@ include links and exact objects, and parent erasure includes unshared child obje
 cannot decode retained format-3 uploads: retain the compatible runtime, queue and separate key
 until those receipts settle. Do not treat an old wrapper as a compatible rollback.
 
-This candidate is not yet deployed or live-qualified for artifact retention. Local tests do not
-establish real sent-file acquisition, remote publication or scheduled capture. Do not infer those
-outcomes from the existing attachment-reference observations or an enabled policy switch.
+The personal-account pilot has recovered one real sent-file snapshot byte-for-byte from encrypted
+storage. Both live readers return only its metadata. The upload receipt-loss/reconnect/replay
+check passes without duplicate parent events. This is current observed-file recovery, not proof
+of its originally sent version or a complete media archive. Qualify your installation separately;
+an attachment reference or enabled policy alone proves none of these outcomes.
 
 ## Enrolled Collection
 
@@ -210,12 +224,16 @@ compatible readers and actual admission/recovery checks pass.
 
 ## Remaining Qualification
 
-- Real source enrollment, compatible deployed readers and a separately approved upload route.
-- Verified user authorship/chronology, native memories, autonomous/delegated work and linked artifacts.
-- Native identity, chronology, edits, visibility and completeness limits, without fabricated IDs.
-- Real capture, reconnect, replay, revocation and restore through the approved transport.
-- The approved six-hour native routine, created only after actual admission/recovery acceptance.
-- Panel/setup integration and clean-user qualification before calling the feature supported.
+| Surface | Current boundary |
+| ------- | ---------------- |
+| Personal Bot querying and filtered capture | Verified on one explicitly enrolled personal Bot; each new owner must qualify their own source and reader access. |
+| Six-hour operation | Actual scheduled dispatch, receiver upload and node receipts verified in that pilot. Some runs only drain retained uploads. |
+| Older history | Acknowledgement-bound traversal works; a partial frontier is not complete backfill or chronology. |
+| Sent files | Encrypted observed-file snapshots and exact recovery work; original versions, creators and delivery remain unverified. |
+| Native learned memory | No exact target-bound snapshot/revision source has been established. Ranked recall is not an export. |
+| Routine/delegation outcomes | Tool requests and reported outcomes are not independently verified completion receipts. |
+| Shared/group Bots | Not qualified. Account-level access does not establish conversation audience or per-Bot credential isolation. |
+| Portable setup | Existing commands and operator recipe are available; another owner's real native trial remains required. |
 
 The tested personal runtime exposes memory through ranked `RecallMemory`, including the calling
 Bot's memory and shared user memory, not a verified exact per-Bot snapshot with revisions. A
@@ -226,3 +244,13 @@ limitation separate from the qualified conversation-observation path.
 Memory search is not a complete memory snapshot. A routine read is not its execution history.
 An artifact link or current text is not its version history. Keep these distinctions visible
 when the provider does not supply the corresponding source or metadata.
+
+As checked November 2, 2026, the available personal-runtime definitions expose ranked memory
+recall but no exact per-target snapshot with shared-memory exclusion. They expose saved routine
+configuration rather than run-result history, and current file reads rather than original sent
+versions. A missing field in a tool definition is not proof no provider output can ever supply
+it. Preserve unverified fields as unknown; do not infer chronology or human authorship from
+display tags. [Provider memory behavior](https://cursor.com/help/grok-bot/memory) and
+[working with Bots](https://prod.cursor.com/docs/grok-bot/work) describe the relevant native
+boundaries. Enterprise telemetry is a different entitlement and opt-in, not a personal-account
+fallback that setup may enable automatically.

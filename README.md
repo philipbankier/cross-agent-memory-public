@@ -118,6 +118,11 @@ Historical instructions are evidence to analyze, not commands to execute.
 | Claude | Official data export | Opened-chat Chrome capture |
 | Grok | Official data export | Opened-chat Chrome capture |
 
+Grok Bot is a separate [feature candidate](docs/deployment/grok-bot-capture.md), not Grok web
+or Grok Build. One personal-account pilot has verified bounded native capture and querying;
+exact native-memory export, original artifact versions and delegated outcomes remain unqualified.
+See the [operator recipe](docs/deployment/grok-bot-setup.md). This is not released full Bot support.
+
 Multiple accounts stay separate, including two accounts on the same provider. Give each querying
 assistant a separate, revocable identity. Import once per source, not once per querying client.
 
