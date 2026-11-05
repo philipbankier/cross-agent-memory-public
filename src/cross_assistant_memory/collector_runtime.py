@@ -15,6 +15,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from cross_assistant_memory.collector import (
+    COLLECTOR_ADAPTER_NAME,
+    COLLECTOR_ADAPTER_VERSION,
     CollectorConfig,
     CollectorNodeConfig,
     InitialSourceCursor,
@@ -31,6 +33,7 @@ from cross_assistant_memory.collector_queue import (
     ReplayBoundary,
     exclusive_collector_sync,
     source_key_for,
+    upload_source_key_for,
 )
 from cross_assistant_memory.collector_service import COLLECTOR_SERVICE_SCHEDULE_SECONDS
 from cross_assistant_memory.ingest import (
@@ -48,6 +51,7 @@ from cross_assistant_memory.models import (
 from cross_assistant_memory.safe_files import open_regular_file_no_symlinks, secure_path_stat
 from cross_assistant_memory.uploads import (
     MAX_UPLOAD_RECORDS,
+    SUPPORTED_NATIVE_PARSERS,
     UploadBatch,
     UploadCursorGap,
     UploadPublicationPending,
@@ -476,6 +480,7 @@ def post_upload_batch(
         headers={
             "Authorization": f"Bearer {credential}",
             "Content-Type": "application/json",
+            "User-Agent": f"{COLLECTOR_ADAPTER_NAME}/{COLLECTOR_ADAPTER_VERSION}",
         },
         method="POST",
     )
@@ -553,6 +558,37 @@ def post_upload_batch(
     except ValueError:
         return QueueFailureCode.INVALID_RESPONSE
     return None
+
+
+def flush_capture_uploads(
+    queue: CollectorQueue,
+    node: CollectorNodeConfig,
+    *,
+    source_system: SourceSystem,
+    source_account_id: str,
+    transport: UploadTransport = post_upload_batch,
+    limit: int = 4,
+    now_epoch: int | None = None,
+) -> FlushResult:
+    """Flush self-contained API observations without inventing file roots or gap repairs."""
+    if (
+        source_system not in SUPPORTED_NATIVE_PARSERS
+        or type(source_account_id) is not str
+        or not source_account_id
+        or type(limit) is not int
+        or not 1 <= limit <= MAX_UPLOADS_PER_SYNC
+    ):
+        raise ValueError("capture queue flush scope or work limit is invalid")
+    return _flush_due_uploads(
+        queue,
+        node,
+        transport=transport,
+        now=now_epoch,
+        opted_in_sources={(source_system, source_account_id)},
+        excluded_sources=set(),
+        sources={},
+        max_uploads=limit,
+    )
 
 
 def load_transport_credential(path: Path) -> str:
@@ -1022,6 +1058,7 @@ def _flush_due_uploads(
     excluded_sources: set[str],
     sources: dict[str, tuple[NativeSourceOptIn, Path]],
     initial_selections: dict[str, InitialSourceCursor] | None = None,
+    max_uploads: int | None = None,
 ) -> FlushResult:
     uploaded = 0
     failed = 0
@@ -1030,16 +1067,14 @@ def _flush_due_uploads(
     checkpoints_advanced = 0
     gap_budget = _ScanBudget()
     transport = _publication_retry_transport(transport)
-    for _index in range(MAX_UPLOADS_PER_SYNC):
+    for _index in range(MAX_UPLOADS_PER_SYNC if max_uploads is None else max_uploads):
         # None keeps queue checks and receipts on the current clock after slow requests.
         due = queue.due_uploads(now_epoch=now, limit=1)
         if not due:
             break
         item = due[0]
         batch = parse_upload_batch(item.body)
-        source_key = source_key_for(
-            batch.parsed.source_system, batch.source_account_id, batch.source_path_hash
-        )
+        source_key = upload_source_key_for(batch)
         try:
             queue.validate_initial_cursor(source_key, (initial_selections or {}).get(source_key))
         except QueueConflictError:

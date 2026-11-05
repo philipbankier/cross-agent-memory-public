@@ -45,7 +45,13 @@ BUILD_INPUTS = (
     "ui/memory-app/tsconfig.json",
     "ui/memory-app/build.mjs",
 )
-BUILD_DIRECTORIES = ("script", "ui/memory-app/src", "ui/memory-app/test", "browser/capture")
+BUILD_DIRECTORIES = (
+    "script",
+    "ui/memory-app/src",
+    "ui/memory-app/test",
+    "browser/capture",
+    "deploy/grok-bot-upload",
+)
 
 
 class BuildProvenance(TypedDict):

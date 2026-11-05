@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 from collections.abc import Callable, Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, BinaryIO, cast
 
@@ -128,6 +128,12 @@ def parse_file(
         _verify_append_only_file(path, before, after, consumed_end=size)
         if len(data) != size or digest != retained_prefix.sha256:
             raise RuntimeError("retained source prefix bytes changed")
+    if source_system is SourceSystem.GROK_BOT:
+        from cross_assistant_memory.grok_bot_capture import parse_grok_bot_capture
+
+        if segment_start != (0, 0, EMPTY_SHA256):
+            raise ValueError("Grok Bot observations are individually captured, not file tails")
+        return replace(parse_grok_bot_capture(data, path), file_mtime_ns=before.st_mtime_ns)
     if source_system in {SourceSystem.CODEX, SourceSystem.CLAUDE_CODE, SourceSystem.GROK_BUILD}:
         schema_fingerprint = native_jsonl_schema_fingerprint(data)
         schema_descriptors: tuple[str, ...] = ()

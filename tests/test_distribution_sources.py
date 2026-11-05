@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shlex
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -30,6 +32,45 @@ def test_verified_build_context_includes_the_distribution_companion(tmp_path: Pa
         assert (context / "docs/third-party" / name).is_file()
     for name in ("manifest.json", "observe.js", "background.js", "popup.html"):
         assert (context / "browser/capture" / name).is_file()
+    for name in ("worker.mjs", "wrangler.example.jsonc", "README.md"):
+        assert (context / "deploy/grok-bot-upload" / name).is_file()
+
+
+def test_container_build_copies_every_protected_source_input(tmp_path: Path) -> None:
+    context = tmp_path / "context"
+    _prepare_context(context)
+    build = tmp_path / "build"
+    build.mkdir()
+    containerfile = (context / "Containerfile").read_text()
+    instructions = containerfile.split("FROM python AS build\n", 1)[1].split(
+        "FROM python AS runtime\n", 1
+    )[0]
+    for line in instructions.splitlines():
+        if not line.startswith("COPY "):
+            continue
+        *sources, destination = shlex.split(line)[1:]
+        for name in sources:
+            source = context / name
+            target = build / destination
+            if source.is_dir():
+                shutil.copytree(source, target, dirs_exist_ok=True)
+            else:
+                target.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target / source.name)
+    assert source_provenance(build) == source_provenance(context)
+    ignore = (context / ".dockerignore").read_text().splitlines()
+    assert "!deploy/" in ignore and "!deploy/grok-bot-upload/" in ignore
+    assert "!deploy/grok-bot-upload/*" in ignore
+
+
+@pytest.mark.parametrize("name", ["worker.mjs", "wrangler.example.jsonc"])
+def test_changed_grok_upload_relay_refuses_source_provenance(tmp_path: Path, name: str) -> None:
+    context = tmp_path / "context"
+    _prepare_context(context)
+    target = context / "deploy/grok-bot-upload" / name
+    target.write_bytes(target.read_bytes() + b"\nchanged\n")
+    with pytest.raises(RuntimeError, match="source distribution differs"):
+        source_provenance(context)
 
 
 @pytest.mark.parametrize("name", ["manifest.json", "observe.js"])
@@ -141,6 +182,13 @@ def test_source_archive_contains_the_exact_protected_companion(tmp_path: Path) -
             assert content is not None
             assert content.read() == (root / relative).read_bytes()
         for path in (root / "browser/capture").iterdir():
+            if not path.is_file():
+                continue
+            relative = path.relative_to(root).as_posix()
+            assert relative in members
+            content = archive.extractfile(members[relative])
+            assert content is not None and content.read() == path.read_bytes()
+        for path in (root / "deploy/grok-bot-upload").iterdir():
             if not path.is_file():
                 continue
             relative = path.relative_to(root).as_posix()

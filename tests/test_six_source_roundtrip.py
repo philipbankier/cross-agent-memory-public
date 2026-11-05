@@ -361,7 +361,9 @@ def test_six_source_roundtrip(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -
     results = ledger.search("Roundtripbeacon", limit=20)
     assert len(results) == len(event_ids) == 12
     assert {result.event_id for result in results} == event_ids
-    assert {result.source_system for result in results} == {source.value for source in SourceSystem}
+    assert {result.source_system for result in results} == {
+        source.value for source in (*NATIVE_SOURCE_SYSTEMS, *WEB_SOURCES)
+    }
     assert {result.authority for result in results} == {
         Authority.USER_ASSERTION.value,
         Authority.ASSISTANT_OUTPUT.value,

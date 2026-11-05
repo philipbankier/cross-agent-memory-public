@@ -320,7 +320,7 @@ _PANEL_HTML = """<!doctype html>
           <form id="source-account-form" class="action-form">
             <h2>Register source</h2>
             <label><span>Device ID</span><input id="source-device-id" maxlength="256" disabled></label>
-            <div class="compact-fields"><label><span>Source</span><select id="source-system" disabled><option value="codex">Codex</option><option value="claude_code">Claude Code</option><option value="grok_build">Grok Build</option><option value="chatgpt_web">ChatGPT</option><option value="claude_web">Claude</option><option value="grok_web">Grok</option></select></label><label><span>Scope</span><select id="source-scope" disabled><option value="user_global">Global</option><option value="project">Project</option><option value="assistant_private">Assistant private</option><option value="session">Session</option></select></label></div>
+            <div class="compact-fields"><label><span>Source</span><select id="source-system" disabled><option value="codex">Codex</option><option value="claude_code">Claude Code</option><option value="grok_build">Grok Build</option><option value="grok_bot">Grok Bot</option><option value="chatgpt_web">ChatGPT</option><option value="claude_web">Claude</option><option value="grok_web">Grok</option></select></label><label><span>Scope</span><select id="source-scope" disabled><option value="user_global">Global</option><option value="project">Project</option><option value="assistant_private">Assistant private</option><option value="session">Session</option></select></label></div>
             <label><span>Account label</span><input id="source-account-label" maxlength="512" disabled></label>
             <label><span>Project context</span><input id="source-project-id" maxlength="512" disabled></label>
             <button id="source-account-button" class="primary-button" type="submit" disabled>Register</button>
@@ -351,7 +351,7 @@ _PANEL_HTML = """<!doctype html>
           <form id="deletion-plan-form" class="action-form">
             <h2>Plan deletion</h2>
             <label><span>Target</span><select id="deletion-kind" disabled><option value="conversation">Conversation</option><option value="source_account">Source account</option></select></label>
-            <label><span>Source</span><select id="deletion-source-system" disabled><option value="codex">Codex</option><option value="claude_code">Claude Code</option><option value="grok_build">Grok Build</option><option value="chatgpt_web">ChatGPT</option><option value="claude_web">Claude</option><option value="grok_web">Grok</option></select></label>
+            <label><span>Source</span><select id="deletion-source-system" disabled><option value="codex">Codex</option><option value="claude_code">Claude Code</option><option value="grok_build">Grok Build</option><option value="grok_bot">Grok Bot</option><option value="chatgpt_web">ChatGPT</option><option value="claude_web">Claude</option><option value="grok_web">Grok</option></select></label>
             <label><span>Source account ID or unique label</span><input id="deletion-source-account" maxlength="1024" required disabled></label>
             <label id="deletion-conversation-field"><span>Conversation ID</span><input id="deletion-conversation" maxlength="4096" required disabled></label>
             <label><span>Reason</span><input id="deletion-reason" maxlength="1024" required disabled></label>
@@ -911,6 +911,7 @@ _PANEL_JS = """(() => {
       codex: 'Codex',
       claude_code: 'Claude Code',
       grok_build: 'Grok Build',
+      grok_bot: 'Grok Bot',
       chatgpt_web: 'ChatGPT',
       claude_web: 'Claude',
       grok_web: 'Grok'

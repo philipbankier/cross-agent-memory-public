@@ -86,6 +86,16 @@ from cross_assistant_memory.evidence_rotation import (
     resume_rotation,
     rotation_status,
 )
+from cross_assistant_memory.grok_bot_backfill import (
+    next_grok_bot_backfill_page,
+    queue_grok_bot_backfill_page,
+)
+from cross_assistant_memory.grok_bot_collector import (
+    flush_grok_bot_capture,
+    grok_bot_capture_status,
+    queue_grok_bot_artifact,
+    queue_grok_bot_page,
+)
 from cross_assistant_memory.identity_setup import (
     apply_client_credential,
     apply_client_registration,
@@ -294,6 +304,27 @@ def build_parser() -> argparse.ArgumentParser:
         "collector-status", help="show text-free native collector and queue status"
     )
     collector_status_parser.add_argument("--config", type=Path, required=True)
+
+    for operation in ("page", "flush", "status", "next", "artifact"):
+        bot_capture = subparsers.add_parser(
+            f"grok-bot-capture-{operation}", help=f"{operation} the opted-in Grok Bot capture queue"
+        )
+        bot_capture.add_argument("--config", type=Path, required=True)
+        bot_capture.add_argument("--policy", type=Path, required=True)
+        if operation in ("page", "artifact"):
+            bot_capture.add_argument("--transcript", type=Path, required=True)
+            bot_capture.add_argument("--bot-id", required=True)
+            if operation == "page":
+                bot_capture.add_argument("--progress", type=Path)
+            else:
+                bot_capture.add_argument("--tool-call-id", required=True)
+                bot_capture.add_argument("--max-bytes", type=int, default=1024 * 1024)
+        elif operation == "next":
+            bot_capture.add_argument("--bot-id", required=True)
+            bot_capture.add_argument("--progress", type=Path, required=True)
+            bot_capture.add_argument("--limit", type=int, default=20, choices=range(1, 201))
+        elif operation == "flush":
+            bot_capture.add_argument("--limit", type=int, default=4, choices=range(1, 5))
 
     collector_retry = subparsers.add_parser(
         "collector-retry", help="explicitly retry one blocked collector upload"
@@ -1032,6 +1063,9 @@ def main(argv: list[str] | None = None) -> None:
     try:
         result = _dispatch(args, settings)
     except KeyboardInterrupt:
+        if args.command.startswith("grok-bot-capture-"):
+            print(json.dumps({"status": "interrupted", "text_free": True}), file=sys.stderr)
+            raise SystemExit(130) from None
         if args.command == "ingest":
             print(
                 json.dumps(
@@ -1102,6 +1136,14 @@ def main(argv: list[str] | None = None) -> None:
             raise SystemExit(130) from None
         return
     except (KeyError, OSError, PermissionError, RuntimeError, ValueError, sqlite3.Error) as exc:
+        if args.command.startswith("grok-bot-capture-"):
+            print(
+                json.dumps(
+                    {"status": "refused", "text_free": True, "error_type": type(exc).__name__}
+                ),
+                file=sys.stderr,
+            )
+            raise SystemExit(2) from None
         if args.command.startswith("evidence-rotation-"):
             print(
                 json.dumps(
@@ -1948,6 +1990,44 @@ def _dispatch(args: argparse.Namespace, settings: Settings) -> dict[str, Any] | 
         return result
     if command == "collector-status":
         return collector_status(cast_path(args.config))
+    if command == "grok-bot-capture-artifact":
+        return queue_grok_bot_artifact(
+            cast_path(args.config),
+            cast_path(args.policy),
+            cast_path(args.transcript),
+            bot_id=str(args.bot_id),
+            native_tool_call_id=str(args.tool_call_id),
+            max_bytes=int(args.max_bytes),
+        )
+    if command == "grok-bot-capture-page":
+        if args.progress is not None:
+            return queue_grok_bot_backfill_page(
+                cast_path(args.config),
+                cast_path(args.policy),
+                cast_path(args.progress),
+                cast_path(args.transcript),
+                bot_id=str(args.bot_id),
+            )
+        return queue_grok_bot_page(
+            cast_path(args.config),
+            cast_path(args.policy),
+            cast_path(args.transcript),
+            bot_id=str(args.bot_id),
+        )
+    if command == "grok-bot-capture-next":
+        return next_grok_bot_backfill_page(
+            cast_path(args.config),
+            cast_path(args.policy),
+            cast_path(args.progress),
+            bot_id=str(args.bot_id),
+            limit=int(args.limit),
+        )
+    if command == "grok-bot-capture-flush":
+        return flush_grok_bot_capture(
+            cast_path(args.config), cast_path(args.policy), limit=int(args.limit)
+        )
+    if command == "grok-bot-capture-status":
+        return grok_bot_capture_status(cast_path(args.config), cast_path(args.policy))
     if command == "collector-retry":
         return retry_blocked_upload(cast_path(args.config), str(args.item_id))
     if command == "collector-enroll":

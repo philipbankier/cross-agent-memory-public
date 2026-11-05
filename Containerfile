@@ -38,6 +38,7 @@ RUN python -m venv /opt/cam
 COPY pyproject.toml LICENSE README.md requirements.lock requirements-bootstrap.lock cam_build.py MANIFEST.in Containerfile .dockerignore compose.yaml ./
 COPY script ./script
 COPY browser/capture ./browser/capture
+COPY deploy/grok-bot-upload ./deploy/grok-bot-upload
 COPY docs/third-party ./docs/third-party
 COPY ui/memory-app ./ui/memory-app
 COPY src/cross_assistant_memory ./src/cross_assistant_memory
@@ -51,7 +52,7 @@ FROM python AS runtime
 
 ARG VCS_REF=unknown
 LABEL org.opencontainers.image.title="Cross Assistant Memory" \
-      org.opencontainers.image.version="0.1.0" \
+      org.opencontainers.image.version="0.2.0" \
       org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.base.name="docker.io/library/debian:trixie-slim" \
       org.opencontainers.image.base.digest="sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f" \

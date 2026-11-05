@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cross-agent-memory-grok-bot-upload",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "send_metrics": false,
+  "observability": { "enabled": false },
+  "preview_urls": false,
+  "vpc_services": [
+    {
+      "binding": "PRIVATE_COLLECTOR_ORIGIN",
+      "service_id": "replace-with-approved-collector-vpc-service-id",
+    },
+  ],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://upload.example.com",
+    "PRIVATE_ORIGIN_URL": "http://127.0.0.1:28765",
+    "SOURCE_ACCOUNT_ID": "replace-with-enrolled-grok-bot-source-account-id",
+  },
+}

@@ -69,6 +69,10 @@ jobs:
           npm run format:check --prefix ui/memory-app
           npm run check:bundle --prefix ui/memory-app
           npm test --prefix ui/memory-app
+      - name: Check source-bound Grok Bot upload relay
+        run: |
+          ui/memory-app/node_modules/.bin/tsc -p deploy/grok-bot-upload/tsconfig.json
+          sh script/test-grok-bot-upload
       - name: Check provider fixtures and capture recovery
         run: |
           command -v node

@@ -7,7 +7,10 @@ from typing import Any, cast
 
 import pytest
 
-from cross_assistant_memory.control_panel import _PANEL_JS  # pyright: ignore[reportPrivateUsage]
+from cross_assistant_memory.control_panel import (
+    _PANEL_HTML,  # pyright: ignore[reportPrivateUsage]
+    _PANEL_JS,  # pyright: ignore[reportPrivateUsage]
+)
 
 pytestmark = pytest.mark.skipif(
     shutil.which("node") is None, reason="Node is required; enforced by the interfaces CI job"
@@ -112,14 +115,15 @@ def test_imported_web_history_is_distinct_from_export_refresh(sync_state: str) -
         ("registered", "status_unavailable", None),
     ],
 )
+@pytest.mark.parametrize("source_system,label", [("codex", "Codex"), ("grok_bot", "Grok Bot")])
 def test_native_history_does_not_promote_collection_to_freshness(
-    state: str, sync_state: str, last_import: str | None
+    state: str, sync_state: str, last_import: str | None, source_system: str, label: str
 ) -> None:
     result = render_sources(
         {
             "sources": [
                 {
-                    "source_system": "codex",
+                    "source_system": source_system,
                     "state": state,
                     "latest_ingested_at": last_import,
                     "sync": {"state": sync_state, "status_source": "node_observation"},
@@ -128,9 +132,20 @@ def test_native_history_does_not_promote_collection_to_freshness(
         }
     )
     assert result["rows"][0]["texts"] == [
-        "Codex",
+        label,
         f"Indexed history: {state}",
         f"Imported {last_import[:10]}" if last_import else "Not imported",
         f"Collection: {sync_state.replace('_', ' ')}",
     ]
     assert result["total"] == f"{int(state == 'available')} of 1 available"
+
+
+def test_grok_bot_uses_existing_source_registration_and_deletion_controls() -> None:
+    option = '<option value="grok_bot">Grok Bot</option>'
+    for selector in ("source-system", "deletion-source-system"):
+        section = _PANEL_HTML.split(f'<select id="{selector}"', 1)[1].split("</select>", 1)[0]
+        assert option in section
+    web_review = _PANEL_HTML.split('<select id="candidate-web-source-system"', 1)[1].split(
+        "</select>", 1
+    )[0]
+    assert option not in web_review

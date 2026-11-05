@@ -23,7 +23,8 @@ and trace important claims back to the original message.
 You explored an idea in ChatGPT, made a decision in Claude, and built it in a coding agent.
 The next assistant should be able to find that history without you pasting it all again.
 
-- One searchable history across six source families, with separate account identities.
+- One searchable history across six source families and optional personal Grok Bot capture,
+  with separate account identities.
 - Exact evidence with source, speaker and date, not just an opaque generated summary.
 - Local or remote operation, with optional encrypted B2 evidence storage.
 - Your existing model and subscription. No separate answer engine or vector database required.
@@ -50,7 +51,8 @@ before importing real data. Set `PYTHON_BIN=/path/to/python3` for both commands 
 
 These commands follow current source. For a fixed version, use
 [signed release artifacts](docs/deployment/verify-release.md) and their verification instructions.
-v0.1.2 retains the dependency fixes and restores cross-batch context and bounded delivery.
+v0.2.0 adds bounded personal Grok Bot capture and encrypted sent-file snapshots.
+Existing installations must review its schema and collector upgrade notes before switching.
 See [release status](docs/release-readiness.md).
 Do not install from GitHub's automatic source ZIP; the build needs Git provenance.
 
@@ -117,6 +119,13 @@ Historical instructions are evidence to analyze, not commands to execute.
 | ChatGPT | Official data export | Opened-chat Chrome capture |
 | Claude | Official data export | Opened-chat Chrome capture |
 | Grok | Official data export | Opened-chat Chrome capture |
+
+Grok Bot has a separate [personal-Bot adapter](docs/deployment/grok-bot-capture.md), not a Grok web
+or Grok Build alias. One personal-account pilot has verified bounded native capture, querying,
+encrypted sent-file recovery and scheduled uploads. Native-memory export, original artifact
+versions, delegated outcomes and shared/group Bots are unsupported. Full historical coverage
+is not guaranteed. See the [operator recipe](docs/deployment/grok-bot-setup.md) and qualify your
+own installation before enabling recurring capture.
 
 Multiple accounts stay separate, including two accounts on the same provider. Give each querying
 assistant a separate, revocable identity. Import once per source, not once per querying client.

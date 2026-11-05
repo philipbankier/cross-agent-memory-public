@@ -12,6 +12,9 @@
 !browser/
 !browser/capture/
 !browser/capture/*
+!deploy/
+!deploy/grok-bot-upload/
+!deploy/grok-bot-upload/*
 !docs/
 !docs/third-party/
 !docs/third-party/README.md

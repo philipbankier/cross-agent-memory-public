@@ -21,6 +21,7 @@ class SourceSystem(StrEnum):
     CHATGPT_WEB = "chatgpt_web"
     CLAUDE_WEB = "claude_web"
     GROK_WEB = "grok_web"
+    GROK_BOT = "grok_bot"
 
 
 class SourceKind(StrEnum):

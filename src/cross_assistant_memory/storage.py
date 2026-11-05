@@ -110,6 +110,11 @@ from cross_assistant_memory.models import (
     WebExportBatchProvenance,
     WebExportConversationObservation,
 )
+from cross_assistant_memory.native_attachments import (
+    NATIVE_ATTACHMENT_SCHEMA,
+    NativeAttachmentUpload,
+    validate_native_attachments,
+)
 from cross_assistant_memory.native_file_import import finish_attempt, load_attempt, retain_attempt
 from cross_assistant_memory.object_writes import (
     JOURNAL_NAME,
@@ -143,9 +148,9 @@ from cross_assistant_memory.safe_files import (
 
 _AdmissionResult = TypeVar("_AdmissionResult")
 
-SCHEMA_VERSION = 24
+SCHEMA_VERSION = 25
 LEGACY_RECOVERY_SCHEMA_VERSIONS = frozenset(
-    {4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}
+    {4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}
 )
 LEGACY_SCHEMA_UPGRADE_VERSIONS = LEGACY_RECOVERY_SCHEMA_VERSIONS | {3}
 SQLITE_SIDECAR_SUFFIXES = ("-wal", "-shm", "-journal")
@@ -292,6 +297,7 @@ class _EvidenceReadState:
     web_export: tuple[object, ...] | None
     attachment_rows: tuple[tuple[object, ...], ...]
     attachment_counts: tuple[int, int, int, int]
+    native_attachment_rows: tuple[tuple[object, ...], ...]
     location: tuple[str, EncryptedObjectManifest] | None
 
 
@@ -1365,6 +1371,7 @@ ON event_contexts(context_id, event_id);
     + ENCRYPTED_LOCATION_SCHEMA
     + PUBLICATION_WORK_SCHEMA
     + ROTATION_SCHEMA
+    + NATIVE_ATTACHMENT_SCHEMA
 )
 
 _SCHEMA_14_OBJECTS = (
@@ -1404,6 +1411,30 @@ def _schema_14_objects(connection: sqlite3.Connection) -> dict[tuple[str, str], 
 
 
 def validate_current_schema_objects(connection: sqlite3.Connection) -> None:
+    validate_schema24_objects(connection)
+    if _native_attachment_schema(connection) != _expected_native_attachment_schema():
+        raise RuntimeError("ledger schema 25 native attachment objects are invalid")
+
+
+@lru_cache(maxsize=1)
+def _expected_native_attachment_schema() -> tuple[tuple[str, str], ...]:
+    with closing(sqlite3.connect(":memory:")) as connection:
+        connection.executescript(NATIVE_ATTACHMENT_SCHEMA)
+        return _native_attachment_schema(connection)
+
+
+def _native_attachment_schema(connection: sqlite3.Connection) -> tuple[tuple[str, str], ...]:
+    return tuple(
+        (row[0], _normalized_schema_sql(row[1]))
+        for row in connection.execute(
+            "SELECT name, sql FROM sqlite_master "
+            "WHERE name IN ('native_attachment_objects', 'native_attachment_object_idx') "
+            "ORDER BY name"
+        )
+    )
+
+
+def validate_schema24_objects(connection: sqlite3.Connection) -> None:
     validate_schema20_objects(connection, current_deletion_schema=True)
     if _rotation_schema(connection) != _expected_rotation_schema():
         raise RuntimeError("ledger schema 24 rotation journal is invalid")
@@ -1470,8 +1501,10 @@ def legacy_snapshot_generation(connection: sqlite3.Connection) -> str:
         validate_schema22_objects(connection)
     elif version == 23:
         validate_schema23_objects(connection)
+    elif version == 24:
+        validate_schema24_objects(connection)
     else:
-        raise RuntimeError("legacy snapshot generation requires unmodified schema 20, 21, 22 or 23")
+        raise RuntimeError("legacy snapshot generation requires unmodified schema 20 through 24")
     return _ledger_generation_digest(connection, schema_version=version)
 
 
@@ -2653,14 +2686,17 @@ class Ledger:
                     if not self.allow_schema_upgrade:
                         raise RuntimeError("ledger schema changed; run an approved schema upgrade")
                     # Recheck under SQLite's write lock before touching the old rollback scope.
-                    _require_empty_legacy_rotation(connection)
-                    if current_version == 23:
+                    if current_version < 24:
+                        _require_empty_legacy_rotation(connection)
+                    if current_version == 24:
+                        validate_schema24_objects(connection)
+                    elif current_version == 23:
                         validate_schema23_objects(connection)
                     elif current_version == 22:
                         validate_schema22_objects(connection)
                     elif current_version == 21:
                         validate_schema21_objects(connection)
-                    if _rotation_schema(connection) is not None:
+                    if current_version < 24 and _rotation_schema(connection) is not None:
                         connection.execute("DROP TABLE evidence_rotation")
                 # executescript commits an open transaction; execute complete statements instead.
                 statement = ""
@@ -2716,7 +2752,11 @@ class Ledger:
             with closing(sqlite3.connect(uri, timeout=15, uri=True)) as connection:
                 row = connection.execute("SELECT MAX(version) FROM schema_migrations").fetchone()
                 current_version = cast(int | None, row[0] if row is not None else None)
-                if self.allow_schema_upgrade and current_version in LEGACY_SCHEMA_UPGRADE_VERSIONS:
+                if (
+                    self.allow_schema_upgrade
+                    and current_version in LEGACY_SCHEMA_UPGRADE_VERSIONS
+                    and current_version < 24
+                ):
                     _require_empty_legacy_rotation(connection)
                 if not self._rotation_maintenance:
                     require_rotation_access(
@@ -2724,6 +2764,9 @@ class Ledger:
                     )
                 if current_version == SCHEMA_VERSION:
                     validate_current_schema_objects(connection)
+                    return
+                if self.allow_schema_upgrade and current_version == 24:
+                    validate_schema24_objects(connection)
                     return
                 if self.allow_schema_upgrade and current_version == 23:
                     validate_schema23_objects(connection)
@@ -4863,6 +4906,33 @@ class Ledger:
             ),
             "source_locator": (cast(str, web_export[3]) if web_export is not None else None),
             "web_export": web_export_evidence,
+            **(
+                {
+                    "native_attachments": {
+                        "attachment_manifests": [
+                            {
+                                "attachment_manifest_id": item[0],
+                                "storage_object_id": item[1],
+                                "content_sha256": cast(str, item[1]).removeprefix("sha256:"),
+                                "byte_length": item[2],
+                                "reference_sha256": item[3],
+                                "media_type_hint": item[4],
+                                "inspection_status": item[5],
+                                "content_access": "metadata_only",
+                                "capture_semantics": (
+                                    "observed_workspace_file_not_attested_sent_version"
+                                ),
+                                "original_sent_bytes_verified": False,
+                            }
+                            for item in state.native_attachment_rows[:32]
+                        ],
+                        "attachment_manifest_count": len(state.native_attachment_rows),
+                        "attachment_manifests_truncated": len(state.native_attachment_rows) > 32,
+                    }
+                }
+                if state.native_attachment_rows
+                else {}
+            ),
             "parser_name": cast(str, row[10]),
             "source_parser_version": cast(str, row[11]),
             "source_object_id": object_id,
@@ -5331,6 +5401,16 @@ class Ledger:
             policy=policy,
             web_export=tuple(web_export) if web_export is not None else None,
             attachment_rows=tuple(web_export_attachment_rows),
+            native_attachment_rows=tuple(
+                connection.execute(
+                    "SELECT a.attachment_id, a.object_id, o.byte_length, a.reference_sha256, "
+                    "a.media_type_hint, a.inspection_status "
+                    "FROM native_attachment_objects a JOIN objects o USING(object_id) "
+                    "JOIN events e USING(source_record_id) WHERE e.event_id = ? "
+                    "ORDER BY a.attachment_id",
+                    (event_id,),
+                ).fetchall()
+            ),
             attachment_counts=(
                 web_export_supplemental_member_count,
                 web_export_linked_member_count,
@@ -8402,7 +8482,15 @@ class Ledger:
         max_record_bytes: int = DEFAULT_MAX_RECORD_BYTES,
         max_publication_objects: int | None = None,
         browser_capture: bool = False,
+        native_attachments: tuple[NativeAttachmentUpload, ...] = (),
     ) -> dict[str, Any]:
+        validate_native_attachments(parsed, native_attachments)
+        if native_attachments and (browser_capture or exclusion_receipts):
+            raise ValueError("native attachment requires an included native reference")
+        if native_attachments and (
+            self._encrypted_evidence_reader is None or self._evidence_publication_policy is None
+        ):
+            raise ValueError("native attachment retention requires encrypted publication")
         if browser_capture:
             from cross_assistant_memory.browser_capture_upload import validate_browser_upload_batch
             from cross_assistant_memory.uploads import UploadBatch
@@ -8428,6 +8516,7 @@ class Ledger:
             source_path_hash=source_path_hash,
             provenance=provenance,
             max_record_bytes=max_record_bytes,
+            native_attachments=native_attachments,
         )
         with self._publication_writer(force_exclusive=True, object_write_scope=scope) as ledger:
             admitted_result: dict[str, Any] | None = None
@@ -8447,6 +8536,7 @@ class Ledger:
                         exclusion_receipts=exclusion_receipts,
                         max_record_bytes=max_record_bytes,
                         browser_capture=browser_capture,
+                        native_attachments=native_attachments,
                     )
                 ledger._finish_native_upload_write_attempt(batch_id)
                 admitted_result = result
@@ -8472,6 +8562,7 @@ class Ledger:
         source_path_hash: str,
         provenance: CollectorProvenance,
         max_record_bytes: int,
+        native_attachments: tuple[NativeAttachmentUpload, ...] = (),
     ) -> ObjectWriteScope:
         return self._native_object_write_scope(
             parsed,
@@ -8484,6 +8575,7 @@ class Ledger:
                 asdict(provenance),
             ),
             max_record_bytes=max_record_bytes,
+            extra_object_bytes=tuple(item.data for item in native_attachments),
         )
 
     def _native_object_write_scope(
@@ -8492,6 +8584,7 @@ class Ledger:
         *,
         operation: tuple[Any, ...],
         max_record_bytes: int,
+        extra_object_bytes: tuple[bytes, ...] = (),
     ) -> ObjectWriteScope:
         reader = self._encrypted_evidence_reader
         policy = self._evidence_publication_policy
@@ -8505,8 +8598,12 @@ class Ledger:
             "publication": None if policy is None else asdict(policy),
             "max_record_bytes": max_record_bytes,
         }
-        objects = max(1, len(parsed.records))
-        byte_count = max(1, sum(len(record.raw_record) for record in parsed.records))
+        objects = max(1, len(parsed.records) + len(extra_object_bytes))
+        byte_count = max(
+            1,
+            sum(len(record.raw_record) for record in parsed.records)
+            + sum(map(len, extra_object_bytes)),
+        )
         return ObjectWriteScope(
             operation_sha256=_sha256_text(json.dumps(operation, sort_keys=True)),
             binding_sha256=_sha256_text(json.dumps(binding, sort_keys=True)),
@@ -8545,6 +8642,7 @@ class Ledger:
         exclusion_receipts: Sequence[ExclusionReceipt],
         max_record_bytes: int = DEFAULT_MAX_RECORD_BYTES,
         browser_capture: bool = False,
+        native_attachments: tuple[NativeAttachmentUpload, ...] = (),
     ) -> dict[str, Any]:
         self._require_writable()
         if UPLOAD_BATCH_ID.fullmatch(batch_id) is None:
@@ -8674,6 +8772,10 @@ class Ledger:
                 """,
                 (batch_id,),
             ).fetchone()
+            for attachment in native_attachments:
+                self._store_native_attachment(
+                    connection, report.source_file_id, attachment, created_at=created_at
+                )
             if existing is None:
                 connection.execute(
                     """
@@ -10224,9 +10326,14 @@ class Ledger:
                         max_record_bytes=DEFAULT_MAX_RECORD_BYTES,
                     )
                     if row[6] is None
+                    and connection.execute(
+                        "SELECT 1 FROM native_attachment_objects WHERE object_id = ? LIMIT 1",
+                        (object_id,),
+                    ).fetchone()
+                    is None
                     else classify_record(
                         SourceSystem(row[5]),
-                        cast(str, row[6]),
+                        cast(str, row[6]) if row[6] is not None else "",
                         raw,
                         max_record_bytes=DEFAULT_MAX_RECORD_BYTES,
                     )
@@ -10308,14 +10415,80 @@ class Ledger:
             publication.finish(manifest)
         return result
 
+    def _store_native_attachment(
+        self,
+        connection: sqlite3.Connection,
+        source_file_id: str,
+        attachment: NativeAttachmentUpload,
+        *,
+        created_at: str,
+    ) -> None:
+        parent = connection.execute(
+            "SELECT r.source_record_id, r.object_id, e.privacy FROM source_records r "
+            "JOIN events_current e USING(source_record_id) "
+            "WHERE r.source_file_id = ? AND r.record_ordinal = ?",
+            (source_file_id, attachment.record_ordinal),
+        ).fetchone()
+        if (
+            parent is None
+            or parent[1] != "sha256:" + attachment.reference_sha256
+            or parent[2] != "included"
+        ):
+            raise ValueError("native attachment has no included parent reference")
+        expected_id = "sha256:" + hashlib.sha256(attachment.data).hexdigest()
+        versions = connection.execute(
+            "SELECT object_id, media_type_hint FROM native_attachment_objects "
+            "WHERE source_record_id = ?",
+            (parent[0],),
+        ).fetchall()
+        if len(versions) >= 32 and (expected_id, attachment.media_type_hint) not in versions:
+            raise ValueError("native attachment observation limit reached")
+        object_id, relative = self._store_object(attachment.data, connection=connection)
+        connection.execute(
+            "INSERT OR IGNORE INTO objects(object_id, plaintext_digest, byte_length, media_type, "
+            "object_path, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                object_id,
+                object_id.removeprefix("sha256:"),
+                len(attachment.data),
+                attachment.media_type_hint,
+                relative,
+                created_at,
+            ),
+        )
+        inspected = classify_attachment(
+            SourceSystem.GROK_BOT,
+            attachment.media_type_hint,
+            attachment.data,
+            max_record_bytes=DEFAULT_MAX_RECORD_BYTES,
+        )
+        identifier = "native_attachment:" + _sha256_text(
+            json.dumps([parent[0], object_id, attachment.media_type_hint], separators=(",", ":"))
+        )
+        connection.execute(
+            "INSERT OR IGNORE INTO native_attachment_objects VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                identifier,
+                parent[0],
+                object_id,
+                attachment.reference_sha256,
+                attachment.media_type_hint,
+                "inspected_text" if inspected.accepted else "not_inspected",
+                created_at,
+            ),
+        )
+        self._queue_evidence_publication(connection, object_id, newly_created=True)
+
     def _queue_source_evidence_publication(
         self, connection: sqlite3.Connection, source_file_id: str
     ) -> None:
         if self._evidence_publication_policy is None:
             return
         for (object_id,) in connection.execute(
-            "SELECT DISTINCT object_id FROM source_records WHERE source_file_id = ?",
-            (source_file_id,),
+            "SELECT object_id FROM source_records WHERE source_file_id = ? "
+            "UNION SELECT a.object_id FROM native_attachment_objects a "
+            "JOIN source_records r USING(source_record_id) WHERE r.source_file_id = ?",
+            (source_file_id, source_file_id),
         ).fetchall():
             self._queue_evidence_publication(connection, object_id, newly_created=False)
 
@@ -10327,15 +10500,21 @@ class Ledger:
             connection.execute("BEGIN")
             if connection.execute(
                 "SELECT 1 FROM evidence_publication_work w "
-                "JOIN source_records r USING(object_id) WHERE r.source_file_id = ? LIMIT 1",
-                (source_file_id,),
+                "WHERE w.object_id IN (SELECT object_id FROM source_records "
+                "WHERE source_file_id = ? "
+                "UNION SELECT a.object_id FROM native_attachment_objects a "
+                "JOIN source_records r USING(source_record_id) WHERE r.source_file_id = ?) LIMIT 1",
+                (source_file_id, source_file_id),
             ).fetchone():
                 return False
             for object_id, size, storage_kind in connection.execute(
-                "SELECT DISTINCT r.object_id, o.byte_length, o.storage_kind "
-                "FROM source_records r LEFT JOIN objects o USING(object_id) "
-                "WHERE r.source_file_id = ?",
-                (source_file_id,),
+                "SELECT refs.object_id, o.byte_length, o.storage_kind FROM "
+                "(SELECT object_id FROM source_records "
+                "WHERE source_file_id = ? "
+                "UNION SELECT a.object_id FROM native_attachment_objects a "
+                "JOIN source_records r USING(source_record_id) WHERE r.source_file_id = ?) refs "
+                "LEFT JOIN objects o USING(object_id)",
+                (source_file_id, source_file_id),
             ):
                 location = read_location(connection, object_id)
                 require_mapping_state(storage_kind, location)
@@ -11421,6 +11600,15 @@ def _publication_object_target(connection: sqlite3.Connection, object_id: str) -
         "WHERE a.object_id = ?",
         (object_id,),
     ).fetchall()
+    attachments.extend(
+        connection.execute(
+            "SELECT sf.source_system, e.privacy FROM native_attachment_objects a "
+            "JOIN source_records r USING(source_record_id) "
+            "JOIN source_files sf USING(source_file_id) "
+            "LEFT JOIN events_current e USING(source_record_id) WHERE a.object_id = ?",
+            (object_id,),
+        ).fetchall()
+    )
     if not records and not attachments:
         raise KeyError("included evidence reference not found")
     if any(item[2] != "included" for item in records) or any(
@@ -11860,6 +12048,15 @@ def _ledger_generation_prefix(
                 "encrypted_deletion_work",
                 "SELECT operation_id, object_id, encrypted_purge_json FROM deletion_object_work "
                 "WHERE encrypted_purge_json IS NOT NULL ORDER BY operation_id, object_id",
+            )
+        )
+    if schema_version >= 25:
+        queries.append(
+            (
+                "native_attachment_objects",
+                "SELECT attachment_id, source_record_id, object_id, reference_sha256, "
+                "media_type_hint, inspection_status FROM native_attachment_objects "
+                "ORDER BY attachment_id",
             )
         )
     for label, sql in queries:
@@ -12351,6 +12548,15 @@ def _collect_no_memory_target(
         cast(str, row[0])
         for row in _rows_matching_ids(
             connection,
+            "SELECT object_id FROM native_attachment_objects "
+            "WHERE source_record_id IN ({placeholders})",
+            record_ids,
+        )
+    )
+    object_ids.update(
+        cast(str, row[0])
+        for row in _rows_matching_ids(
+            connection,
             """
         SELECT object_id FROM web_export_reconciled_events WHERE event_id IN ({placeholders})
         """,
@@ -12452,6 +12658,7 @@ def _collect_deletion_target(
         )
         for table in (
             "source_records",
+            "native_attachment_objects",
             "web_export_attachment_objects",
             "web_export_reconciled_events",
         ):
@@ -12738,6 +12945,15 @@ def _collect_deletion_target(
     }
     object_candidate_ids = (
         record_object_ids
+        | {
+            cast(str, row[0])
+            for row in _rows_matching_ids(
+                connection,
+                "SELECT object_id FROM native_attachment_objects "
+                "WHERE source_record_id IN ({placeholders})",
+                source_record_ids,
+            )
+        }
         | web_source_object_object_ids
         | attachment_object_object_ids
         | reconciled_object_ids
@@ -12827,6 +13043,14 @@ def _deletable_object_ids(
     retained: set[str] = set()
     for row in _rows_matching_ids(
         connection,
+        "SELECT source_record_id, object_id FROM native_attachment_objects "
+        "WHERE object_id IN ({placeholders})",
+        candidates,
+    ):
+        if cast(str, row[0]) not in target.source_record_ids:
+            retained.add(cast(str, row[1]))
+    for row in _rows_matching_ids(
+        connection,
         """
         SELECT source_record_id, object_id
         FROM source_records
@@ -12911,6 +13135,7 @@ def _unreferenced_deletion_objects(
     referenced: set[str] = set()
     for table in (
         "source_records",
+        "native_attachment_objects",
         "web_export_source_objects",
         "web_export_attachment_objects",
         "web_export_reconciled_events",
