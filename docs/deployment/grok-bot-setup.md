@@ -1,6 +1,6 @@
 # Grok Bot Operator Recipe
 
-This is an agent-guided recipe for the unreleased Bot feature, not an automatic account installer.
+This is an agent-guided recipe for the personal-Bot adapter, not an automatic account installer.
 It reuses the existing node, collector, encrypted queue and native routine. No second scheduler,
 memory database or answer engine is needed. Read the [coverage boundaries](grok-bot-capture.md)
 before enrolling data.

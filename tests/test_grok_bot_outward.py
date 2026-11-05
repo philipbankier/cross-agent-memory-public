@@ -32,6 +32,24 @@ def widget() -> dict[str, object]:
     }
 
 
+def single_widget() -> dict[str, object]:
+    return {
+        "type": "widget",
+        "end_turn": True,
+        "widget": {
+            "prompt": "Synthetic single question",
+            "options": [
+                {"label": "One", "value": "one", "style": "primary"},
+                {"label": "Two", "style": "danger", "description": "Synthetic detail"},
+            ],
+            "allowCustom": True,
+            "multiSelect": False,
+            "dismissOnMoveOn": True,
+            "helpText": "Synthetic help",
+        },
+    }
+
+
 def source(arguments: dict[str, object]) -> bytes:
     record = {
         "role": "assistant",
@@ -58,8 +76,18 @@ def source(arguments: dict[str, object]) -> bytes:
     ("arguments", "kind"),
     [
         (widget(), "question_request"),
+        (single_widget(), "question_request"),
         (
             {"type": "attachment", "url": "file:///workspace/results/synthetic.md"},
+            "attachment_reference",
+        ),
+        (
+            {
+                "type": "attachment",
+                "url": "file:///workspace/results/synthetic.md",
+                "alt": "Synthetic description",
+                "end_turn": False,
+            },
             "attachment_reference",
         ),
     ],
@@ -111,6 +139,51 @@ def test_text_observation_keeps_its_legacy_wire_identity() -> None:
         capture.parse_grok_bot_capture(
             original.canonical_bytes(), Path("/synthetic/old.json"), parser_version="0.2.0"
         )
+
+
+@pytest.mark.parametrize("options", [None, []])
+def test_single_question_with_free_text_does_not_invent_options(options: object) -> None:
+    detail: dict[str, object] = {"prompt": "Synthetic free text", "allowCustom": True}
+    if options is not None:
+        detail["options"] = options
+    arguments = {"type": "widget", "widget": detail}
+    kind, content = canonical_outward_request(arguments)
+    assert kind == "question_request" and json.loads(content) == arguments
+
+
+@pytest.mark.parametrize(
+    "tamper",
+    ["style", "description", "label", "value", "multiSelect", "end_turn", "answer", "mixed"],
+)
+def test_single_question_refuses_unknown_fields_and_wrong_types(tamper: str) -> None:
+    arguments = single_widget()
+    detail = cast(dict[str, object], arguments["widget"])
+    option = cast(list[dict[str, object]], detail["options"])[0]
+    if tamper in {"description", "label", "value"}:
+        option[tamper] = False
+    elif tamper == "style":
+        option[tamper] = "private-canary"
+    elif tamper == "end_turn":
+        arguments[tamper] = 1
+    elif tamper == "multiSelect":
+        detail[tamper] = "private-canary"
+    elif tamper == "mixed":
+        detail["steps"] = cast(dict[str, object], widget()["widget"])["steps"]
+    else:
+        detail[tamper] = "private-canary"
+    with pytest.raises(ValueError) as error:
+        project_transcript_page(source(arguments), expected_bot_id=BOT)
+    assert "private-canary" not in str(error.value)
+
+
+@pytest.mark.parametrize("marker", ["[private]", "[no-memory]", "xai-" + "0" * 32])
+def test_optional_question_text_is_privacy_checked(marker: str) -> None:
+    arguments = single_widget()
+    detail = cast(dict[str, object], arguments["widget"])
+    cast(list[dict[str, object]], detail["options"])[0]["description"] = marker
+    projected = project_transcript_page(source(arguments), expected_bot_id=BOT)
+    assert projected.replies == () and projected.excluded_replies == 1
+    assert marker.encode() not in projected.canonical_bytes()
 
 
 @pytest.mark.parametrize(

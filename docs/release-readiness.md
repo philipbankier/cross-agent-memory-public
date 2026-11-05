@@ -3,6 +3,29 @@
 Current source and published artifacts are different things. This page records the boundary,
 not a blanket claim that every deployment or assistant answer is safe.
 
+## v0.2.0 Candidate
+
+This release adds a separately enrolled personal Grok Bot source, filtered native history,
+acknowledgement-bound older-page progress, an encrypted resumable upload queue, and source-linked
+sent-file snapshots. It reuses the existing node, access controls, evidence tools and recovery
+path. A source-bound upload relay is optional; the account-level query connection is separate.
+
+The personal pilot verified actual node admissions, exact encrypted reads through both readers,
+sent-file byte recovery, replay/reconnect and an unattended scheduled upload. These proofs do not
+establish complete provider history, reliable execution of every native routine, or another
+owner's installation. Native learned-memory exports, original sent-file versions, attested
+delegation/routine outcomes and shared/group Bots remain unsupported. See the
+[coverage table](deployment/grok-bot-capture.md#remaining-qualification).
+
+Upgrade notes: ledger schema 25 adds attachment-child links; collector queue schema 7 adds the
+separate Bot source. Preserve verified recovery material and install compatible readers before
+enabling the collector. Older readers cannot open schema 25, and older collectors cannot open
+queue schema 7. Restoring an old executable alone is not a rollback. No release action changes
+an existing fleet, its credentials or its capture settings automatically.
+
+Publication requires the exact candidate's platform checks, signed package/image builds and
+independent download verification. The candidate designation is not proof that publication passed.
+
 ## v0.1.2
 
 This correction restores deployed behavior omitted from the earlier public source:

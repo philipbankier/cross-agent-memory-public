@@ -14,9 +14,13 @@ def canonical_outward_request(value: object) -> tuple[StructuredRequestKind, str
     if not isinstance(value, dict):
         raise ValueError("Grok Bot outward request is unsupported")
     arguments = cast(dict[str, object], value)
+    if "end_turn" in arguments and type(arguments["end_turn"]) is not bool:
+        raise ValueError("Grok Bot outward request turn marker is unsupported")
     kind: StructuredRequestKind
     if arguments.get("type") == "attachment":
-        _fields(arguments, {"type", "url"})
+        _fields(arguments, {"type", "url"}, {"alt", "end_turn"})
+        if "alt" in arguments:
+            _text(arguments["alt"])
         url = _text(arguments["url"])
         try:
             parsed = urlsplit(url)
@@ -39,22 +43,26 @@ def canonical_outward_request(value: object) -> tuple[StructuredRequestKind, str
             raise ValueError("Grok Bot attachment reference is unsupported")
         kind = "attachment_reference"
     elif arguments.get("type") == "widget":
-        _fields(arguments, {"type", "widget"})
-        widget = _fields(arguments["widget"], {"prompt", "steps"})
+        _fields(arguments, {"type", "widget"}, {"end_turn"})
+        widget = _fields(
+            arguments["widget"],
+            {"prompt"},
+            {"steps", "options", "allowCustom", "multiSelect", "dismissOnMoveOn", "helpText"},
+        )
         _text(widget["prompt"])
-        for value in _items(widget["steps"], MAX_WIDGET_STEPS):
-            if not isinstance(value, dict):
-                raise ValueError("Grok Bot question step is unsupported")
-            step = cast(dict[str, object], value)
-            if step.keys() not in ({"prompt", "options"}, {"prompt", "options", "allowCustom"}):
-                raise ValueError("Grok Bot question step is unsupported")
-            if "allowCustom" in step and type(step["allowCustom"]) is not bool:
-                raise ValueError("Grok Bot question custom-answer flag is unsupported")
-            _text(step["prompt"])
-            for option in _items(step["options"], MAX_WIDGET_OPTIONS):
-                fields = _fields(option, {"label", "value"})
-                _text(fields["label"])
-                _text(fields["value"])
+        _question_flags(widget)
+        if "helpText" in widget:
+            _text(widget["helpText"])
+        if "steps" in widget:
+            if "options" in widget:
+                raise ValueError("Grok Bot question layout is ambiguous")
+            for value in _items(widget["steps"], MAX_WIDGET_STEPS):
+                step = _fields(value, {"prompt", "options"}, {"allowCustom", "multiSelect"})
+                _text(step["prompt"])
+                _question_flags(step)
+                _question_options(_items(step["options"], MAX_WIDGET_OPTIONS))
+        elif "options" in widget:
+            _question_options(_items(widget["options"], MAX_WIDGET_OPTIONS, minimum=0))
         kind = "question_request"
     else:
         raise ValueError("Grok Bot outward request type is unsupported")
@@ -68,10 +76,28 @@ def canonical_outward_request(value: object) -> tuple[StructuredRequestKind, str
     return kind, content
 
 
-def _fields(value: object, keys: set[str]) -> dict[str, object]:
-    if not isinstance(value, dict) or value.keys() != keys:
+def _fields(
+    value: object, keys: set[str], optional: set[str] | frozenset[str] = frozenset()
+) -> dict[str, object]:
+    if not isinstance(value, dict) or not keys <= value.keys() <= keys | optional:
         raise ValueError("Grok Bot outward request fields are unsupported")
     return cast(dict[str, object], value)
+
+
+def _question_flags(value: dict[str, object]) -> None:
+    for key in ("allowCustom", "multiSelect", "dismissOnMoveOn"):
+        if key in value and type(value[key]) is not bool:
+            raise ValueError("Grok Bot question flag is unsupported")
+
+
+def _question_options(options: list[object]) -> None:
+    for option in options:
+        fields = _fields(option, {"label"}, {"value", "style", "description"})
+        for key in ("label", "value", "description"):
+            if key in fields:
+                _text(fields[key])
+        if "style" in fields and fields["style"] not in ("default", "primary", "danger"):
+            raise ValueError("Grok Bot question option style is unsupported")
 
 
 def _text(value: object) -> str:
@@ -80,7 +106,7 @@ def _text(value: object) -> str:
     return value
 
 
-def _items(value: object, maximum: int) -> list[object]:
-    if type(value) is not list or not 1 <= len(cast(list[object], value)) <= maximum:
+def _items(value: object, maximum: int, *, minimum: int = 1) -> list[object]:
+    if type(value) is not list or not minimum <= len(cast(list[object], value)) <= maximum:
         raise ValueError("Grok Bot question list exceeds the capture bound")
     return cast(list[object], value)

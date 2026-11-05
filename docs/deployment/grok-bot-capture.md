@@ -1,12 +1,13 @@
 # Grok Bot Capture Qualification
 
-This feature branch is not released full Grok Bot support. Native read-only querying and
+This adapter provides bounded personal-Bot history support, not full Grok Bot support.
+Native read-only querying and
 source collection are separate permissions. An OAuth memory reader cannot upload history.
 Do not point an older six-source node at these uploads or change a working fleet to test them.
 
 ## Start With Your Own Installation
 
-Use a verified checkout of this feature, not a published release that predates the Bot adapter.
+Use v0.2.0 or a later verified release, not a release that predates the Bot adapter.
 The [agent-guided setup](agent-guided-setup.md) supplies node, identity and recovery commands.
 The [operator recipe](grok-bot-setup.md) connects those existing steps to native Bot capture.
 Do not copy another operator's account IDs, cloud paths, credentials or deployment files.
@@ -29,8 +30,12 @@ hashes and replay identities. Structured requests use format 2 and parser `0.2.0
 node must accept both before the collector emits structured requests. Declaring a structured
 record as the old parser, or a text record as the new parser, refuses.
 
-The observed question widget has `prompt` and `steps`; each step has `prompt`, `options`, and
-optional boolean `allowCustom`. Options contain string `label` and `value`. Preserve the exact
+The observed question widget supports both single-question `prompt`/`options` and multi-step
+`prompt`/`steps` layouts. Boolean flags, help text and option descriptions/styles are validated
+against the native schema. Optional values are retained as supplied, never synthesized into an
+answer or approval. Structured sends may include a boolean `end_turn`; it stays inside the
+request content, not a delivery receipt. Unknown fields and mixed single/multi-step layouts refuse.
+Keep existing multi-step canonical bytes and replay identities unchanged. Preserve the exact
 structured request as canonical JSON, not as an answered question or an approval. Unknown fields,
 types and widgets refuse. The 32-step and 64-option bounds are CAM resource limits, not claims
 about provider limits. Ordinary privacy and byte limits still apply before retention.

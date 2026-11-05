@@ -12,7 +12,7 @@ not prerequisites for seeing the product.
 | Use Linux containers | [Container profile](deployment/container-profile.md) |
 | Capture eligible browser conversations | [Chrome capture](../browser/capture/README.md) |
 | Keep native history current | [Collector pairing](deployment/native-collector-pairing.md), [service setup](deployment/native-collector-service.md) |
-| Try the Grok Bot feature candidate | [Operator recipe](deployment/grok-bot-setup.md), [capture and coverage](deployment/grok-bot-capture.md) |
+| Connect a personal Grok Bot | [Operator recipe](deployment/grok-bot-setup.md), [capture and coverage](deployment/grok-bot-capture.md) |
 | Understand how answers use evidence | [Query skill](../skills/cross-agent-memory/SKILL.md) |
 | Diagnose an installation or update it | [Runtime and operational notes](deployment/runtime-notes.md) |
 | Verify a downloaded release | [Artifact verification](deployment/verify-release.md) |
