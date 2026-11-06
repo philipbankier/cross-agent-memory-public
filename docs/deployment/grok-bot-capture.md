@@ -30,6 +30,14 @@ hashes and replay identities. Structured requests use format 2 and parser `0.2.0
 node must accept both before the collector emits structured requests. Declaring a structured
 record as the old parser, or a text record as the new parser, refuses.
 
+Native `SendToUser` arguments may be an object or a JSON-encoded object; decoding rejects
+duplicate keys and non-JSON constants before the same field and privacy checks. Other tools'
+serialized inputs remain unqualified. Tool-call IDs retain their exact bytes, including the
+observed `call-<UUID>-<integer>\nfc_<UUID>_<integer>` compound form with one literal newline.
+Do not split or normalize that identifier or treat either component as proof of delivery.
+Deploy a reader accepting the compound form before its collector; old observation bytes and
+replay identities remain unchanged. Other multiline identifiers refuse.
+
 The observed question widget supports both single-question `prompt`/`options` and multi-step
 `prompt`/`steps` layouts. Boolean flags, help text and option descriptions/styles are validated
 against the native schema. Optional values are retained as supplied, never synthesized into an

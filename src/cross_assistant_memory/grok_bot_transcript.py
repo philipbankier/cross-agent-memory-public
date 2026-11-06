@@ -10,6 +10,7 @@ from typing import Literal, NoReturn, cast
 from uuid import UUID
 
 from cross_assistant_memory.admission import classify_record
+from cross_assistant_memory.grok_bot_identity import valid_native_tool_call_id
 from cross_assistant_memory.grok_bot_outward import canonical_outward_request
 
 MAX_PAGE_BYTES = 1024 * 1024
@@ -162,7 +163,7 @@ def project_transcript_page(data: bytes, *, expected_bot_id: str) -> TranscriptP
             if (
                 not isinstance(content, str)
                 or not content.strip()
-                or re.fullmatch(r"[A-Za-z0-9_:-]{1,256}", call_id) is None
+                or not valid_native_tool_call_id(call_id)
             ):
                 raise ValueError("Grok Bot reply request fields are unsupported")
             identity = (kind, content, cast(bool | None, end_turn))
@@ -276,6 +277,17 @@ def _inspect(
             if not isinstance(kind, str) or kind not in _BLOCK_FIELDS:
                 raise ValueError("Grok Bot transcript content kind is unsupported")
             _object(block, _BLOCK_FIELDS[kind])
+            if (
+                kind == "tool_use"
+                and block.get("name") == "SendToUser"
+                and isinstance(block.get("input"), str)
+            ):
+                # Native history can retain serialized arguments, not only decoded objects.
+                block["input"] = json.loads(
+                    cast(str, block["input"]),
+                    object_pairs_hook=_unique_object,
+                    parse_constant=_reject_constant,
+                )
             for key, field in block.items():
                 valid = isinstance(field, dict) if key == "input" else isinstance(field, str)
                 if not valid:
