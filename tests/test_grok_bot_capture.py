@@ -125,6 +125,43 @@ def test_capture_refuses_duplicate_and_unknown_fields() -> None:
             module.parse_grok_bot_capture_record(raw)
 
 
+def test_compound_native_call_id_roundtrips_without_normalization() -> None:
+    value = _value()
+    value["native_tool_call_id"] = f"call-{BOT}-21\nfc_{BOT}_0"
+    observation = capture.parse_grok_bot_capture_record(json.dumps(value).encode())
+    assert json.loads(observation.canonical_bytes()) == value
+    batch = parse_upload_batch(
+        capture.build_grok_bot_capture_upload(
+            observation, source_account_id="source_account:" + "a" * 64
+        )
+    )
+    assert batch.parsed.records[0].message_id == value["native_tool_call_id"]
+
+
+@pytest.mark.parametrize(
+    "identity",
+    [
+        f"call-{BOT}-21\r\nfc_{BOT}_0",
+        f"call-{BOT}-21\nfc_{BOT}_0\n",
+        f"call-{BOT}-21\nfc_{BOT}_0\nother",
+        f"call-{BOT}-21\nother_{BOT}_0",
+        f"call-{BOT.upper()}-21\nfc_{BOT}_0",
+        f"call-{BOT}-021\nfc_{BOT}_0",
+        f"call-{BOT}-21\nfc_{BOT}_-1",
+        f"call-{BOT}-21\nfc_{BOT}_0 ",
+        f"call-{BOT}-" + "1" * 256 + f"\nfc_{BOT}_0",
+        "arbitrary\nmultiline",
+        "x" * 257,
+    ],
+)
+def test_compound_id_refuses_near_matches_without_logging_it(identity: str) -> None:
+    value = _value()
+    value["native_tool_call_id"] = identity
+    with pytest.raises(ValueError) as error:
+        capture.parse_grok_bot_capture_record(json.dumps(value).encode())
+    assert identity not in str(error.value)
+
+
 def test_grok_bot_parser_does_not_turn_a_send_into_execution_or_invent_a_timestamp() -> None:
     module = capture
     source = json.dumps(_value()).encode()

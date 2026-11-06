@@ -202,6 +202,78 @@ def test_projection_never_guesses_positions_when_header_span_has_gaps() -> None:
     assert projection.replies[0].page_record_index == 2
 
 
+def test_serialized_send_arguments_keep_the_same_observation_identity() -> None:
+    from cross_assistant_memory.grok_bot_capture import GrokBotCaptureScope, transcript_page_uploads
+
+    source = _page(_records())
+    encoded = source.replace(
+        b'"input": {"content": "canary"}',
+        json.dumps({"input": json.dumps({"content": "canary"})})[1:-1].encode(),
+    )
+    scope = GrokBotCaptureScope("source_account:" + "a" * 64, (BOT,), BOT[:-1] + "2")
+    original = transcript_page_uploads(source, bot_id=BOT, scope=scope)
+    decoded = transcript_page_uploads(encoded, bot_id=BOT, scope=scope)
+    assert original[0].replies == decoded[0].replies
+    assert original[2] == decoded[2]
+    assert original[0].source_sha256 != decoded[0].source_sha256
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        '"canary"',
+        "null",
+        "[]",
+        "true",
+        "1",
+        "{",
+        '{"content":"canary","content":"other"}',
+        '{"content":"canary","end_turn":NaN}',
+        '{"content":"canary","recipient":"other"}',
+        '{"content":"[private] canary","nested":{"x":1,"x":2}}',
+    ],
+)
+def test_serialized_send_arguments_refuse_unknown_or_ambiguous_json(arguments: str) -> None:
+    source = _page(_records()).replace(
+        b'"input": {"content": "canary"}',
+        json.dumps({"input": arguments})[1:-1].encode(),
+    )
+    with pytest.raises(ValueError) as error:
+        _project(source)
+    assert "canary" not in str(error.value)
+
+
+def test_serialized_arguments_do_not_expand_other_tool_schemas() -> None:
+    source = _page(_records()).replace(
+        b'"input": {"secret": "canary"}',
+        json.dumps({"input": json.dumps({"secret": "canary"})})[1:-1].encode(),
+    )
+    with pytest.raises(ValueError, match="field type"):
+        _project(source)
+
+
+@pytest.mark.parametrize("text", ["[private] canary", "[no-memory] canary", "xai-" + "0" * 32])
+def test_serialized_send_arguments_preserve_privacy_exclusions(text: str) -> None:
+    source = _page(_records()).replace(
+        b'"input": {"content": "canary"}',
+        json.dumps({"input": json.dumps({"content": text, "end_turn": True})})[1:-1].encode(),
+    )
+    projection = _project(source)
+    assert projection.replies == () and projection.excluded_replies == 1
+    assert text.encode() not in projection.canonical_bytes()
+
+
+def test_compound_call_id_is_preserved_without_interpreting_or_splitting() -> None:
+    identity = f"call-{BOT}-21\nfc_{BOT}_0"
+    source = _page(_records()).replace(
+        b'"id": "call-2"', json.dumps({"id": identity})[1:-1].encode()
+    )
+    reply = _project(source).replies[0]
+    assert reply.native_tool_call_id == identity
+    assert reply.delivery == "requested_not_verified"
+    assert reply.conversation_id is None
+
+
 @pytest.mark.parametrize(
     "input_value",
     [

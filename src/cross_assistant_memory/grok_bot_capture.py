@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, NoReturn, cast
 from uuid import UUID
 
 from cross_assistant_memory.admission import classify_record
+from cross_assistant_memory.grok_bot_identity import valid_native_tool_call_id
 from cross_assistant_memory.grok_bot_outward import (
     StructuredRequestKind,
     canonical_outward_request,
@@ -285,8 +286,7 @@ class GrokBotReplyObservation:
         ):
             raise ValueError("Grok Bot capture scope or provenance is unsupported")
         if (
-            type(self.native_tool_call_id) is not str
-            or re.fullmatch(r"[A-Za-z0-9_:-]{1,256}", self.native_tool_call_id) is None
+            not valid_native_tool_call_id(self.native_tool_call_id)
             or type(self.content_text) is not str
             or not self.content_text.strip()
         ):
