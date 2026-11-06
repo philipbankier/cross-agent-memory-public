@@ -262,13 +262,15 @@ def test_user_text_envelope_cannot_smuggle_identity_or_delivery(key: str, value:
         capture.parse_grok_bot_capture_record(json.dumps(loaded).encode())
 
 
-def test_grok_bot_admission_replay_exact_evidence_and_restore(tmp_path: Path) -> None:
+@pytest.mark.parametrize("call_id", ["call-synthetic-1", f"call-{BOT}-21\nfc_{BOT}_0"])
+def test_grok_bot_admission_replay_exact_evidence_and_restore(tmp_path: Path, call_id: str) -> None:
     from cross_assistant_memory.backup import create_offline_clone, create_snapshot, verify_snapshot
 
     root = tmp_path / "node"
     application, principal, account = _capture_case(root)
     module = capture
-    observation = module.parse_grok_bot_capture_record(json.dumps(_value()).encode())
+    value = _value() | {"native_tool_call_id": call_id}
+    observation = module.parse_grok_bot_capture_record(json.dumps(value).encode())
     body = module.build_grok_bot_capture_upload(observation, source_account_id=account)
     batch = parse_upload_batch(body)
     admitted = application.upload_batch(principal, batch)
