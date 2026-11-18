@@ -162,7 +162,7 @@ The sync model has two speeds:
 - Explicit MCP capture may immediately propose an important decision, correction, or task.
 - Native history and official export reconciliation later supplies canonical evidence.
 
-Local collectors target a 15-minute cadence while their device is active and provide `sync now`.
+Local collectors default to an hourly cadence while their device is active and provide `sync now`.
 ChatGPT, Claude, and Grok web histories use a weekly assisted export workflow. Weekly is the
 request cadence, not a freshness guarantee: provider preparation and expiring download links may
 require later human action. The workflow may request, monitor, download, verify, and stage an

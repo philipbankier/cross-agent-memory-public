@@ -76,6 +76,33 @@ def _codex_message(text: str) -> dict[str, object]:
     }
 
 
+@pytest.mark.parametrize(("age_seconds", "priority"), [(1800, True), (3600, True), (3601, False)])
+def test_new_source_priority_covers_the_hourly_collection_window(
+    tmp_path: Path, age_seconds: int, priority: bool
+) -> None:
+    now = 2_000_000_000
+    source = write_jsonl(
+        tmp_path / "codex" / "session.jsonl",
+        [
+            {"type": "session_meta", "payload": {"id": "hourly", "source": "cli"}},
+            _codex_message("Synthetic hourly collection request."),
+        ],
+    )
+    modified = now - age_seconds
+    os.utime(source, (modified, modified))
+    config = _write_config(tmp_path, [("codex", source.parent, "source_account:codex")])
+
+    def transport(_node: CollectorNodeConfig, _credential: str, _body: bytes) -> None:
+        return None
+
+    result = runtime.sync_collector(config, transport=transport, now_epoch=now)
+    assert result["status"] == "ok"
+    assert result["uploaded_batches"] == 1
+    work = cast(dict[str, object], result["scan_work"])
+    assert work["priority_file_attempts"] == int(priority)
+    assert work["backfill_file_attempts"] == int(not priority)
+
+
 @pytest.mark.parametrize("priority", [True, False])
 def test_small_source_uses_remaining_budget_without_losing_deferred_rotation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, priority: bool
@@ -98,7 +125,7 @@ def test_small_source_uses_remaining_budget_without_losing_deferred_rotation(
         )
     )
     for path in paths:
-        modified = now if priority else now - 3600
+        modified = now if priority else now - runtime.COLLECTOR_SERVICE_SCHEDULE_SECONDS - 1
         os.utime(path, (modified, modified))
     config = _write_config(tmp_path, [("codex", root, "source_account:codex")])
     costs = {paths[0].stat().st_size: 60, paths[1].stat().st_size: 60}
@@ -155,7 +182,7 @@ def test_initial_deferred_lanes_keep_their_first_unfinished_source(
             )
             for index in range(3)
         ]
-        modified = now if priority else now - 3600
+        modified = now if priority else now - runtime.COLLECTOR_SERVICE_SCHEDULE_SECONDS - 1
         for path in paths:
             os.utime(path, (modified, modified))
         lanes[priority] = sorted(
@@ -394,7 +421,7 @@ def test_impossible_dense_reparse_does_not_starve_a_healthy_source(
                 *[_codex_message(f"Synthetic request {index}.") for index in range(count)],
             ],
         )
-        modified = now if priority else now - 3600
+        modified = now if priority else now - runtime.COLLECTOR_SERVICE_SCHEDULE_SECONDS - 1
         os.utime(path, (modified, modified))
     config = _write_config(tmp_path, [("codex", root, "source_account:codex")])
     dense_size = paths[0].stat().st_size

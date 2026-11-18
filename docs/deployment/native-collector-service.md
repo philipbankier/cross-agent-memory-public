@@ -1,7 +1,7 @@
 # Native Collector Service
 
 Date: 2026-08-30
-Updated: 2026-09-20
+Updated: 2026-11-18
 
 This profile runs the Codex, Claude Code, and Grok Build collector from one explicit format-2
 collector configuration. It provides equivalent user-level launchd and systemd schedules without
@@ -11,9 +11,12 @@ copying provider credentials into a service file.
 
 - The service runs as the logged-in user, never as root or a system daemon.
 - Every invocation runs `collector-sync --config <absolute-path> --quiet`.
-- launchd uses a user LaunchAgent with `RunAtLoad` and `StartInterval=900`.
+- launchd uses a user LaunchAgent with `RunAtLoad` and `StartInterval=3600`.
 - systemd uses a user oneshot service and timer with `OnStartupSec=1min`,
-  `OnUnitActiveSec=15min`, and `Persistent=false`.
+  `OnUnitActiveSec=3600s`, and `Persistent=false`.
+- Hourly is the default for newly generated service definitions. Existing installed schedules
+  are not rewritten by a code update; changing them requires a reviewed service replacement.
+  Run `collector-sync --config <absolute-path>` for an explicit earlier sync.
 - A powered-off or inactive device does not accumulate catch-up executions.
 - Routine success is silent. Attention and failure output contains collector state and hashes, not
   transcript text.
