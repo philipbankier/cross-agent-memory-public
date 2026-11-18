@@ -20,6 +20,52 @@ skill may be the adapter target instead. Record its source revision and digest, 
 the canonical workflow changes, and identify it as query-only: setup operations still require
 a verified full checkout and its current instructions. Do not maintain a second edited workflow.
 
+Use the [daily-use acceptance checks](../getting-started.md#what-your-agent-must-finish) when the
+owner wants ongoing use, not only a trial. A small import is the first checkpoint, not permission
+to stop before authorized backfill, both clients, persistence and scheduled collection work.
+
+## Same-Mac Daily Use
+
+Keep storage and all listeners on this Mac unless the owner chooses otherwise. Start the receiving
+node in a supervised terminal for the small checkpoint, using a verified unused loopback port:
+
+```sh
+script/cross-memory --home "$CAM_HOME" serve \
+  --transport streamable-http --host 127.0.0.1 --port 8765
+```
+
+This service includes authenticated enrollment/upload routes. A `--read-only` service does not;
+do not aim the collector at a query-only endpoint. For this local example, enrollment uses
+`http://127.0.0.1:8765/enroll` and the collector's `node.upload_url` is
+`http://127.0.0.1:8765/upload/batches`.
+Use the actual selected port consistently. Separate read-only principals still restrict assistant
+queries; collector pairing does not grant assistant write access. Inspect `serve --help` and
+`connect --help` before configuring the clients, and keep credentials out of arguments and logs.
+
+For ongoing use, the setup agent must create a reviewed user-level service for this new receiving
+node, then install the separate collector service described below. The repository has a collector
+service installer, not a general node-service installer. Do not invent a `node-service-install`
+command or copy the original operator's private fleet scripts.
+
+On macOS, create a new, nonconflicting LaunchAgent using a structured plist writer. Bind its
+`ProgramArguments` to the absolute installed `.venv/bin/cross-memory`, `--home`, the approved
+data directory and the `serve` arguments above. Set `RunAtLoad` and `KeepAlive`, a restart throttle,
+and private bounded logs outside collection roots. Use no shell profile, bearer token or key
+contents in the plist. Validate with `plutil -lint`, load into this user's `gui/<uid>` domain and
+verify the actual listener, authentication and upload behavior. Preserve any existing job at the
+chosen path/label and stop on a conflict instead of overwriting it.
+
+On Linux, use an equivalent reviewed user systemd service with the absolute `ExecStart`, private
+working/log paths, restart-on-failure and the same loopback boundary. The existing container
+profile is another supported Linux choice. Do not enable lingering or system-wide/root operation
+without explaining and approving the changed lifetime/access boundary.
+
+User services are not an always-on remote server: login state and sleep affect availability. Check
+that the node survives closing the setup terminal and restarts after a controlled service stop.
+Then verify a real collector run reaches it. Record the actual service labels/paths and status,
+stop/start and sync-now commands in the owner's private operating note. If persistence cannot be
+verified, report that gap rather than calling daily-use setup complete.
+
 ## Design Contract
 
 Setup is a sequence of small, dependency-ordered operations. It is not one installer with ambient
@@ -254,7 +300,9 @@ Repeat sequentially for each approved Codex, Claude Code, or Grok Build identity
 
 Build one explicit format-2 private collector config from the approved node URL, collector-token
 path, separate bounded queue and queue-key paths, and returned source-account IDs. Creating the
-config does not authorize opening its source roots. Validate it without syncing:
+config does not authorize opening its source roots. Use the existing typed config/parser in
+`src/cross_assistant_memory/collector.py` and the format-2 examples in the collector tests; do not
+invent field names or substitute a base URL for `node.upload_url`. Validate it without syncing:
 
 ```bash
 script/cross-memory collector-config-validate \
@@ -276,7 +324,14 @@ repeat the exact arguments with `--expected-plan-sha256` and `--execute`. Exact 
 no-op; verified file-first partial state resumes; conflicting manager or filesystem state is
 preserved. See `docs/deployment/native-collector-service.md`.
 
-Do not run `collector-sync` until real source access and ingestion are separately approved.
+New services check at startup and hourly (3600 seconds). This applies to native histories only,
+not web export requests or personal Grok Bot routines. Existing installed definitions are not
+overwritten on update. See the service guide for reviewed replacement and recovery boundaries.
+
+Run `collector-sync --config '<absolute config path>'` only within the approved source access and
+ingestion scope. For full daily-use setup, finish the authorized backlog in bounded passes, verify
+new records from both clients and observe a natural scheduled run. A manual sync proves capture,
+not that the hourly timer fired. Preserve originals, encrypted queues and acknowledgment cursors.
 
 ## Pause And Recovery Rules
 

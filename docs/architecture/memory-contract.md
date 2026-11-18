@@ -638,7 +638,7 @@ Retrieved memory, external pages, assistant output, tool output, and imported tr
 
 ## Synchronization And Collector Queue
 
-- Native source collectors SHOULD reconcile every 15 minutes while their device is active.
+- Native source collectors SHOULD reconcile hourly by default while their device is active.
 - A collector MUST expose an explicit immediate synchronization command.
 - Web-source reconciliation SHOULD run as a weekly assisted official-export workflow.
 - Weekly MUST be described as a request cadence, not a freshness guarantee.

@@ -74,21 +74,38 @@ The panel manages evidence and access; your assistant is where you ask for synth
 
 ## Connect Your Own History
 
-Open this folder in Codex or Claude Code and send:
+For daily use with Codex and Claude Code on one Mac, open this folder in either agent and send:
 
 ```text
-Read AGENTS.md and docs/getting-started.md. Set up Cross-Agent Memory for me.
-Confirm the node host, querying assistants, storage choice and one small source
-I approve. Use only my accounts. Handle safe retries, but involve me for login,
-permissions, new cost, recovery-key custody or destructive changes.
-Test three real questions, exact evidence, replay and restart/reconnect.
-Do not import my full history, schedule capture or expose a public endpoint.
-Report what passed, what is configured but untested, and what remains blocked.
+Read AGENTS.md and docs/getting-started.md. Set up Cross-Agent Memory for daily
+use on this Mac, with local storage and both Codex and Claude Code. Ask once
+which local history roots/accounts and exclusions I approve. That scope covers
+backfill, separate read-only MCP identities, user-wide query skills, a local
+background node and hourly native collection. A small import is a checkpoint,
+not the finish line. Preserve existing data, settings and unrelated services.
+Verify real handoffs in both directions from fresh sessions outside this repo,
+exact evidence, new-history capture, duplicate-free replay and reconnect.
+No cloud, web capture, public endpoint or new spending without asking. Stop for
+actual login, permission, privacy or destructive-change decisions, not each
+internal substep. Leave private operating/recovery instructions and a sanitized
+pass/fail report. Do not call untested or blocked parts complete.
 ```
 
-[First-session guide](docs/getting-started.md) ·
+[Full setup and small-trial guide](docs/getting-started.md) ·
 [Detailed commands](docs/deployment/agent-guided-setup.md) ·
 [Remote node and B2](REMOTE.md)
+
+Prefer a small trial first? Say so and approve only one conversation; background jobs and larger
+imports stay off. Full local setup needs no B2 account or separate server. History stays on your
+node, but evidence retrieved by an assistant is sent to that assistant's model as context.
+
+New native collectors check at startup and hourly. They inspect only approved history roots,
+skip unchanged completed files, queue eligible new records encrypted, and deliver them to your
+node with replay protection. They do not call an LLM, scan the whole Mac or request web exports.
+Changed files may need earlier bytes reread for integrity; initial backfill can take several
+bounded passes. Sleep, backlog or an unavailable node delays freshness. For an immediate handoff,
+use the documented [sync-now command](docs/getting-started.md#day-to-day-use).
+This source change does not replace existing installed schedules or older release binaries.
 
 ## How It Works
 

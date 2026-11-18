@@ -26,7 +26,7 @@ from cross_assistant_memory.safe_files import (
 )
 
 COLLECTOR_SERVICE_PLAN_FORMAT_VERSION = 3
-COLLECTOR_SERVICE_SCHEDULE_SECONDS = 15 * 60
+COLLECTOR_SERVICE_SCHEDULE_SECONDS = 60 * 60
 COLLECTOR_SERVICE_BASENAME = "cross-assistant-memory-collector"
 LAUNCHD_LABEL = "cross-assistant-memory.collector"
 SYSTEMD_SERVICE_NAME = f"{COLLECTOR_SERVICE_BASENAME}.service"
@@ -295,11 +295,11 @@ def _systemd_service_files(
     ).encode()
     timer = (
         "[Unit]\n"
-        "Description=Run the Cross-Agent Memory native collector every 15 minutes\n"
+        "Description=Run the Cross-Agent Memory native collector hourly\n"
         "\n"
         "[Timer]\n"
         "OnStartupSec=1min\n"
-        "OnUnitActiveSec=15min\n"
+        f"OnUnitActiveSec={COLLECTOR_SERVICE_SCHEDULE_SECONDS}s\n"
         "AccuracySec=1min\n"
         "Persistent=false\n"
         f"Unit={SYSTEMD_SERVICE_NAME}\n"
