@@ -128,6 +128,11 @@ a persistent collector, a new export or a schedule.
 6. Bootstrap uses the sealed `*-plan` and `*-apply` commands. Do not substitute `init`,
    `client-register`, `client-credential-issue`, `device-enrollment-create`, or
    `source-account-register`.
+7. Match the requested finish line in `docs/getting-started.md`. For full daily-use setup, a small
+   import is a checkpoint: finish the authorized backfill, all requested clients, user-wide skill
+   discovery, receiving-node persistence, hourly native collection and real two-way handoffs.
+   A small trial may stop earlier only when that is what the owner requested. Keep unrequested
+   providers, cloud storage and experiments separate; do not narrow the approved setup silently.
 
 ## Local Ledger
 

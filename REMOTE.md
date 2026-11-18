@@ -15,9 +15,10 @@ Have your agent configure these only after you approve the actual host, cost and
    the agent-guided setup instructions, and register separate read-only credentials per assistant.
 2. Keep the HTTP origin on loopback. Verify `serve --help` before choosing the read-only or native
    upload service. Configure only your own node and credentials. Do not expose the bare MCP port.
-3. Start in a supervised terminal for the initial trial. Persistence and automatic collection are
-   separate, explicitly approved steps after successful queries. The personal legacy launchd
-   installers are intentionally absent.
+3. Start in a supervised terminal for the initial checkpoint. For full daily use, finish approved
+   node persistence and automatic collection after successful queries; do not leave them out as
+   optional trial work. The personal legacy launchd installers are intentionally absent. Follow
+   the [service boundaries](docs/deployment/agent-guided-setup.md#same-mac-daily-use) for the chosen host.
 4. Install the runtime on the client too. Configure its MCP command as the absolute path to
    `script/cross-memory`, using the `connect-ssh` arguments below. Verify the host key independently
    and retain strict SSH checking. The client and node should use the same reviewed Git revision.

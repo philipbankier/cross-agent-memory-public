@@ -7,12 +7,15 @@ deployments, evaluation records and Git history. Do not seek or recreate that pr
 
 ## Scope
 
-- Ask once for the node host, querying assistant, storage choice and small approved source scope.
+- Ask once for the node host, querying assistants, storage choice and approved source scope.
   Use the named operation's approval for expected substeps and safe retries, not per-hash prompts.
-- The first session is one small real source, three useful questions, exact evidence, replay and
-  restart/reconnect. Then add a second source and test one cross-source question if the owner agrees.
-- Keep optional model/ranking experiments, whole-history backfill, website OAuth setup, recurring
-  jobs and public-release polish out of the initial path. This does not delete those capabilities.
+- Distinguish a small trial from full daily-use setup. Start with a small real import, questions,
+  exact evidence and replay as a checkpoint. For full setup, continue through the approved backfill,
+  both requested clients, user-wide query skills, node persistence, hourly native collection and
+  two-way handoff/reconnect checks in docs/getting-started.md. A working demo or MCP alone is not done.
+- Keep optional model/ranking experiments, unrequested web accounts, cloud storage and release work
+  out of local setup. Do not omit authorized backfill or recurring collection as if they were optional
+  when the owner requested daily use. Preserve exclusions and report unsupported history explicitly.
 - No public deployment, spending, new key handling, login/2FA, destructive changes or broader source
   access without the owner's authorization. Stop only the affected operation; continue safe work.
 - Do not reset a database, delete staging/journals, silently raise limits or disable a safety check
